@@ -88,9 +88,9 @@ $(document).ready(function() {
                 }
             });
 
-            $('.date-picker').datetimepicker({
-                format: 'MM/DD/YYYY'
-            });
+            //$('.date-picker').datetimepicker({
+            //    format: 'MM/DD/YYYY'
+            //});
         }
     }
 

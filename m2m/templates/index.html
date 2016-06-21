@@ -12,30 +12,29 @@
     <title>Powerhouse</title>
 
     <!-- Bootstrap Core CSS -->
+    {% block extra_css %}{% endblock %}
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
     <!-- Custom CSS -->
     <link href="/static/css/simple-sidebar.css" rel="stylesheet">
     <link href="/static/css/screen.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 
 <body>
-
     <div id="wrapper">
-
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
            <ul class="sidebar-nav" id="menu-accordion">
                 <li class="sidebar-brand">
-                    <a href="#">
+                    <a href="/">
                         Company logo
                     </a>
                 </li>
@@ -72,7 +71,7 @@
                 </li>
                 <li class="panel hid"> <a data-toggle="collapse" class="collapsed" data-parent="#menu-accordion" href="#hidden-link">Hidden <span class="glyphicon  arrow"></span></a>
                     <ul id="hidden-link" class="collapse">
-                        <li><a href="#">Accounts</a></li>
+                        <li><a href="/accounts/">Accounts</a></li>
                         <li><a href="#">SubTest2</a></li>
                         <li><a href="#">SubTest2</a></li>
                         <li><a href="#">SubTest2</a></li>
@@ -93,232 +92,7 @@
             </div>
 
             <div id="main-content">
-                <div class="col-lg-12 content-head">
-                    <h1 class="pull-left">Sample Diesel Inventory</h1>
-                    <div class="actions pull-right">
-                        <a href="javascript:;" class="btn btn-primary">Adj Supply</a>
-                        <a href="javascript:;" class="btn btn-primary">Adj Hedge</a>
-                    </div> 
-                </div> <!-- /.content-head -->
-                <div class="clearfix"></div>
-                <div class="content-body">
-                    <div class="box-row">
-                        <div class="col-lg-3">
-                            <div class="box inv">
-                                <div class="box-head clearfix">
-                                    <div class="icon pull-left">
-                                        <img src="/static/images/volume.png" alt="">
-                                    </div>
-                                    <div class="agg-data pull-right">
-                                        <div class="title">inventory volume</div>
-                                        <div class="amount"><strong>390,123</strong>gal</div>
-                                    </div>
-                                </div>
-                                <div class="box-content">
-                                    <div class="data">
-                                        <div class="table-container">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="row-title">hedge volume</td>
-                                                        <td>-336,000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="row-title">unhedge volume</td>
-                                                        <td>18,450</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="box price">
-                                <div class="box-head clearfix">
-                                    <div class="icon pull-left">
-                                        <img src="/static/images/price.png" alt="">
-                                    </div>
-                                    <div class="agg-data pull-right">
-                                        <div class="title">Company internal price</div>
-                                        <div class="amount"><strong>$1.2212</strong></div>
-                                    </div>
-                                </div>
-                                <div class="box-content">
-                                    <div class="data">
-                                        <div class="table-container">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="row-title">avgcost (hedged)</td>
-                                                        <td>1.2025</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="row-title">avgcost (physical)</td>
-                                                        <td>1.1044</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="box margin">
-                                <div class="box-head clearfix">
-                                    <div class="icon pull-left">
-                                        <img src="/static/images/margin.png" alt="">
-                                    </div>
-                                    <div class="agg-data pull-right">
-                                        <div class="title">current margin</div>
-                                        <div class="amount"><strong>$0.0187</strong></div>
-                                    </div>
-                                </div>
-                                <div class="box-content">
-                                    <div class="data">
-                                        <div class="table-container">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="row-title">margin (physical)</td>
-                                                        <td>0.1168</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="row-title">hedge contribution</td>
-                                                        <td>-0.0981</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="box sales">
-                                <div class="box-head clearfix">
-                                    <div class="icon pull-left">
-                                        <img src="/static/images/calendar.png" alt="">
-                                    </div>
-                                    <div class="agg-data pull-right">
-                                        <div class="title">
-                                            sales <br> 
-                                            <select name="" id="">
-                                                <option value="">30 Days</option>
-                                                <option value="">MTD</option>
-                                                <option value="">Week to Date</option>
-                                                <option value="">Custom Date</option>
-                                            </select>
-                                        </div>
-                                        <div class="amount"><strong>$49,940</strong></div>
-                                    </div>
-                                </div>
-                                <div class="box-content">
-                                    <div class="data">
-                                        <div class="table-container">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="row-title">AVG margin</td>
-                                                        <td>0.1168</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="row-title">total volume</td>
-                                                        <td>40,000</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                     
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="main-boxes">
-                        <div class="col-lg-9">
-                            <div class="box">
-                                <div class="box-head">
-                                    <div class="title pull-left">Supply Summary</div>
-                                    <div class="actions pull-right">
-                                        <a href="javascript:;" class="btn btn-primary">Adj Supply</a>
-                                        <a href="javascript:;" class="btn btn-primary">Adj Hedge</a>
-                                    </div>                                     
-                                </div>
-                                <div class="clearfix"></div>
-                                <div class="box-content">
-                                  <!-- Nav tabs -->
-                                  <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#supply" aria-controls="home" role="tab" data-toggle="tab">supply overview</a></li>
-                                    <li role="presentation"><a href="#hedge-pos" aria-controls="profile" role="tab" data-toggle="tab">hedge positions</a></li>
-                                  </ul>
-
-                                  <!-- Tab panes -->
-                                  <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="supply">
-                                        <table class="table data-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Supplier</th>
-                                                    <th class="number">Current Position</th>
-                                                    <th class="number">Price</th>
-                                                    <th class="number">Unrealized Margin</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <tr>
-                                                    <td>12-Nov-2015</td>
-                                                    <td>Supplier #1</td>
-                                                    <td class="number">380,000</td>
-                                                    <td class="number">1,0881</td>
-                                                    <td class="number">0.1331</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>12-Nov-2015</td>
-                                                    <td>Supplier #1</td>
-                                                    <td class="number">380,000</td>
-                                                    <td class="number">1,0881</td>
-                                                    <td class="number">0.1331</td>
-                                                </tr>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="number">390,123</td>
-                                                    <td class="number">1.1044</td>
-                                                    <td class="number">0.1168</td>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="hedge-pos">Another data table here.</div>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 sidebar-container">
-                            <div class="sidebar">
-                                <div class="box">
-                                    <div class="box-head">
-                                       <h3>Sample Diesel Inventory</h3>
-                                    </div>
-                                    <div class="box-content">
-                                        <div class="item">
-                                            <div class="type">diesel</div>
-                                            <div class="amount">390,00 (gal)</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div> <!-- /.content-body -->
+                {% block content %} {% endblock %}
             </div> <!-- /#main-content -->
         </div>
         <!-- /#page-content-wrapper -->
@@ -341,6 +115,8 @@
         $("#wrapper").toggleClass("toggled");
     });
     </script>
+    {% block extra_js %}{% endblock %}
+    
 
 </body>
 
