@@ -26,7 +26,7 @@ SECRET_KEY = 'xwb3lkiyzz4zpsxqb079w@9-sb7y!^^ce8u=&3n0g2mhc*)s-e'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-APPEND_SLASH=False
+#APPEND_SLASH=False
 CSRF_COOKIE_SECURE = False
 
 

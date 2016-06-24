@@ -1,5 +1,35 @@
 $(function(){
+    $('#email').focus(function(){
+        console.log("Please input a invalid email.");
+    });
+    $('#email').blur(function(){
+        var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if(!myreg.test($(this).val())){
+            console.log("Please input a invalid email!");
+            $(this).focus()
+            
+        }
+    });
+
+    $('#password1').focus(function(){
+        console.log("Enter at least 6 characters.");
+    });
+    $('#password1').blur(function(){
+        console.log("Password can not be empty");
+    });
+    $('#password2').focus(function(){
+        console.log("Re-enter at least 6 characters.");
+    });
+    $('#password2').blur(function(){
+        console.log("password1:" + $('#password1').val() + ",password2:" +$('#password2').val())
+        if ($('#password1').val() != $(this).val()) {
+            console.log("Password and re-enter password do not match.")
+        }
+    });
     
+    $('#confirm').click(function(){
+       console.log('BBBBBBBBBBBBBBBB') 
+    });
 });
 
 function add_user() {
@@ -22,18 +52,23 @@ function add_user() {
             if (json_data.error) {
                 feedback(json_data.error_message, 'error')
             } else {
-                // remove the project slice from the DOM
-                $('#project_slice_'+project_id).remove();
 
-                // audit the value
-                audit_values();
                 feedback('Success', 'ok');
-                closeWait();
             }
         },
         error: function(html){
-            alert('failure');
+            feedback('There was an error', 'error')
         }
     });
 
+}
+
+function add_event() {
+    //$('#confirm').click
+}
+
+function remove_accounts() {
+    $('#users .selected')
+    console.log($('#confirm').text())
+    console.log('#################')
 }
