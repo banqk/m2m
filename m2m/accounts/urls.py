@@ -6,4 +6,5 @@ urlpatterns = patterns(
     url(r'^accounts/$', 'accounts'),
     url(r'^log/$', 'log'),
     url(r'^create_account/$', 'create_account'),
+    url(r'^remove_account/$', 'remove_account'),
 )

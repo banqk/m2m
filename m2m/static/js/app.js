@@ -75,8 +75,18 @@ $(document).ready(function() {
             })
 
             $('.table-container .btn-delete').on('click', function() {
+                var option = $(this).attr('id')
                 var table = TableUtils.getDataTableFromControl($(this));
                 var count = table.rows( { selected: true } ).count();
+                //var choies = table.rows('.selected')
+                var choices = $('.selected td');
+                var len = choices.length;
+                var del_list = new Array();
+                //console.log('***********:' + choies[1])
+                for(var i=1; i<len; i+=6) {
+                    console.log('***********:' + choices.eq(i).text());
+                    del_list.push(choices.eq(i).text());
+                }
                 if(count === 0) {
                     bootbox.alert("Please select, at least, 1 row to be deleted");
                 } else {
@@ -86,6 +96,17 @@ $(document).ready(function() {
                         }
                     });                    
                 }
+                if(option == "delete_account") { 
+                    $('#confirm').on('click', function(){
+                        remove_accounts(del_list);
+                    });
+                } else if(option == "delete_company") {
+                    $('#confirm').on('click', function(){
+                        remove_company(del_list);
+                    });
+                    
+                }
+
             });
 
             //$('.date-picker').datetimepicker({

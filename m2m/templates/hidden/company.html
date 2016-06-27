@@ -35,7 +35,7 @@
 		    <div class="separator">
 			<a title="Print selected rows" class="btn-print" href="javascript:;"></a>
 			<a class="btn-edit" href="javascript:;"></a>
-			<a title="Delete selected rows" class="btn-delete" href="javascript:;"  onclick="remove_accounts()"></a>
+			<a id="delete_company" title="Delete selected rows" class="btn-delete" href="javascript:;" ></a>
 		    </div>
 		</div>
 		<div class=" input-group table-search col-lg-4 pull-right">
@@ -46,9 +46,8 @@
                     <span class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></span>
 		    <select  class="form-control selectpicker" style="width:255px; display:inline-block;">
 			<option>No Filter</option>
-			<option>Company</option>
-			<option>User Name</option>
-			<option>Email</option>
+			<option>Name</option>
+			<option>Address</option>
 		    </select>
 		</div>
 	    </div>
@@ -59,10 +58,9 @@
 		    <tr>
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
-			<th>Last Login Date</th>
-			<th>User Name</th>
-			<th>Email</th>
-			<th>Company</th>
+			<th>Create Date</th>
+			<th>Company Name</th>
+			<th>Address</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -72,18 +70,16 @@
 			<th></th>
 			<th></th>
 			<th></th>
-			<th></th>
 		    </tr>
 		</tfoot>
 		<tbody>
-                    {% for account in companies %}
+                    {% for company in companies %}
                      <tr>
                          <td></td>
-                         <td>{{account.id}}</td>
-                         <td>{{account.last_login_date}}</td>
-                         <td>{{account.name}}</td>
-                         <td>{{account.email}}</td>
-                         <td>{{account.company}}</td>
+                         <td>{{company.id}}</td>
+                         <td>{{company.create_date}}</td>
+                         <td>{{company.name}}</td>
+                         <td>{{company.address}}</td>
                      </tr>
                     {% endfor %}
 <!--
@@ -132,45 +128,27 @@
         <div id="add-company" class="modal fade" tabindex="-1" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
-                <form id="user_info" action="">
+                <form id="company_info" action="">
                   {% csrf_token %}
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Add Account</h4>
                   </div>
                   <div class="modal-body clearfix">
-                    <div class="col-lg-6">
+                    <div class="col-lg-8">
                         <div class="form-group">
-                            <label for="">user name<span style="color:red">*</span></label>
+                            <label for="">company name<span style="color:red">*</span></label>
                             <input type="text" id="usename" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="">password</label>
-                            <input type="password" id="password1" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="">confirm</label>
-                            <input type="password" id="password2" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">full name </label>
+                            <label for="">address </label>
                             <input type="text" id="fullname" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="">email </label>
-                            <input type="text" id="email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="">company</label>
-                            <input type="text" id="company" class="form-control">
                         </div>
                     </div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="add_user_btn" type="submit" class="btn btn-primary" onclick="add_user()">Save</button>
+                    <button id="add_user_btn" type="submit" class="btn btn-primary" onclick="add_company()">Save</button>
                   </div>
                 </form>
 

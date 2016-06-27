@@ -14,7 +14,7 @@
 	<div class="box-head clearfix">
 	    <h1 class="pull-left">Users</h1>
 	    <div class="actions pull-right">
-		<a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-user"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Create User</a>
+		<a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-user" title="Create M2M account"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Create User</a>
 	    </div>
 	</div>
 <!--
@@ -35,7 +35,7 @@
 		    <div class="separator">
 			<a title="Print selected rows" class="btn-print" href="javascript:;"></a>
 			<a class="btn-edit" href="javascript:;"></a>
-			<a title="Delete selected rows" class="btn-delete" href="javascript:;"  onclick="remove_accounts()"></a>
+			<a id="delete_account" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
 		    </div>
 		</div>
 		<div class=" input-group table-search col-lg-4 pull-right">
@@ -59,7 +59,7 @@
 		    <tr>
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
-			<th>Last Login Date</th>
+			<th>Create Date</th>
 			<th>User Name</th>
 			<th>Email</th>
 			<th>Company</th>
@@ -144,6 +144,7 @@
                             <label for="">user name<span style="color:red">*</span></label>
                             <input type="text" id="usename" class="form-control">
                         </div>
+<!--
                         <div class="form-group">
                             <label for="">password</label>
                             <input type="password" id="password1" class="form-control">
@@ -154,6 +155,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
+-->
                         <div class="form-group">
                             <label for="">full name </label>
                             <input type="text" id="fullname" class="form-control">
@@ -177,6 +179,17 @@
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+
+<!--
+    <div id="remove_user" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="bootbox-body">Are you sure you want to delete the items?
+                </div>
+            </div>
+        </div>
+    </div>
+-->
 
 {% endblock%}
 

@@ -67,8 +67,76 @@ function add_event() {
     //$('#confirm').click
 }
 
-function remove_accounts() {
-    $('#users .selected')
-    console.log($('#confirm').text())
-    console.log('#################')
+function remove_accounts(accounts) {
+    $.ajax({
+        type: "POST",
+        url: "/remove_account/",
+        data: ({ accounts : accounts}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                feedback(json_data.error_message, 'error')
+            } else {
+
+                feedback('Success', 'ok');
+            }
+        },
+        error: function(html){
+            feedback('There was an error', 'error')
+        }
+    });
+}
+
+function add_company() {
+    console.log('add company test')
+
+    var text_vals = new Array(2);
+    var i = 0;
+    $("#company_info input").each(function(){
+        console.log($(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    
+    $.ajax({
+        type: "POST",
+        url: "/company/create_company/",
+        data: ({ company_name : text_vals[0], address: text_vals[1]}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                feedback(json_data.error_message, 'error')
+            } else {
+
+                feedback('Success', 'ok');
+            }
+        },
+        error: function(html){
+            feedback('There was an error', 'error')
+        }
+    });
+
+}
+
+function remove_company(companies) {
+    $.ajax({
+        type: "POST",
+        url: "/company/remove_company/",
+        data: ({ companies : companies}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                feedback(json_data.error_message, 'error')
+            } else {
+
+                feedback('Success', 'ok');
+            }
+        },
+        error: function(html){
+            feedback('There was an error', 'error')
+        }
+    });
 }

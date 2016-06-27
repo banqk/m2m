@@ -42,6 +42,17 @@ def create_account(request):
     )
     account.save()
     
-#    render_to_url = 'hidden/account.html'
     return HttpResponse(json.dumps({'response': 'success'}))
-# Create your views here.
+
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def remove_account(request):
+    request_vals = request.POST
+    logger = logging.getLogger('')
+    logger.info(str(request))
+    accounts = request_vals.getlist('accounts[]', '')
+   
+    Account.objects.filter(pk__in=accounts).delete()
+    
+    return HttpResponse(json.dumps({'response': 'success'}))
