@@ -191,7 +191,6 @@ function add_inventory() {
     
     console.log('inven ***' + $('#type').val() + '$$$$')
     if($('#type').val() == 'Inventory') {
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
 	    $.ajax({
 		type: "POST",
 		url: "/inventory/create_inventory/",
@@ -211,11 +210,10 @@ function add_inventory() {
 		}
 	    });
     } else {
-            console.log('!!!!!!!!!!!!!!!!!!!!')
 	    $.ajax({
 		type: "POST",
 		url: "/hedge/create_hedge_account",
-		data: ({ name : text_vals[0], institution: text_vals[1], account_number: text_vals[2]}),
+		data: ({ name : text_vals[0], institution: text_vals[1], account_number: text_vals[2], account_id: m2m_account_id}),
 		success: function(html){
 
 		    json_data = JSON.parse(html);

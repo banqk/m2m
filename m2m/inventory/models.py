@@ -7,4 +7,5 @@ class Inventory(models.Model):
     fuel_type = models.CharField(max_length=20)
     location = models.CharField(max_length=250)
     id_number = models.CharField(max_length=50)
+    create_date = models.DateTimeField(null=True, auto_now=True)
     m2m_account = models.ForeignKey(Account)

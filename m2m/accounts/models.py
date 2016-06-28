@@ -7,7 +7,7 @@ class Account(models.Model):
     email = models.CharField(max_length=250)
     company = models.CharField(max_length=250)
     last_login_date = models.DateTimeField(
-        null=True,
+        auto_now=True,
         help_text='When the account logined, will change the column', )
     
 
