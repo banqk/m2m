@@ -28,14 +28,14 @@ def create_account(request):
     logger = logging.getLogger('')
     logger.info(str(request))
     user_name = request_vals.get('user_name')
-    password = request_vals.get('password')
+#    password = request_vals.get('password')
     full_name = request_vals.get('full_name')
     email = request_vals.get('email')
     company = request_vals.get('company')
 
     account = Account.objects.create(
         name = user_name,
-        password = password,
+#        password = password,
         full_name = full_name,
         email = email,
         company = company

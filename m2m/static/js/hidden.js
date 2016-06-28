@@ -45,7 +45,7 @@ function add_user() {
     $.ajax({
         type: "POST",
         url: "/create_account/",
-        data: ({ user_name : text_vals[0], password : text_vals[1], full_name: text_vals[3], email: text_vals[4], company: text_vals[5]}),
+        data: ({ user_name : text_vals[0], full_name: text_vals[1], email: text_vals[2], company: text_vals[3]}),
         success: function(html){
 
             json_data = JSON.parse(html);

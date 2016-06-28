@@ -79,7 +79,7 @@
                     {% for account in accounts %}
                      <tr>
                          <td></td>
-                         <td>{{account.id}}</td>
+                         <td><a href="/api/account/?account_id={{account.id}}">{{account.id}}<a></td>
                          <td>{{account.last_login_date}}</td>
                          <td>{{account.name}}</td>
                          <td>{{account.email}}</td>
