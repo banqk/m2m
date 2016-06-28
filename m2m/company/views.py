@@ -33,6 +33,7 @@ def create_company(request):
 def remove_company(request):
     request_vals = request.POST
     companies = request_vals.getlist('companies[]', '')
+    print companies
     
     Company.objects.filter(pk__in=companies).delete()
    

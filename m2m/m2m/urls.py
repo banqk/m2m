@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^', include('accounts.urls')),
     url(r'^company', include('company.urls')),
     url(r'^api', include('common.urls')),
+    url(r'^inventory', include('inventory.urls')),
+    url(r'^hedge', include('hedge_account.urls')),
 ]

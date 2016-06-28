@@ -82,11 +82,6 @@ $(document).ready(function() {
                 var choices = $('.selected td');
                 var len = choices.length;
                 var del_list = new Array();
-                //console.log('***********:' + choies[1])
-                for(var i=1; i<len; i+=6) {
-                    console.log('***********:' + choices.eq(i).text());
-                    del_list.push(choices.eq(i).text());
-                }
                 if(count === 0) {
                     bootbox.alert("Please select, at least, 1 row to be deleted");
                 } else {
@@ -97,10 +92,18 @@ $(document).ready(function() {
                     });                    
                 }
                 if(option == "delete_account") { 
+                    for(var i=1; i<len; i+=6) {
+                        del_list.push(choices.eq(i).text());
+                    }
                     $('#confirm').on('click', function(){
                         remove_accounts(del_list);
                     });
                 } else if(option == "delete_company") {
+                    for(var i=1; i<len; i+=5) {
+                        console.log('############' + choices.eq(i).text())
+                        del_list.push(choices.eq(i).text());
+                    }
+                    console.log(del_list)
                     $('#confirm').on('click', function(){
                         remove_company(del_list);
                     });
