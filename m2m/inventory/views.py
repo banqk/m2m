@@ -23,6 +23,7 @@ def create_inventory(request):
     in_location = request_vals.get('in_location')
     id_number = request_vals.get('id_number')
     account_id = request_vals.get('account_id')
+    print account_id
 
     account = Account.objects.get(pk=account_id)
     
@@ -35,4 +36,4 @@ def create_inventory(request):
     )
     inventory.save()
 
-    return HttpResponse(json.dumps({'response': 'success'}))
+    return HttpResponse(json.dumps({'response': 'success', 'account_id':account_id } ))

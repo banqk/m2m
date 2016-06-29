@@ -7,9 +7,20 @@ from hedge_account.models import Hedge_Account
 def account(request):
     options = {}
     account_id = request.GET.get('account_id', '')
-    account = Account.objects.get(pk=account_id)
-    inventories = Inventory.objects.get(m2m_account=account_id)
-    hedge_accounts = Hedge_Account.objects.get(m2m_account=account_id)
+
+    try:
+        account = Account.objects.get(pk=account_id)
+    except Account.DoesNotExist:
+        pass
+    try:
+        inventories = Inventory.objects.filter(m2m_account=account_id)
+    except Inventory.DoesNotExist:
+        inventories = {}
+    try:
+        hedge_accounts = Hedge_Account.objects.filter(m2m_account=account_id)
+    except Hedge_Account.DoesNotExist:
+        hedge_accounts = {}
+    
     options.update({'current_account_id': account_id})
     options.update({'account': account})
     options.update({'inventories': inventories})

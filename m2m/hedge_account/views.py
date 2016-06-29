@@ -2,7 +2,8 @@ from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from hedge_account import Hedge_Account
+from hedge_account.models import Hedge_Account
+from accounts.models import Account
 import simplejson as json
 
 
@@ -20,12 +21,15 @@ def create_hedge_account(request):
     name = request_vals.get('name')
     institution = request_vals.get('institution')
     account_number = request_vals.get('account_number')
+    account_id = request_vals.get('account_id')
+    account = Account.objects.get(pk=account_id)
 
     hedge = Hedge_Account.objects.create(
         name = name,
         institution = institution,
-        id_number = account_number
+        id_number = account_number,
+        m2m_account = account
     )
     hedge.save()
 
-    return HttpResponse(json.dumps({'response': 'success'}))
+    return HttpResponse(json.dumps({'response': 'success', 'account_id': account_id}))

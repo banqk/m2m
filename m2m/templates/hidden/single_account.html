@@ -26,6 +26,9 @@
     </select>
 </div>
 -->
+    <div class="box-head clearfix">
+        <h1 class="pull-left">Inventories</h1>
+    </div>
     <div class="box-content">
 	<div class="table-container">
 	    <table id="inventories" class="table is-datatable">
@@ -55,7 +58,7 @@
                     {% for inventory in inventories %}
                      <tr>
                          <td></td>
-                         <td><>{{inventory.id}}<a></td>
+                         <td><a>{{inventory.id}}</a></td>
                          <td>{{inventory.create_date}}</td>
                          <td>{{inventory.name}}</td>
                          <td>{{inventory.fuel_type}}</td>
@@ -67,7 +70,10 @@
 	    </table>
 	</div>
     </div>
-        <div class="box-content">
+    <div class="box-head clearfix">
+        <h1 class="pull-left">Hedge Accounts</h1>
+    </div>
+    <div class="box-content">
         <div class="table-container">
             <table id="hedge_accounts" class="table is-datatable">
                 <thead>
@@ -97,8 +103,8 @@
                          <td><>{{hedge_account.id}}<a></td>
                          <td>{{hedge_account.create_date}}</td>
                          <td>{{hedge_account.name}}</td>
-                         <td>{{inventory.institution}}</td>
-                         <td>{{inventory.account_number}}</td>
+                         <td>{{hedge_account.institution}}</td>
+                         <td>{{hedge_account.id_number}}</td>
                      </tr>
                     {% endfor %}
                 </tbody>
@@ -148,7 +154,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="add_user_btn" type="submit" class="btn btn-primary" onclick="add_inventory()">Save</button>
+                    <button id="add_user_btn" type="button" class="btn btn-primary" onclick="add_inventory()">Save</button>
                   </div>
                 </form>
 

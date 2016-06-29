@@ -196,8 +196,9 @@ function add_inventory() {
 		url: "/inventory/create_inventory/",
 		data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3], account_id: m2m_account_id}),
 		success: function(html){
-
 		    json_data = JSON.parse(html);
+                    console.log(json_data['account_id'])
+                    window.location.href='/api/account/?account_id=' + json_data['account_id']
 		    if (json_data.error) {
 			feedback(json_data.error_message, 'error')
 		    } else {
@@ -212,11 +213,12 @@ function add_inventory() {
     } else {
 	    $.ajax({
 		type: "POST",
-		url: "/hedge/create_hedge_account",
+		url: "/hedge/create_hedge_account/",
 		data: ({ name : text_vals[0], institution: text_vals[1], account_number: text_vals[2], account_id: m2m_account_id}),
 		success: function(html){
 
 		    json_data = JSON.parse(html);
+                    window.location.href='/api/account/?account_id=' + json_data['account_id']
 		    if (json_data.error) {
 			feedback(json_data.error_message, 'error')
 		    } else {
