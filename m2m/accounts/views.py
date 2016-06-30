@@ -56,3 +56,6 @@ def remove_account(request):
     Account.objects.filter(pk__in=accounts).delete()
     
     return HttpResponse(json.dumps({'response': 'success'}))
+
+def search_account(request):
+    request_vals = request.GET
