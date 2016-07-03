@@ -11,7 +11,7 @@ def hedges(request):
     options = {}
     hedges = Hedge_Account.objects.all()
     options.update({'hedges': hedges})
-    render_to_url = 'hidden/single_account.html'
+    render_to_url = 'hidden/hedge_account.html'
     return render_to_response(render_to_url, options)
 
 @require_http_methods(['POST'])
@@ -22,6 +22,7 @@ def create_hedge_account(request):
     institution = request_vals.get('institution')
     account_number = request_vals.get('account_number')
     account_id = request_vals.get('account_id')
+    print account_id
     account = Account.objects.get(pk=account_id)
 
     hedge = Hedge_Account.objects.create(
@@ -33,3 +34,13 @@ def create_hedge_account(request):
     hedge.save()
 
     return HttpResponse(json.dumps({'response': 'success', 'account_id': account_id}))
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def remove_hedge_account(request):
+    request_vals = request.POST
+    hedge_accounts = request_vals.getlist('hedge_accounts[]', '')
+
+    Hedge_Account.objects.filter(pk__in=hedge_accounts).delete()
+
+    return HttpResponse(json.dumps({'response': 'success'}))

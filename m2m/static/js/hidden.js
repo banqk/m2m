@@ -1,4 +1,101 @@
 $(function(){
+
+    $('#name').focus(function(){
+        console.log("The name is not empty and greater than 5 characters.")
+    });
+
+    $('#name').blur(function(){
+        name = $('#name').val()
+        console.log(name + ',' + name.length) 
+        if(name.length <= 5) {
+            if($('p').length == 0) {
+                pTab = $('<p style="color:red; dispaly:inline-block;">Please enter greater than 5 characters.</p>')
+                $(this).after(pTab)
+            }
+            $(this).focus()
+        } else {
+            $('p').remove();
+        }
+    });
+   
+    $('#address').focus(function(){
+        console.log("enter address input tab")
+    }); 
+    $('#address').blur(function(){
+        address = $('#address').val();
+        if(address.length < 1){
+            console.log('################')
+            if($('p').length == 0) {
+                pTab = $('<p style="color:red; dispaly:inline-block;">The address cannot be empty.</p>');
+                $(this).after(pTab);
+            }
+            $(this).focus();
+        } else {
+            $('p').remove();
+        }
+    });
+
+    $('#fuel_type').blur(function(){
+        fuel_type = $('#fuel_type').val();
+        if(fuel_type.length < 1){
+            if($('p').length == 0) {
+                pTab = $('<p style="color:red; dispaly:inline-block;">The fuel type cannot be empty.</p>');
+                $(this).after(pTab);
+            }
+            $(this).focus();
+        } else {
+            $('p').remove();
+        }
+    });
+    $('#id_number').blur(function(){
+        id_number = $('#id_number').val();
+        if(id_number.length < 1){
+            if($('p').length == 0) {
+                pTab = $('<p style="color:red; dispaly:inline-block;">The id number cannot be empty.</p>');
+                $(this).after(pTab);
+            }
+            $(this).focus();
+        } else {
+            $('p').remove();
+        }
+    });
+
+    $('#institution').blur(function(){
+        institution = $('#institution').val();
+        if(institution.length < 1){
+            if($('p').length == 0) {
+                pTab = $('<p style="color:red; dispaly:inline-block;">The institution cannot be empty.</p>');
+                $(this).after(pTab);
+            }
+            $(this).focus();
+        } else {
+            $('p').remove();
+        }
+    });
+    $('#account_number').blur(function(){
+        account_number = $('#account_number').val();
+        if(account_number.length < 1){
+            if($('p').length == 0) {
+                pTab = $('<p style="color:red; dispaly:inline-block;">The account number cannot be empty.</p>');
+                $(this).after(pTab);
+            }
+            $(this).focus();
+        } else {
+            $('p').remove();
+        }
+    });
+/*
+    $('#address').blur(function(){
+        address = $('#address').val();
+        if(name.length < 1){
+            pTab = $('<p style="color:red; dispaly:inline-block;">The address cannot be empty.</p>');
+            $(this).after(pTab)
+            $(this).focus()
+        } else {
+            $('p').remove();
+        }
+    });
+*/
     $('#email').focus(function(){
         console.log("Please input a invalid email.");
     });
@@ -6,20 +103,17 @@ $(function(){
         var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
         if(!myreg.test($(this).val())){
             console.log("Please input a invalid email!");
-            $(this).focus()
+            if($('p').length<1) {
+                pTab = $('<p style="color:red; dispaly:inline-block;">Please enter a invalid email.</p>');
+                $(this).after(pTab);
+            }
+            $(this).focus();
             
+        } else {
+            $('p').remove();
         }
     });
 
-    $('#password1').focus(function(){
-        console.log("Enter at least 6 characters.");
-    });
-    $('#password1').blur(function(){
-        console.log("Password can not be empty");
-    });
-    $('#password2').focus(function(){
-        console.log("Re-enter at least 6 characters.");
-    });
     $('#password2').blur(function(){
         console.log("password1:" + $('#password1').val() + ",password2:" +$('#password2').val())
         if ($('#password1').val() != $(this).val()) {
@@ -81,7 +175,7 @@ function add_user() {
     $.ajax({
         type: "POST",
         url: "/create_account/",
-        data: ({ user_name : text_vals[0], full_name: text_vals[1], email: text_vals[2], company: text_vals[3]}),
+        data: ({ name : text_vals[0], address: text_vals[1], email: text_vals[2]}),
         success: function(html){
 
             json_data = JSON.parse(html);
@@ -233,4 +327,105 @@ function add_inventory() {
 
     }
 
+}
+
+
+function new_inventory() {
+    var text_vals = new Array(6);
+    var i = 0;
+    $("#inventory_info input").each(function(){
+        console.log( '#########::::::' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })    
+    $.ajax({
+	type: "POST",
+	url: "/inventory/create_inventory/",
+	data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3], account_id: text_vals[4]}),
+	success: function(html){
+	    json_data = JSON.parse(html);
+//	    console.log(json_data['account_id'])
+//	    window.location.href='/api/account/?account_id=' + json_data['account_id']
+	    if (json_data.error) {
+		feedback(json_data.error_message, 'error')
+	    } else {
+
+		feedback('Success', 'ok');
+	    }
+	},
+	error: function(html){
+	    feedback('There was an error', 'error')
+	}
+    });    
+}
+
+function new_hedge_account() {
+    var text_vals = new Array(6);
+    var i = 0;
+    $("#hedge_account_info input").each(function(){
+        console.log( '#########::::::' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })    
+    $.ajax({
+	type: "POST",
+	url: "/hedge/create_hedge_account/",
+	data: ({ name : text_vals[0], institution: text_vals[1], account_number: text_vals[2], account_id: text_vals[3]}),
+	success: function(html){
+	    json_data = JSON.parse(html);
+//	    console.log(json_data['account_id'])
+//	    window.location.href='/api/account/?account_id=' + json_data['account_id']
+	    if (json_data.error) {
+		feedback(json_data.error_message, 'error')
+	    } else {
+
+		feedback('Success', 'ok');
+	    }
+	},
+	error: function(html){
+	    feedback('There was an error', 'error')
+	}
+    });    
+}
+
+function remove_inventory(inventories) {
+    $.ajax({
+        type: "POST",
+        url: "/inventory/remove_inventory/",
+        data: ({ inventories : inventories}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                feedback(json_data.error_message, 'error')
+            } else {
+
+                feedback('Success', 'ok');
+            }
+        },
+        error: function(html){
+            feedback('There was an error', 'error')
+        }
+    });
+}
+
+function remove_hedge_account(hedge_accounts) {
+    $.ajax({
+        type: "POST",
+        url: "/hedge/remove_hedge_account/",
+        data: ({ hedge_accounts : hedge_accounts}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                feedback(json_data.error_message, 'error')
+            } else {
+
+                feedback('Success', 'ok');
+            }
+        },
+        error: function(html){
+            feedback('There was an error', 'error')
+        }
+    });
 }

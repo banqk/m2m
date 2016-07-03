@@ -26,11 +26,24 @@
     </select>
 </div>
 -->
-    <div class="box-head clearfix">
-        <h1 class="pull-left">Inventories</h1>
-    </div>
     <div class="box-content">
 	<div class="table-container">
+            <div class="table-controls clearfix">
+		 <div class="table-actions pull-right">
+		    <div class="separator">
+			<a title="Print selected rows" class="btn-print" href="javascript:;"></a>
+			<a class="btn-edit" href="javascript:;"></a>
+			<a id="delete_inventory" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
+		    </div>
+		</div>
+            <div class=" input-group table-search col-lg-4 pull-right">
+                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+                    <input type="search" placeholder="Search" class="form-control">
+            </div>
+            <div class="">
+                <h1 class="pull-left">Inventories</h1>
+            </div>
+            </div>
 	    <table id="inventories" class="table is-datatable">
 		<thead>
 		    <tr>
@@ -43,6 +56,7 @@
                         <th>Id Number</th>
 		    </tr>
 		</thead>
+<!--
 		<tfoot>
 		    <tr class="filters">
 			<th></th>
@@ -54,6 +68,7 @@
 			<th></th>
 		    </tr>
 		</tfoot>
+-->
 		<tbody>
                     {% for inventory in inventories %}
                      <tr>
@@ -86,16 +101,6 @@
                         <th>Account Number</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr class="filters">
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </tfoot>
                 <tbody>
                     {% for hedge_account in hedge_accounts %}
                      <tr>
@@ -128,7 +133,7 @@
                   <div class="modal-body clearfix">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="">name<span style="color:red">*</span></label>
+                            <label for="">name</label>
                             <input type="text" id="name" class="form-control">
                         </div>
                         <div class="form-group">

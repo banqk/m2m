@@ -91,6 +91,7 @@ $(document).ready(function() {
                         }
                     });                    
                 }
+                console.log('###########' + option)
                 if(option == "delete_account") { 
                     for(var i=1; i<len; i+=6) {
                         del_list.push(choices.eq(i).text());
@@ -107,7 +108,24 @@ $(document).ready(function() {
                     $('#confirm').on('click', function(){
                         remove_company(del_list);
                     });
-                    
+                } else if(option == "delete_inventory") {
+                    for(var i=1; i<len; i+=8) {
+                        console.log('############' + choices.eq(i).text())
+                        del_list.push(choices.eq(i).text());
+                    }
+                    console.log(del_list)
+                    $('#confirm').on('click', function(){
+                        remove_inventory(del_list);
+                    });
+                } else if(option == "delete_hedge_account") {
+                    for(var i=1; i<len; i+=7) {
+                        console.log('############' + choices.eq(i).text())
+                        del_list.push(choices.eq(i).text());
+                    }
+                    console.log(del_list)
+                    $('#confirm').on('click', function(){
+                        remove_hedge_account(del_list);
+                    });
                 }
 
             });

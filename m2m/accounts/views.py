@@ -27,18 +27,16 @@ def create_account(request):
     request_vals = request.POST
     logger = logging.getLogger('')
     logger.info(str(request))
-    user_name = request_vals.get('user_name')
+    user_name = request_vals.get('name')
 #    password = request_vals.get('password')
-    full_name = request_vals.get('full_name')
+    address = request_vals.get('address')
     email = request_vals.get('email')
-    company = request_vals.get('company')
 
     account = Account.objects.create(
         name = user_name,
 #        password = password,
-        full_name = full_name,
-        email = email,
-        company = company
+        address = address,
+        email = email
     )
     account.save()
     

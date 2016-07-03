@@ -11,7 +11,7 @@ def inventories(request):
     options = {}
     inventories = Inventory.objects.all()
     options.update({'inventories': inventories})
-    render_to_url = 'hidden/single_account.html'
+    render_to_url = 'hidden/inventory.html'
     return render_to_response(render_to_url, options)
 
 @require_http_methods(['POST'])
@@ -37,3 +37,13 @@ def create_inventory(request):
     inventory.save()
 
     return HttpResponse(json.dumps({'response': 'success', 'account_id':account_id } ))
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def remove_inventory(request):
+    request_vals = request.POST
+    inventories = request_vals.getlist('inventories[]', '')
+
+    Inventory.objects.filter(pk__in=inventories).delete()
+
+    return HttpResponse(json.dumps({'response': 'success'}))
