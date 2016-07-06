@@ -57,3 +57,15 @@ def remove_account(request):
 
 def search_account(request):
     request_vals = request.GET
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def update_account(request):
+    request_vals = request.POST
+    logger = logging.getLogger('')
+    logger.info(str(request))
+    accounts = request_vals.getlist('accounts[]', '')
+   
+    Account.objects.filter(pk__in=accounts).delete()
+    
+    return HttpResponse(json.dumps({'response': 'success'}))

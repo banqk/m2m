@@ -6,5 +6,6 @@ urlpatterns = patterns(
     url(r'inventories/$', 'inventories'),
     url(r'create_inventory/$', 'create_inventory'),
     url(r'remove_inventory/$', 'remove_inventory'),
+    url(r'update_inventory/$', 'update_inventory'),
 
 )

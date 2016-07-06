@@ -44,3 +44,13 @@ def remove_hedge_account(request):
     Hedge_Account.objects.filter(pk__in=hedge_accounts).delete()
 
     return HttpResponse(json.dumps({'response': 'success'}))
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def update_hedge_account(request):
+    request_vals = request.POST
+    hedge_accounts = request_vals.getlist('hedge_accounts[]', '')
+
+    Hedge_Account.objects.filter(pk__in=hedge_accounts).delete()
+
+    return HttpResponse(json.dumps({'response': 'success'}))

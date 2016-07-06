@@ -47,3 +47,13 @@ def remove_inventory(request):
     Inventory.objects.filter(pk__in=inventories).delete()
 
     return HttpResponse(json.dumps({'response': 'success'}))
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def update_inventory(request):
+    request_vals = request.POST
+    inventories = request_vals.getlist('inventories[]', '')
+
+    Inventory.objects.filter(pk__in=inventories).delete()
+
+    return HttpResponse(json.dumps({'response': 'success'}))

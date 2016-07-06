@@ -6,5 +6,6 @@ urlpatterns = patterns(
     url(r'hedge_accounts/$', 'hedges'),
     url(r'create_hedge_account/$', 'create_hedge_account'),
     url(r'remove_hedge_account/$', 'remove_hedge_account'),
+    url(r'update_hedge_account/$', 'update_hedge_account'),
 
 )

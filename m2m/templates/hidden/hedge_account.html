@@ -81,8 +81,8 @@
                     {% for hedge in hedges %}
                      <tr>
                          <td></td>
-                         <td>{{hedge.id}}</td>
-                         <td>{{hedge.name}}</td>
+                         <td><a href="/api/hedge/?hedge_id={{hedge.id}}">{{hedge.id}}</a></td>
+                         <td><a href="/api/hedge/?hedge_id={{hedge.id}}">{{hedge.name}}</a></td>
                          <td>{{hedge.create_date}}</td>
                          <td>{{hedge.institution}}</td>
                          <td>{{hedge.id_number}}</td>

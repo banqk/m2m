@@ -83,8 +83,8 @@
                     {% for inventory in inventories %}
                      <tr>
                          <td></td>
-                         <td>{{inventory.id}}</td>
-                         <td>{{inventory.name}}</td>
+                         <td><a href="/api/inventory/?inventory_id={{inventory.id}}">{{inventory.id}}</a></td>
+                         <td><a href="/api/inventory/?inventory_id={{inventory.id}}">{{inventory.name}}</td>
                          <td>{{inventory.create_date}}</td>
                          <td>{{inventory.fuel_type}}</td>
                          <td>{{inventory.location}}</td>

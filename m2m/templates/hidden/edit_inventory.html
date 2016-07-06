@@ -11,10 +11,13 @@
   <div class="col-lg-12 main-box-container">
     <div class="box">
 	<div class="box-head clearfix">
-	    <h1 class="pull-left">Hedge Account & Inventory</h1>
+	    <h1 class="pull-left">Inventory</h1>
+
+<!--
 	    <div class="actions pull-right">
 		<a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-inventory" title="Create Inventory & Hedge Account"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create</a>
 	    </div>
+-->
 	</div>
 <!--
 <div>
@@ -26,139 +29,52 @@
     </select>
 </div>
 -->
-
-        <div class="box-content">
-        <div class="table-container">
-            <table id="inventory" class="table is-datatable">
+    <div class="box-content">
+	<div class="table-container">
+	    <table id="inventory" class="table is-datatable">
                 <thead>
                      <tr>
-                         <th>Column name</th>
-                         <th>Content</th>
-                         <th>Description</th>
+                         <th>Column name</th>       
+                         <th>Content</th>       
+                         <th>Description</th>       
                      </tr>
                 </thead>
-                <tbody>
+		<tbody>
                      <tr>
                          <td>Id</td>
-                         <td><a>{{account.id}}</a></td>
+                         <td><a>{{inventory.id}}</a></td>
                          <td><td>
                      </tr>
                      <tr>
                          <td>Create Date</td>
-                         <td>{{account.create_date}}</td>
+                         <td>{{inventory.create_date}}</td>
                          <td></td>
                      </tr>
                      <tr>
                          <td>Name</td>
-                         <td><input type="text" value="{{account.name}}" class="form-control"></td>
+                         <td><input type="text" value="{{inventory.name}}" class="form-control"></td>
                          <td></td>
                      </tr>
                      <tr>
-                         <td>Address</td>
-                         <td><input type="text" value="{{account.address}}" class="form-control"></td>
+                         <td>Fuel Type</td>
+                         <td><input type="text" value="{{inventory.fuel_type}}" class="form-control"></td>
                          <td></td>
                      </tr>
                      <tr>
-                         <td>Email</td>
-                         <td><input type="text" value="{{account.email}}" class="form-control"></td>
+                         <td>Location</td>
+                         <td><input type="text" value="{{inventory.location}}" class="form-control"></td>
                          <td></td>
                      </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="modal-footer">
-                    <button id="update_account" type="submit" class="btn btn-primary" onclick="update_account()">Save</button>
-        </div>
-    </div>
-    
-    <div class="box-content">
-	<div class="table-container">
-            <div class="table-controls clearfix">
-		 <div class="table-actions pull-right">
-		    <div class="separator">
-			<a title="Print selected rows" class="btn-print" href="javascript:;"></a>
-			<a class="btn-edit" href="javascript:;"></a>
-			<a id="delete_inventory" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
-		    </div>
-		</div>
-            <div class=" input-group table-search col-lg-4 pull-right">
-                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                    <input type="search" placeholder="Search" class="form-control">
-            </div>
-            <div class="">
-                <h1 class="pull-left">Inventories</h1>
-            </div>
-            </div>
-	    <table id="inventories" class="table is-datatable">
-		<thead>
-		    <tr>
-			<th class="select-checkbox no-filter"></th>
-			<th class="no-filter">ID</th>
-			<th>Create Date</th>
-			<th>Inventory Name</th>
-			<th>Fuel Type</th>
-			<th>Location</th>
-                        <th>Id Number</th>
-		    </tr>
-		</thead>
-<!--
-		<tfoot>
-		    <tr class="filters">
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
-		    </tr>
-		</tfoot>
--->
-		<tbody>
-                    {% for inventory in inventories %}
                      <tr>
+                         <td>Id Number</td>
+                         <td><input type="text" value="{{inventory.id_number}}" class="form-control"></td>
                          <td></td>
-                         <td><a>{{inventory.id}}</a></td>
-                         <td>{{inventory.create_date}}</td>
-                         <td>{{inventory.name}}</td>
-                         <td>{{inventory.fuel_type}}</td>
-                         <td>{{inventory.location}}</td>
-                         <td>{{inventory.id_number}}</td>
                      </tr>
-                    {% endfor %}
 		</tbody>
 	    </table>
 	</div>
-    </div>
-    <div class="box-head clearfix">
-        <h1 class="pull-left">Hedge Accounts</h1>
-    </div>
-    <div class="box-content">
-        <div class="table-container">
-            <table id="hedge_accounts" class="table is-datatable">
-                <thead>
-                    <tr>
-                        <th class="select-checkbox no-filter"></th>
-                        <th class="no-filter">ID</th>
-                        <th>Create Date</th>
-                        <th>Hedge Name</th>
-                        <th>Institution</th>
-                        <th>Account Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for hedge_account in hedge_accounts %}
-                     <tr>
-                         <td></td>
-                         <td><a>{{hedge_account.id}}</a></td>
-                         <td>{{hedge_account.create_date}}</td>
-                         <td>{{hedge_account.name}}</td>
-                         <td>{{hedge_account.institution}}</td>
-                         <td>{{hedge_account.id_number}}</td>
-                     </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="modal-footer">
+                    <button id="update_inventory" type="submit" class="btn btn-primary" onclick="update_inventory()">Save</button>
         </div>
     </div>
 </div>
