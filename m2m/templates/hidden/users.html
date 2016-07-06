@@ -59,7 +59,9 @@
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
 			<th>Create Date</th>
-			<th>Company Name</th>
+			<th>User Name</th>
+			<th>Email</th>
+			<th>Full Name</th>
 			<th>Address</th>
 		    </tr>
 		</thead>
@@ -70,16 +72,20 @@
 			<th></th>
 			<th></th>
 			<th></th>
+			<th></th>
+			<th></th>
 		    </tr>
 		</tfoot>
 		<tbody>
-                    {% for company in companies %}
+                    {% for user in users %}
                      <tr>
                          <td></td>
-                         <td><a href="/api/company/?company_id={{company.id}}">{{company.id}}</a></td>
-                         <td>{{company.create_date}}</td>
-                         <td>{{company.name}}</td>
-                         <td>{{company.address}}</td>
+                         <td>{{company.id}}</td>
+                         <td>{{user.create_date}}</td>
+                         <td>{{user.name}}</td>
+                         <td>{{user.email}}</td>
+                         <td>{{user.full_name}}</td>
+                         <td>{{user.address}}</td>
                      </tr>
                     {% endfor %}
 <!--

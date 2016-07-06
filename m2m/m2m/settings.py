@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'company',
     'inventory',
     'hedge_account',
+    'users',
 )
 
 MIDDLEWARE_CLASSES = (
