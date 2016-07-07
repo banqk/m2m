@@ -16,6 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -104,12 +105,12 @@ WSGI_APPLICATION = 'm2m.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'm2m',
-        'USER': 'root',
-        'PASSWORD': '123456',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dbk72qi1bbc1ub',
+        'USER': 'kwtiaqhvfnlcji',
+        'PASSWORD': 'yBGy5aCvOu51qA7YugN7l8gA0k',
+        'HOST': 'ec2-54-243-47-213.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
@@ -131,11 +132,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+
+
+
+STATIC_ROOT = BASE_DIR + '/staticfiles/'
+
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = (
     BASE_DIR + '/static/',
 )
-
 
 LOGGING = {
     'version': 1,
@@ -163,13 +169,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
-        },
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'formatter': 'verbose',
-            'filename': '/var/log/m2m/m2m.log'
-        },
+        }
     },
     'loggers': {
         'django.request': {
@@ -178,7 +178,7 @@ LOGGING = {
             'propagate': True,
         },
         'rat': {
-            'handlers': ['file'],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True
         },

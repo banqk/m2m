@@ -60,10 +60,11 @@
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
 			<th>Name</th>
-			<th>Create Date</th>
+
 			<th>Institution</th>
 			<th>Account Number</th>
 			<th>M2M Account</th>
+                <th>Create Date</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -83,10 +84,11 @@
                          <td></td>
                          <td><a href="/api/hedge/?hedge_id={{hedge.id}}">{{hedge.id}}</a></td>
                          <td><a href="/api/hedge/?hedge_id={{hedge.id}}">{{hedge.name}}</a></td>
-                         <td>{{hedge.create_date}}</td>
+
                          <td>{{hedge.institution}}</td>
                          <td>{{hedge.id_number}}</td>
                          <td>{{hedge.m2m_account.name}}</td>
+                         <td>{{hedge.create_date| date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
 <!--

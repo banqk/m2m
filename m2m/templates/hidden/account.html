@@ -60,9 +60,10 @@
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
 			<th>Name</th>
-			<th>Create Date</th>
+
 			<th>Address</th>
 			<th>Email</th>
+                <th>Create Date</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -81,9 +82,10 @@
                          <td></td>
                          <td><a href="/api/account/?account_id={{account.id}}">{{account.id}}</a></td>
                          <td><a href="/api/account/?account_id={{account.id}}">{{account.name}}</a></td>
-                         <td>{{account.create_date}}</td>
+
                          <td>{{account.address}}</td>
                          <td>{{account.email}}</td>
+                         <td>{{account.create_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
 <!--

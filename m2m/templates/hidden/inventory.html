@@ -60,11 +60,12 @@
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
 			<th>Name</th>
-			<th>Create Date</th>
+
 			<th>Fuel Type</th>
 			<th>Location</th>
 			<th>Id Number</th>
 			<th>M2M Account</th>
+                <th>Create Date</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -85,11 +86,12 @@
                          <td></td>
                          <td><a href="/api/inventory/?inventory_id={{inventory.id}}">{{inventory.id}}</a></td>
                          <td><a href="/api/inventory/?inventory_id={{inventory.id}}">{{inventory.name}}</td>
-                         <td>{{inventory.create_date}}</td>
+
                          <td>{{inventory.fuel_type}}</td>
                          <td>{{inventory.location}}</td>
                          <td>{{inventory.id_number}}</td>
                          <td>{{inventory.m2m_account.name}}</td>
+                         <td>{{inventory.create_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
 <!--

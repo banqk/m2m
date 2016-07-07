@@ -1,5 +1,6 @@
-from django.conf.urls import include, url
+from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.conf import settings
 
 urlpatterns = [
     # Examples:
@@ -14,3 +15,7 @@ urlpatterns = [
     url(r'^hedge', include('hedge_account.urls')),
     url(r'^users', include('users.urls')),
 ]
+
+urlpatterns += patterns('',
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+    )
