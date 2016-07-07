@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^api', include('common.urls')),
     url(r'^inventory', include('inventory.urls')),
     url(r'^hedge', include('hedge_account.urls')),
+    url(r'^users', include('users.urls')),
 ]
 
 urlpatterns += patterns('',
