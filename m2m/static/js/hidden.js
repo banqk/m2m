@@ -187,7 +187,7 @@ function add_user() {
             }
         },
         error: function(html){
-            feedback('There was an error', 'error')
+            bootbox.alert("There was an error.")
         }
     });
 
@@ -213,7 +213,7 @@ function remove_accounts(accounts) {
             }
         },
         error: function(html){
-            feedback('There was an error', 'error')
+            bootbox.alert("There was an error.")
         }
     });
 }
@@ -244,7 +244,7 @@ function add_company() {
             }
         },
         error: function(html){
-            feedback('There was an error', 'error')
+            bootbox.alert("There was an error.")
         }
     });
 
@@ -266,7 +266,7 @@ function remove_company(companies) {
             }
         },
         error: function(html){
-            feedback('There was an error', 'error')
+            bootbox.alert("There was an error.")
         }
     });
 }
@@ -301,7 +301,7 @@ function add_inventory() {
 		    }
 		},
 		error: function(html){
-		    feedback('There was an error', 'error')
+                    bootbox.alert("There was an error.")
 		}
 	    });
     } else {
@@ -321,7 +321,7 @@ function add_inventory() {
 		    }
 		},
 		error: function(html){
-		    feedback('There was an error', 'error')
+                    bootbox.alert("There was an error.")
 		}
 	    });
 
@@ -354,7 +354,7 @@ function new_inventory() {
 	    }
 	},
 	error: function(html){
-	    feedback('There was an error', 'error')
+            bootbox.alert("There was an error.")
 	}
     });    
 }
@@ -383,7 +383,7 @@ function new_hedge_account() {
 	    }
 	},
 	error: function(html){
-	    feedback('There was an error', 'error')
+            bootbox.alert("There was an error.")
 	}
     });    
 }
@@ -404,7 +404,7 @@ function remove_inventory(inventories) {
             }
         },
         error: function(html){
-            feedback('There was an error', 'error')
+            bootbox.alert("There was an error.")
         }
     });
 }
@@ -425,7 +425,97 @@ function remove_hedge_account(hedge_accounts) {
             }
         },
         error: function(html){
-            feedback('There was an error', 'error')
+            bootbox.alert("There was an error.")
+        }
+    });
+}
+
+function update_account() {
+
+    var text_vals = new Array(11);
+    var i = 0;
+    $("#edit_account input").each(function(){
+        console.log( '#########::::::' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    var m2m_account_id = $('#current_account_id').text()
+    $.ajax({
+        type: "POST",
+        url: "/update_account/",
+        data: ({ name : text_vals[0], address: text_vals[1], email: text_vals[2], account_id: m2m_account_id}),
+        success: function(html){
+            json_data = JSON.parse(html);
+//          console.log(json_data['account_id'])
+//          window.location.href='/api/account/?account_id=' + json_data['account_id']
+            if (json_data.error) {
+                bootbox.alert(json_data.error_message)
+            } else {
+                bootbox.alert("Update success.")
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+}
+function update_inventory() {
+
+    var text_vals = new Array(11);
+    var i = 0;
+    $("#edit_inventory input").each(function(){
+        console.log( '#########::::::' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    var inventory_id = $('#inventory_id').text()
+    $.ajax({
+        type: "POST",
+        url: "/inventory/update_inventory/",
+        data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3], inventory_id: inventory_id}),
+        success: function(html){
+            json_data = JSON.parse(html);
+//          console.log(json_data['account_id'])
+//          window.location.href='/api/account/?account_id=' + json_data['account_id']
+            bootbox.alert("Update success.")
+            if (json_data.error) {
+                feedback(json_data.error_message, 'error')
+            } else {
+
+                feedback('Success', 'ok');
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+}
+function update_hedge() {
+
+    var text_vals = new Array(11);
+    var i = 0;
+    $("#edit_hedge input").each(function(){
+        console.log( '#########::::::' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    var hedge_id = $('#hedge_id').text()
+    $.ajax({
+        type: "POST",
+        url: "/hedge/update_hedge/",
+        data: ({ name : text_vals[0], institution: text_vals[1], id_number: text_vals[2], hedge_id: hedge_id}),
+        success: function(html){
+            json_data = JSON.parse(html);
+//          console.log(json_data['account_id'])
+//          window.location.href='/api/account/?account_id=' + json_data['account_id']
+            if (json_data.error) {
+                bootbox.alert(json_data.error_message)
+            } else {
+                bootbox.alert("Update success.")
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
         }
     });
 }

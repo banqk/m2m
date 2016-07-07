@@ -52,8 +52,17 @@ def remove_inventory(request):
 @csrf_exempt
 def update_inventory(request):
     request_vals = request.POST
-    inventories = request_vals.getlist('inventories[]', '')
+    inventory_id = request_vals.get('inventory_id')
+    name = request_vals.get('name')
+    fuel_type = request_vals.get('fuel_type')
+    location = request_vals.get('in_location')
+    id_number = request_vals.get('id_number')
 
-    Inventory.objects.filter(pk__in=inventories).delete()
+    inventory = Inventory.objects.get(pk=inventory_id)
+    inventory.name = name
+    inventory.fuel_type = fuel_type
+    inventory.location = location
+    inventory.id_number = id_number
+    inventory.save()
 
     return HttpResponse(json.dumps({'response': 'success'}))

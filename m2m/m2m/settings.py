@@ -103,17 +103,27 @@ WSGI_APPLICATION = 'm2m.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'dbk72qi1bbc1ub',
+#        'USER': 'kwtiaqhvfnlcji',
+#        'PASSWORD': 'yBGy5aCvOu51qA7YugN7l8gA0k',
+#        'HOST': 'ec2-54-243-47-213.compute-1.amazonaws.com',
+#        'PORT': '5432',
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dbk72qi1bbc1ub',
-        'USER': 'kwtiaqhvfnlcji',
-        'PASSWORD': 'yBGy5aCvOu51qA7YugN7l8gA0k',
-        'HOST': 'ec2-54-243-47-213.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'm2m',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        'HOST': '',
+        'PORT': '',
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

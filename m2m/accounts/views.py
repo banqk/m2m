@@ -64,8 +64,16 @@ def update_account(request):
     request_vals = request.POST
     logger = logging.getLogger('')
     logger.info(str(request))
-    accounts = request_vals.getlist('accounts[]', '')
+    account_id = request_vals.get('account_id')
+    name = request_vals.get('name')
+    address = request_vals.get('address')
+    email = request_vals.get('email')
    
-    Account.objects.filter(pk__in=accounts).delete()
+    account = Account.objects.get(pk=account_id)
+    account.name = name
+    account.address = address
+    account.email = email
+    account.save()
+    
     
     return HttpResponse(json.dumps({'response': 'success'}))

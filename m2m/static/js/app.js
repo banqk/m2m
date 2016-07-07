@@ -91,7 +91,6 @@ $(document).ready(function() {
                         }
                     });                    
                 }
-                console.log('###########' + option)
                 if(option == "delete_account") { 
                     for(var i=1; i<len; i+=6) {
                         del_list.push(choices.eq(i).text());
@@ -101,7 +100,6 @@ $(document).ready(function() {
                     });
                 } else if(option == "delete_company") {
                     for(var i=1; i<len; i+=5) {
-                        console.log('############' + choices.eq(i).text())
                         del_list.push(choices.eq(i).text());
                     }
                     console.log(del_list)
@@ -110,7 +108,6 @@ $(document).ready(function() {
                     });
                 } else if(option == "delete_inventory") {
                     for(var i=1; i<len; i+=8) {
-                        console.log('############' + choices.eq(i).text())
                         del_list.push(choices.eq(i).text());
                     }
                     console.log(del_list)
@@ -119,7 +116,6 @@ $(document).ready(function() {
                     });
                 } else if(option == "delete_hedge_account") {
                     for(var i=1; i<len; i+=7) {
-                        console.log('############' + choices.eq(i).text())
                         del_list.push(choices.eq(i).text());
                     }
                     console.log(del_list)

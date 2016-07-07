@@ -49,8 +49,15 @@ def remove_hedge_account(request):
 @csrf_exempt
 def update_hedge_account(request):
     request_vals = request.POST
-    hedge_accounts = request_vals.getlist('hedge_accounts[]', '')
+    hedge_id = request_vals.get('hedge_id')
+    name = request_vals.get('name')
+    institution = request_vals.get('institution')
+    id_number = request_vals.get('id_number')
 
-    Hedge_Account.objects.filter(pk__in=hedge_accounts).delete()
+    hedge_account = Hedge_Account.objects.get(pk=hedge_id)
+    hedge_account.name = name
+    hedge_account.institution = institution
+    hedge_account.id_number = id_number
+    hedge_account.save()
 
     return HttpResponse(json.dumps({'response': 'success'}))
