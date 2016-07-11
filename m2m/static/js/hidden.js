@@ -114,16 +114,33 @@ $(function(){
         }
     });
 
-    $('#password2').blur(function(){
-        console.log("password1:" + $('#password1').val() + ",password2:" +$('#password2').val())
-        if ($('#password1').val() != $(this).val()) {
-            console.log("Password and re-enter password do not match.")
+    $('#password').blur(function(){
+        password = $('#password').val()
+        console.log(name + ',' + name.length) 
+        if(password.length <= 5) {
+            if($('p').length == 0) {
+                pTab = $('<p style="color:red; dispaly:inline-block;">Please enter greater than 5 characters.</p>')
+                $(this).after(pTab)
+            }
+            $(this).focus()
+        } else {
+            $('p').remove();
+        }
+    });
+
+    $('#confirm').blur(function(){
+        console.log("password:" + $('#password1').val() + ",password2:" +$('#password2').val())
+        if ($('#password').val() != $(this).val()) {
+            if($('p').length == 0) {
+                pTab = $('<p style="color:red; dispaly:inline-block;">Password ad re-enter password do not match.</p>')
+                $(this).after(pTab)
+            }
+            $(this).focus()
+        } else {
+            $('p').remove();
         }
     });
     
-    $('#confirm').click(function(){
-       console.log('BBBBBBBBBBBBBBBB') 
-    });
     
     $('#type').change(function(){
         type = $('#type').val()
@@ -518,4 +535,34 @@ function update_hedge() {
             bootbox.alert("There was an error.")
         }
     });
+}
+
+function add_account() {
+
+    var text_vals = new Array(9);
+    var i = 0;
+    $("#user_info input").each(function(){
+        console.log($(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    
+    $.ajax({
+        type: "POST",
+        url: "/users/create_user/",
+        data: ({ name : text_vals[0], password: text_vals[1], first_name: text_vals[3], last_name: text_vals[4], email: text_vals[5]}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                bootbox.alert(json_data['response'])
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+
 }
