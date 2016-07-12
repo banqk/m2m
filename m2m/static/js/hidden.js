@@ -489,7 +489,7 @@ function update_inventory() {
     $.ajax({
         type: "POST",
         url: "/inventory/update_inventory/",
-        data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3], inventory_id: inventory_id}),
+        data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3],volumn: text_vals[4], inventory_id: inventory_id}),
         success: function(html){
             json_data = JSON.parse(html);
 //          console.log(json_data['account_id'])

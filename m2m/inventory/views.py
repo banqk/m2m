@@ -57,12 +57,14 @@ def update_inventory(request):
     fuel_type = request_vals.get('fuel_type')
     location = request_vals.get('in_location')
     id_number = request_vals.get('id_number')
+    volumn = request_vals.get('volumn')
 
     inventory = Inventory.objects.get(pk=inventory_id)
     inventory.name = name
     inventory.fuel_type = fuel_type
     inventory.location = location
     inventory.id_number = id_number
+    inventory.volumn = volumn
     inventory.save()
 
     return HttpResponse(json.dumps({'response': 'success'}))
