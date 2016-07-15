@@ -14,6 +14,10 @@ urlpatterns = [
     url(r'^inventory', include('inventory.urls')),
     url(r'^hedge', include('hedge_account.urls')),
     url(r'^users', include('users.urls')),
+    url(r'^counter', include('counter_party.urls')),
+    url(r'^product', include('product.urls')),
+    url(r'^transaction', include('phy_transaction.urls')),
+    url(r'^hedge_tran', include('hedge_transaction.urls')),
 ]
 
 urlpatterns += patterns('',

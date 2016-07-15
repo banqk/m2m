@@ -81,4 +81,4 @@ def update_account(request):
 def search_account(request):
     account_name = request.GET.get('account_name', '')
     accounts = Account.objects.filter(name__icontains=account_name)
-    return HttpResponse(json.dumps('response':accounts))
+    return HttpResponse(json.dumps({'response':accounts}))

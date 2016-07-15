@@ -45,6 +45,11 @@ INSTALLED_APPS = (
     'inventory',
     'hedge_account',
     'users',
+    'counter_party',
+    'product',
+    'phy_transaction',
+    'hedge_transaction',
+    'hedge_instrument',
 )
 
 MIDDLEWARE_CLASSES = (
