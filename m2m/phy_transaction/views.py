@@ -28,11 +28,21 @@ def create_physical(request):
     product_id = request_vals.get('product')
     volume = request_vals.get('volume')
     price = request_vals.get('price')
-    counter_id = request_vals.get('counter_party')
-
-    inventory = Inventory.objects.get(pk=inventory_id)
-    product = Product.objects.get(pk=product_id)
-    counter = Counter.objects.get(pk=counter_id)
+    counter_id = request_vals.get('counter')
+    print counter_id
+    try:
+        inventory = Inventory.objects.get(pk=inventory_id)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
+    try:
+        product = Product.objects.get(pk=product_id)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of product is incorrectly'}))
+    try:
+        counter = Counter.objects.get(pk=counter_id)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of counter is incorrectly'}))
+         
 
     physical = Physical.objects.create(
         name = name,
@@ -41,7 +51,7 @@ def create_physical(request):
         product = product,
         volume = volume,
         price = price,
-        counter = counter
+        counter_party = counter
     )
     physical.save()
     

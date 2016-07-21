@@ -35,7 +35,7 @@
 		    <div class="separator">
 			<a title="Print selected rows" class="btn-print" href="javascript:;"></a>
 			<a class="btn-edit" href="javascript:;"></a>
-			<a id="delete_physical" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
+			<a id="delete_hedge_tran" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
 		    </div>
 		</div>
 		<div class=" input-group table-search col-lg-4 pull-right">
@@ -66,7 +66,7 @@
 			<th>Volume</th>
                         <th>Price</th>
                         <th>Initial Position</th>
-                <th>Create Date</th>
+                        <th>Create Date</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -83,18 +83,18 @@
 		    </tr>
 		</tfoot>
 		<tbody>
-                    {% for physical in physicals %}
+                    {% for hedge_tran in hedge_trans %}
                      <tr>
                          <td></td>
-                         <td><a href="/api/physical/?physical_id={{physical.id}}">{{physical.id}}</a></td>
-                         <td><a href="/api/physical/?physical_id={{physical.id}}">{{physical.name}}</td>
+                         <td><a href="/api/hedge_tran/?hedge_tran_id={{hedge_tran.id}}">{{hedge_tran.id}}</a></td>
+                         <td><a href="/api/hedge_tran/?hedge_tran_id={{hedge_tran.id}}">{{hedge_tran.name}}</td>
 
-                         <td>{{physical.type}}</td>
-                         <td>{{physical.inventory.name}}</td>
-                         <td>{{physical.product.name}}</td>
-                         <td>{{physical.volume}}</td>
-                         <td>{{physical.price}}</td>
-                         <td>{{physical.counter.name}}</td>
+                         <td>{{hedge_tran.type}}</td>
+                         <td>{{hedge_tran.inventory.name}}</td>
+                         <td>{{hedge_tran.product.name}}</td>
+                         <td>{{hedge_tran.volume}}</td>
+                         <td>{{hedge_tran.price}}</td>
+                         <td>{{hedge_tran.counter.name}}</td>
                      </tr>
                     {% endfor %}
 		</tbody>
@@ -149,7 +149,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="add_user_btn" type="submit" class="btn btn-primary" onclick="add_physical()">Save</button>
+                    <button id="add_user_btn" type="submit" class="btn btn-primary" onclick="add_hedge_tran()">Save</button>
                   </div>
                 </form>
 

@@ -1,5 +1,4 @@
 from django.db import models
-from inventory.models import Inventory
 from hedge_account.models import Hedge_Account
 from counter_party.models import Counter 
 from hedge_instrument.models import Instrument

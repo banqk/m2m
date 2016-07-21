@@ -66,7 +66,7 @@
 			<th>Volume</th>
                         <th>Price</th>
                         <th>Counter Party</th>
-                <th>Create Date</th>
+	                <th>Create Date</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -89,12 +89,13 @@
                          <td><a href="/api/physical/?physical_id={{physical.id}}">{{physical.id}}</a></td>
                          <td><a href="/api/physical/?physical_id={{physical.id}}">{{physical.name}}</td>
 
-                         <td>{{physical.type}}</td>
+                         <td>{{physical.phy_type}}</td>
                          <td>{{physical.inventory.name}}</td>
                          <td>{{physical.product.name}}</td>
                          <td>{{physical.volume}}</td>
                          <td>{{physical.price}}</td>
-                         <td>{{physical.counter.name}}</td>
+                         <td>{{physical.counter_party.name}}</td>
+                         <td>{{physical.create_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
 		</tbody>
@@ -110,7 +111,6 @@
           <div class="modal-dialog">
             <div class="modal-content">
                 <form id="physical_info" action="">
-                  {% csrf_token %}
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Add Physical Transaction</h4>
@@ -149,7 +149,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="add_user_btn" type="submit" class="btn btn-primary" onclick="add_physical()">Save</button>
+                    <button id="add_user_btn" type="button" class="btn btn-primary" onclick="add_physical()">Save</button>
                   </div>
                 </form>
 
