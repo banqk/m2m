@@ -27,14 +27,17 @@ def create_account(request):
     request_vals = request.POST
     logger = logging.getLogger('')
     logger.info(str(request))
-    user_name = request_vals.get('name')
-#    password = request_vals.get('password')
+    user_name = request_vals.get('name').strip()
     address = request_vals.get('address')
     email = request_vals.get('email')
+    try:
+        inventory = Account.objects.get(name=user_name)
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The name already exists in the application'}))
+    except Exception:
+        pass
 
     account = Account.objects.create(
         name = user_name,
-#        password = password,
         address = address,
         email = email
     )

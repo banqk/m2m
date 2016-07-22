@@ -29,8 +29,16 @@ def create_hedge_tran(request):
     price = request_vals.get('price')
     initial_pos = request_vals.get('initial_pos')
 
-    hedge_account = Hedge_Account.objects.get(pk=hedge_id)
-    instrument = Instrument.objects.get(pk=instrument_id)
+    #hedge_account = Hedge_Account.objects.get(pk=hedge_id)
+    #instrument = Instrument.objects.get(pk=instrument_id)
+    try:
+        hedge_account = Hedge_Account.objects.get(pk=hedge_id)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of hedge account is incorrectly'}))
+    try:
+        instrument = Instrument.objects.get(pk=instrument_id)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of contract is incorrectly'}))
 
     hedge_tran = Hedge_Tran.objects.create(
         name = name,

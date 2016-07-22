@@ -21,6 +21,12 @@ def create_counter(request):
     counter_type = request_vals.get('counter_type')
     identifier = request_vals.get('identifier')
 
+    try:
+        counter_party = Counter.objects.get(name=name)
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The name already exists in the application'}))
+    except Exception:
+        pass
+
     counter = Counter.objects.create(
         name = name,
         address = address,

@@ -25,7 +25,16 @@ def create_inventory(request):
     account_id = request_vals.get('account_id')
     print account_id
 
-    account = Account.objects.get(pk=account_id)
+    try:
+        inventory = Inventory.objects.get(name=name)
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The name already exists in the application'}))
+    except Exception:
+        pass
+
+    try:
+        account = Account.objects.get(pk=account_id)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of account is incorrectly'}))
     
     inventory = Inventory.objects.create(
         name = name,

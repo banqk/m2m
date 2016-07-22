@@ -197,10 +197,14 @@ function add_user() {
 
             json_data = JSON.parse(html);
             if (json_data.error) {
-                feedback(json_data.error_message, 'error')
+                bootbox.alert(json_data['response'])
             } else {
-
-                feedback('Success', 'ok');
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/accounts";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
             }
         },
         error: function(html){
@@ -363,12 +367,16 @@ function new_inventory() {
 	    json_data = JSON.parse(html);
 //	    console.log(json_data['account_id'])
 //	    window.location.href='/api/account/?account_id=' + json_data['account_id']
-	    if (json_data.error) {
-		feedback(json_data.error_message, 'error')
-	    } else {
-
-		feedback('Success', 'ok');
-	    }
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/inventory/inventories";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
+            }
 	},
 	error: function(html){
             bootbox.alert("There was an error.")
@@ -392,12 +400,16 @@ function new_hedge_account() {
 	    json_data = JSON.parse(html);
 //	    console.log(json_data['account_id'])
 //	    window.location.href='/api/account/?account_id=' + json_data['account_id']
-	    if (json_data.error) {
-		feedback(json_data.error_message, 'error')
-	    } else {
-
-		feedback('Success', 'ok');
-	    }
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/hedge_account/hedge_accounts";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
+            }
 	},
 	error: function(html){
             bootbox.alert("There was an error.")
@@ -556,7 +568,12 @@ function add_account() {
             if (json_data.error) {
                 bootbox.alert(json_data['response'])
             } else {
-                bootbox.alert(json_data['response'])
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/users/users";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
             }
         },
         error: function(html){
@@ -584,7 +601,12 @@ function add_counter() {
             if (json_data.error) {
                 bootbox.alert(json_data['response'])
             } else {
-                bootbox.alert(json_data['response'])
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/counter/counters";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
             }
         },
         error: function(html){
@@ -641,7 +663,12 @@ function add_physical() {
             if (json_data.error) {
                 bootbox.alert(json_data['response'])
             } else {
-                bootbox.alert(json_data['response'])
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/transaction/physical";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
             }
         },
         error: function(html){
@@ -655,6 +682,7 @@ function add_hedge_tran() {
     var text_vals = new Array(9);
     var i = 0;
     $("#hedge_tran_info input").each(function(){
+    //$("#physical_info input").each(function(){
         console.log('##############' + $(this).val())
         text_vals[i] = $(this).val()
         i = i + 1
@@ -662,7 +690,8 @@ function add_hedge_tran() {
     
     $.ajax({
         type: "POST",
-        url: "/hedge_tran/create_hedge_tran/",
+        url: "/hedge_tran/create_ht/",
+//        data: ({ name : text_vals[0], type: text_vals[1], inventory: text_vals[2], product: text_vals[3], volume: text_vals[4], price: text_vals[5],counter: text_vals[6]}),
         data: ({ name : text_vals[0], type: text_vals[1], hedge_account: text_vals[2], contract: text_vals[3], volume: text_vals[4], price: text_vals[5],initial_pos: text_vals[6]}),
         success: function(html){
 
@@ -670,7 +699,12 @@ function add_hedge_tran() {
             if (json_data.error) {
                 bootbox.alert(json_data['response'])
             } else {
-                bootbox.alert(json_data['response'])
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/hedge_tran/hedge_tran";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
             }
         },
         error: function(html){

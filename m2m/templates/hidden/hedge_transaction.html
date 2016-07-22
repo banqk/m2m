@@ -110,7 +110,6 @@
           <div class="modal-dialog">
             <div class="modal-content">
                 <form id="hedge_tran_info" action="">
-                  {% csrf_token %}
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Add Hedge Transaction</h4>
@@ -149,7 +148,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="add_user_btn" type="submit" class="btn btn-primary" onclick="add_hedge_tran()">Save</button>
+                    <button id="add_user_btn" type="button" class="btn btn-primary" onclick="add_hedge_tran()">Save</button>
                   </div>
                 </form>
 

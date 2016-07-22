@@ -27,7 +27,7 @@ def create_user(request):
 
     try:
         users = User.objects.get(name = user_name)
-        return HttpResponse(json.dumps({'response': 'The username is already exists.'}))
+        return HttpResponse(json.dumps({'response':'failure','info': 'The username is already exists in the application.'}))
     except User.DoesNotExist:
         pass 
 
