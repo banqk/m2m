@@ -362,7 +362,7 @@ function new_inventory() {
     $.ajax({
 	type: "POST",
 	url: "/inventory/create_inventory/",
-	data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3], account_id: text_vals[4]}),
+	data: ({ name : text_vals[0], fuel_type: $("#inventory_info select").val(), in_location: text_vals[1], id_number: text_vals[2], account_id: text_vals[3]}),
 	success: function(html){
 	    json_data = JSON.parse(html);
 //	    console.log(json_data['account_id'])
