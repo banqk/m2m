@@ -12,9 +12,9 @@
     <div class="box">
 
 	<div class="box-head clearfix">
-	    <h1 class="pull-left">Counter Party</h1>
+	    <h1 class="pull-left">Fuel Class</h1>
 	    <div class="actions pull-right">
-		<a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-counter" title="Create Inventory"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create Counter Party</a>
+		<a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-fuel_class" title="Create Fuel Class"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create Fuel Class</a>
 	    </div>
 	</div>
 <!--
@@ -35,7 +35,7 @@
 		    <div class="separator">
 			<a title="Print selected rows" class="btn-print" href="javascript:;"></a>
 			<a class="btn-edit" href="javascript:;"></a>
-			<a id="delete_counter" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
+			<a id="delete_fuel_class" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
 		    </div>
 		</div>
 		<div class=" input-group table-search col-lg-4 pull-right">
@@ -59,11 +59,8 @@
 		    <tr>
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
-			<th>Name</th>
-			<th>Type</th>
-			<th>Identifier</th>
-			<th>Address</th>
-                        <th>Create Date</th>
+			<th>Code</th>
+			<th>Description</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -72,21 +69,15 @@
 			<th></th>
 			<th></th>
 			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
 		    </tr>
 		</tfoot>
 		<tbody>
-                    {% for counter in counters %}
+                    {% for fuel_class in fuel_classes %}
                      <tr>
                          <td></td>
-                         <td><a href="/api/counter/?counter_id={{counter.id}}">{{counter.id}}</a></td>
-                         <td><a href="/api/counter/?counter_id={{counter.id}}">{{counter.name}}</td>
-                         <td>{{counter.counter_type}}</td>
-                         <td>{{counter.identifier}}</td>
-                         <td>{{counter.address}}</td>
-                         <td>{{counter.create_date | date:'Y-m-d H:i'}}</td>
+                         <td><a href="/api/fuel_class/?fuel_class_id={{fuel_class.id}}">{{fuel_class.id}}</a></td>
+                         <td><a href="/api/fuel_class/?fuel_class_id={{fuel_class.id}}">{{fuel_class.code}}</a></td>
+                         <td>{{fuel_class.description}}</td>
                      </tr>
                     {% endfor %}
 <!--
@@ -132,38 +123,30 @@
 </div>
 
 <!-- modals -->
-        <div id="add-counter" class="modal fade" tabindex="-1" role="dialog">
+        <div id="add-fuel_class" class="modal fade" tabindex="-1" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
-                <form id="counter_info" action="">
+                <form id="fuel_class_info" action="">
                   {% csrf_token %}
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Add Counter Party</h4>
+                    <h4 class="modal-title">Add Fuel Class</h4>
                   </div>
                   <div class="modal-body clearfix">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label for="">name</label>
-                            <input type="text" id="name" class="form-control"> 
+                            <label for="">code</label>
+                            <input type="text" id="code" class="form-control"> 
                         </div>
                         <div class="form-group">
-                            <label for="">type </label>
-                            <input type="text" id="counter_type" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="">address </label>
-                            <input type="text" id="address" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="">identifier</label>
-                            <input type="text" id="identifier" class="form-control">
+                            <label for="">description </label>
+                            <input type="text" id="description" class="form-control">
                         </div>
                     </div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="add_user_btn" type="button" class="btn btn-primary" onclick="add_counter()">Save</button>
+                    <button id="add_user_btn" type="button" class="btn btn-primary" onclick="add_fuel_class()">Save</button>
                   </div>
                 </form>
 

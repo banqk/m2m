@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'phy_transaction',
     'hedge_transaction',
     'hedge_instrument',
+    'fuel_class',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^product', include('product.urls')),
     url(r'^transaction', include('phy_transaction.urls')),
     url(r'^hedge_tran', include('hedge_transaction.urls')),
+    url(r'^fuel', include('fuel_class.urls')),
 ]
 
 urlpatterns += patterns('',

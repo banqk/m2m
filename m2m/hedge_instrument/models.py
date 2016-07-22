@@ -1,9 +1,10 @@
 from django.db import models
 from counter_party.models import Counter
+from fuel_class.models import Fuel_Class
 
 class Instrument(models.Model):
     name = models.CharField(max_length = 100)
-    fuel_class = models.CharField(max_length = 100)
+    fuel_class = models.ForeignKey(Fuel_Class)
     contract_year = models.CharField(max_length=10)
     contract_month = models.CharField(max_length=10)
     expiration_date = models.DateTimeField(null=True)

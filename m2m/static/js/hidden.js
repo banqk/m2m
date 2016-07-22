@@ -682,7 +682,6 @@ function add_hedge_tran() {
     var text_vals = new Array(9);
     var i = 0;
     $("#hedge_tran_info input").each(function(){
-    //$("#physical_info input").each(function(){
         console.log('##############' + $(this).val())
         text_vals[i] = $(this).val()
         i = i + 1
@@ -691,7 +690,6 @@ function add_hedge_tran() {
     $.ajax({
         type: "POST",
         url: "/hedge_tran/create_ht/",
-//        data: ({ name : text_vals[0], type: text_vals[1], inventory: text_vals[2], product: text_vals[3], volume: text_vals[4], price: text_vals[5],counter: text_vals[6]}),
         data: ({ name : text_vals[0], type: text_vals[1], hedge_account: text_vals[2], contract: text_vals[3], volume: text_vals[4], price: text_vals[5],initial_pos: text_vals[6]}),
         success: function(html){
 
@@ -702,6 +700,41 @@ function add_hedge_tran() {
                 //bootbox.alert(json_data['response'])
                 if(json_data['response'] == 'success'){
                     window.location = "/hedge_tran/hedge_tran";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+
+}
+
+function add_fuel_class() {
+
+    var text_vals = new Array(9);
+    var i = 0;
+    $("#fuel_class_info input").each(function(){
+        console.log('##############' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    
+    $.ajax({
+        type: "POST",
+        url: "/fuel/create_fuel/",
+        data: ({ code : text_vals[0], description: text_vals[1]}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/fuel/fuels";
                 } else {
                     bootbox.alert(json_data['info']);
                 }
