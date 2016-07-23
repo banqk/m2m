@@ -2,38 +2,55 @@ from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from hedge_account.models import Hedge_Account
-from accounts.models import Account
+from hedge_instrument.models import Instrument
+from fuel_class.models import Fuel_Class
+from counter_party.models import Counter
 import simplejson as json
 
 
-def hedges(request):
+def hedge_inst(request):
     options = {}
-    hedges = Hedge_Account.objects.all()
-    options.update({'hedges': hedges})
-    render_to_url = 'hidden/hedge_account.html'
+    instruments = Instrument.objects.all()
+    options.update({'instruments': instruments})
+    render_to_url = 'hidden/hedge_instrument.html'
     return render_to_response(render_to_url, options)
 
 @require_http_methods(['POST'])
 @csrf_exempt
-def create_hedge_account(request):
+def create_inst(request):
     request_vals = request.POST
-    name = request_vals.get('name')
-    institution = request_vals.get('institution')
-    account_number = request_vals.get('account_number')
-    account_id = request_vals.get('account_id')
-    print account_id
-    account = Account.objects.get(pk=account_id)
+    symbol = request_vals.get('symbol')
+    fuel_id = request_vals.get('fuel_class')
+    year = request_vals.get('year')
+    month = request_vals.get('month')
+    expiration_date = request_vals.get('expiration_date')
+    instrument = request_vals.get('instrument')
+    put_call = request_vals.get('put_call')
+    strike_price = request_vals.get('strike_price')
+    counter_id = request_vals.get('counter_party')
+    try:
+        fuel_class = Fuel_Class.objects.get(pk=fuel_id)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of fuel_class is incorrectly'}))
+    try:
+        counter = Counter.objects.get(pk=counter_id)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of counter party is incorrectly'}))
 
-    hedge = Hedge_Account.objects.create(
-        name = name,
-        institution = institution,
-        id_number = account_number,
-        m2m_account = account
+    inst = Instrument.objects.create(
+        symbol = symbol,
+        fuel_class = fuel_class,
+        contract_year = year,
+        contract_month = month,
+        expiration_date = expiration_date,
+        instrument = instrument,
+        put_call = put_call,
+        strike_price = strike_price,
+        counter_party = counter
     )
-    hedge.save()
+    inst.save()
 
-    return HttpResponse(json.dumps({'response': 'success', 'account_id': account_id}))
+    return HttpResponse(json.dumps({'response': 'success'}))
 
 @require_http_methods(['POST'])
 @csrf_exempt

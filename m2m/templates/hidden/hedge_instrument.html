@@ -1,0 +1,183 @@
+{% extends "index.html" %}
+
+{% block extra_css %}
+  <link href="/static/css/hidden.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css"/>
+{% endblock %}
+
+{% block content %}
+
+<div class="content-body">
+  <div class="col-lg-12 main-box-container">
+    <div class="box">
+
+	<div class="box-head clearfix">
+	    <h1 class="pull-left">Hedge Instrument</h1>
+	    <div class="actions pull-right">
+		<a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-hedge-tran" title="Create Inventory"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create Hedge Instrument</a>
+	    </div>
+	</div>
+<!--
+<div>
+    <select  class="form-control selectpicker" style="width:255px; display:inline-block;">
+        <option>No Filter</option>
+        <option>Company</option>
+        <option>User Name</option>
+        <option>Email</option>
+    </select>
+</div>
+-->
+<div class="box-content">
+	<div class="table-container">
+	    <!-- Table Controls -->
+	    <div class="table-controls clearfix">
+		<div class="table-actions pull-right">
+		    <div class="separator">
+			<a title="Print selected rows" class="btn-print" href="javascript:;"></a>
+			<a class="btn-edit" href="javascript:;"></a>
+			<a id="delete_instrument" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
+		    </div>
+		</div>
+		<div class=" input-group table-search col-lg-4 pull-right">
+		    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+		    <input type="search" placeholder="Search" class="form-control">
+		</div>
+<!--
+		<div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></span>
+		    <select  class="form-control selectpicker" style="width:255px; display:inline-block;">
+			<option>User Name</option>
+			<option>Email</option>
+		    </select>
+		</div>
+-->
+	    </div>
+
+
+	    <table id="intruments" class="table is-datatable">
+		<thead>
+		    <tr>
+			<th class="select-checkbox no-filter"></th>
+			<th class="no-filter">ID</th>
+			<th>Contract Symbol</th>
+			<th>Fuel Class</th>
+			<th>Contract Year</th>
+			<th>Contract Month</th>
+			<th>Expiratoin Date</th>
+		    </tr>
+		</thead>
+		<tfoot>
+		    <tr class="filters">
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		    </tr>
+		</tfoot>
+		<tbody>
+                    {% for instrument in instruments %}
+                     <tr>
+                         <td></td>
+                         <td><a href="/api/instrument/?instrument_id={{instrument.id}}">{{instrument.id}}</a></td>
+                         <td><a href="/api/instrument/?instrument_id={{instrument.id}}">{{instrument.symbol}}</td>
+
+                         <td>{{instrument.fuel_class.code}}</td>
+                         <td>{{instrument.contract_year}}</td>
+                         <td>{{instrument.contract_month}}</td>
+                         <td>{{instrument.expiration_date}}</td>
+                     </tr>
+                    {% endfor %}
+		</tbody>
+	    </table>
+	</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- modals -->
+        <div id="add-hedge-tran" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="instrument_info" action="">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Hedge Instrument</h4>
+                  </div>
+                  <div class="modal-body clearfix">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="">contract symbol</label>
+                            <input type="text" id="symbol" class="form-control"> 
+                        </div>
+                        <div class="form-group">
+                            <label for="">fuel class</label>
+                            <input type="text" id="phy_type" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">contract year</label>
+                            <input type="text" id="contract_year" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">contract month</label>
+                            <input type="text" id="contract_month" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">expiration_date</label>
+                            <input type="text" id="expiration_date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">instrument</label>
+                            <input type="text" id="instrument" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">put call</label>
+                            <input type="text" id="put call" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">strike price</label>
+                            <input type="text" id="price" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">counter party</label>
+                            <input type="text" id="counter_party" class="form-control">
+                        </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="add_user_btn" type="button" class="btn btn-primary" onclick="add_instrument()">Save</button>
+                  </div>
+                </form>
+
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+<!--
+    <div id="remove_user" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="bootbox-body">Are you sure you want to delete the items?
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+
+{% endblock%}
+
+{% block extra_js %}
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootbox.min.js"></script>
+    <script src="/static/js/hidden.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="/static/js/moment.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}

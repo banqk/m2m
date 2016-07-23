@@ -1,11 +1,9 @@
 from django.conf.urls import patterns, url
 
-
 urlpatterns = patterns(
-   'hedge_account.views',
-    url(r'hedge_accounts/$', 'hedges'),
-    url(r'create_hedge_account/$', 'create_hedge_account'),
-    url(r'remove_hedge_account/$', 'remove_hedge_account'),
-    url(r'update_hedge/$', 'update_hedge_account'),
-
+    'hedge_instrument.views',
+    url(r'hedge_inst/$', 'hedge_inst'),
+    url(r'create_inst/$', 'create_inst'),
+    url(r'remove_inst/$', 'remove_inst'),
+    url(r'update_inst/$', 'update_inst'),
 )

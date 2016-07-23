@@ -746,3 +746,38 @@ function add_fuel_class() {
     });
 
 }
+
+function add_instrument() {
+
+    var text_vals = new Array(9);
+    var i = 0;
+    $("#instrument_info input").each(function(){
+        console.log('##############' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    
+    $.ajax({
+        type: "POST",
+        url: "/inst/create_inst/",
+        data: ({ symbol : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: text_vals[3], expiration_date: text_vals[4], instrument: text_vals[5],put_call: text_vals[6], strike_price: text_vals[7], counter_party: text_vals[8]}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/inst/hedge_inst";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+
+}
