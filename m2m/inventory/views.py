@@ -27,8 +27,7 @@ def create_inventory(request):
     fuel_type = request_vals.get('fuel_type')
     in_location = request_vals.get('in_location')
     id_number = request_vals.get('id_number')
-    account_name = request_vals.get('account_name').strip()
-    print account_id
+    account_name = request_vals.get('account_id').strip()
 
     try:
         inventory = Inventory.objects.get(name=name)
@@ -50,7 +49,7 @@ def create_inventory(request):
     )
     inventory.save()
 
-    return HttpResponse(json.dumps({'response': 'success', 'account_id':account_id } ))
+    return HttpResponse(json.dumps({'response': 'success', 'account_id': account.id} ))
 
 @require_http_methods(['POST'])
 @csrf_exempt

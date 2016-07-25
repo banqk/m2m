@@ -47,7 +47,7 @@ def create_hedge_account(request):
     )
     hedge.save()
 
-    return HttpResponse(json.dumps({'response': 'success', 'account_id': account_id}))
+    return HttpResponse(json.dumps({'response': 'success', 'account_id': account.id}))
 
 @require_http_methods(['POST'])
 @csrf_exempt
