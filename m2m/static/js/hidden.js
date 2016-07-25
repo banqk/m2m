@@ -298,20 +298,20 @@ function remove_company(companies) {
     });
 }
 
-function add_inventory() {
+function add_inventory(entityType) {
 
     var text_vals = new Array(6);
-    var i = 0;
-    console.log('$*********' + $('#inven_hedge_info'))
-    $("#inven_hedge_info input").each(function(){
-        console.log( '#########::::::' + $(this).val())
-        text_vals[i] = $(this).val()
-        i = i + 1
-    })
     var m2m_account_id = $('#current_account_id').text()
     
     console.log('inven ***' + $('#type').val() + '$$$$')
-    if($('#type').val() == 'Inventory') {
+    if(entityType == 'Inventory') {
+        var i = 0;
+        console.log('$*********' + $('#inven_hedge_info'))
+        $("#inven_hedge_info input").each(function(){
+            console.log( '#########::::::' + $(this).val())
+            text_vals[i] = $(this).val()
+            i = i + 1
+        })
 	    $.ajax({
 		type: "POST",
 		url: "/inventory/create_inventory/",
@@ -332,6 +332,13 @@ function add_inventory() {
 		}
 	    });
     } else {
+        var i = 0;
+        console.log('$*********' + $('#inven_hedge_info2'))
+        $("#inven_hedge_info2 input").each(function(){
+            console.log( '#########::::::' + $(this).val())
+            text_vals[i] = $(this).val()
+            i = i + 1
+        })
 	    $.ajax({
 		type: "POST",
 		url: "/hedge/create_hedge_account/",
