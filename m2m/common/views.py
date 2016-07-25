@@ -21,7 +21,7 @@ def account(request):
     except Hedge_Account.DoesNotExist:
         hedge_accounts = {}
     
-    options.update({'current_account_id': account_id})
+#    options.update({'current_account_name': account.name})
     options.update({'account': account})
     options.update({'inventories': inventories})
     options.update({'hedge_accounts': hedge_accounts})

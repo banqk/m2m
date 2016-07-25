@@ -10,10 +10,10 @@ import simplejson as json
 def inventories(request):
     options = {}
     inventories = Inventory.objects.all()
-    account_names = []
+    account_names = ''
     m2m_accounts = Account.objects.all()
     for account in m2m_accounts:
-        account_names.append(account.name)
+        account_names += account.name + ','
     print account_names
     options.update({'inventories': inventories, 'inven_names':account_names})
     render_to_url = 'hidden/inventory.html'
@@ -27,7 +27,7 @@ def create_inventory(request):
     fuel_type = request_vals.get('fuel_type')
     in_location = request_vals.get('in_location')
     id_number = request_vals.get('id_number')
-    account_id = request_vals.get('account_id')
+    account_name = request_vals.get('account_name').strip()
     print account_id
 
     try:
@@ -37,7 +37,7 @@ def create_inventory(request):
         pass
 
     try:
-        account = Account.objects.get(pk=account_id)
+        account = Account.objects.get(name=account_name)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of account is incorrectly'}))
     

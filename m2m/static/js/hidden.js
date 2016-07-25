@@ -178,11 +178,16 @@ $(function(){
         }
     });
    
-   $('m2m_account').autocomplete({
-//    $('m2m_account').typeahead({
-//        local: $('auto_complete').text()
-        source: $('auto_complete').text()
+//   var input = $("#m2m_account");
+    var input = document.getElementById('m2m_account')
+    new Awesomplete(input, {
+        list: $('#auto_inventory').text().split(",")
     });
+    var input = document.getElementById('m2m_account')
+    new Awesomplete(input, {
+        list: $('#auto_hedge_account').text().split(",")
+    });
+
 });
 
 function add_user() {
@@ -301,7 +306,10 @@ function remove_company(companies) {
 function add_inventory(entityType) {
 
     var text_vals = new Array(6);
-    var m2m_account_id = $('#current_account_id').text()
+    var m2m_account_name = $('#current_account_id').text()
+    if(m2m_account_name == ""){
+        m2m_account_name = $('#m2m_account').val()
+    }
     
     console.log('inven ***' + $('#type').val() + '$$$$')
     if(entityType == 'Inventory') {
@@ -315,7 +323,7 @@ function add_inventory(entityType) {
 	    $.ajax({
 		type: "POST",
 		url: "/inventory/create_inventory/",
-		data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3], account_id: m2m_account_id}),
+		data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3], account_name: m2m_account_name}),
 		success: function(html){
 		    json_data = JSON.parse(html);
                     console.log(json_data['account_id'])

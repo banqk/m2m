@@ -10,7 +10,12 @@ import simplejson as json
 def hedges(request):
     options = {}
     hedges = Hedge_Account.objects.all()
-    options.update({'hedges': hedges})
+    m2m_accounts = Account.objects.all()
+    account_names = ''
+    for account in m2m_accounts:
+        account_names += account.name + ','
+    print account_names
+    options.update({'hedges': hedges, 'account_names': account_names})
     render_to_url = 'hidden/hedge_account.html'
     return render_to_response(render_to_url, options)
 
@@ -30,7 +35,7 @@ def create_hedge_account(request):
         pass
 
     try:
-        account = Account.objects.get(pk=account_id)
+        account = Account.objects.get(name=account_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of account is incorrectly'}))
 
