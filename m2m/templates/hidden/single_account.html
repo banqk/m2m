@@ -71,8 +71,12 @@
         </div>
     </div>
     
+     <div class="box-head clearfix">
+        <h1 class="pull-left">Inventories</h1>
+    </div>
     <div class="box-content">
 	<div class="table-container">
+	    <!--
             <div class="table-controls clearfix">
 		 <div class="table-actions pull-right">
 		    <div class="separator">
@@ -85,20 +89,19 @@
                     <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
                     <input type="search" placeholder="Search" class="form-control">
             </div>
-            <div class="">
-                <h1 class="pull-left">Inventories</h1>
             </div>
-            </div>
+            -->
 	    <table id="inventories" class="table is-datatable">
 		<thead>
 		    <tr>
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
-			<th>Create Date</th>
+			
 			<th>Inventory Name</th>
 			<th>Fuel Type</th>
 			<th>Location</th>
                         <th>Id Number</th>
+                        <th>Create Date</th>
 		    </tr>
 		</thead>
 <!--
@@ -119,11 +122,12 @@
                      <tr>
                          <td></td>
                          <td><a>{{inventory.id}}</a></td>
-                         <td>{{inventory.create_date}}</td>
+                         
                          <td>{{inventory.name}}</td>
                          <td>{{inventory.fuel_type}}</td>
                          <td>{{inventory.location}}</td>
                          <td>{{inventory.id_number}}</td>
+                         <td>{{inventory.create_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
 		</tbody>
@@ -140,10 +144,11 @@
                     <tr>
                         <th class="select-checkbox no-filter"></th>
                         <th class="no-filter">ID</th>
-                        <th>Create Date</th>
+                        
                         <th>Hedge Name</th>
                         <th>Institution</th>
                         <th>Account Number</th>
+                        <th>Create Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -151,10 +156,11 @@
                      <tr>
                          <td></td>
                          <td><a>{{hedge_account.id}}</a></td>
-                         <td>{{hedge_account.create_date}}</td>
+                         
                          <td>{{hedge_account.name}}</td>
                          <td>{{hedge_account.institution}}</td>
                          <td>{{hedge_account.id_number}}</td>
+                         <td>{{hedge_account.create_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
                 </tbody>
