@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from accounts.models import Account
+from users.models import User
 from django.http import HttpResponse
 import simplejson as json
 import logging
@@ -36,10 +37,13 @@ def create_account(request):
     except Exception:
         pass
 
+    user = User.objects.get(pk=1)
+
     account = Account.objects.create(
         name = user_name,
         address = address,
-        email = email
+        email = email,
+        user = user
     )
     account.save()
     

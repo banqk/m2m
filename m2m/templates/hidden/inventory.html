@@ -42,15 +42,6 @@
 		    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
 		    <input type="search" placeholder="Search" class="form-control">
 		</div>
-<!--
-		<div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></span>
-		    <select  class="form-control selectpicker" style="width:255px; display:inline-block;">
-			<option>User Name</option>
-			<option>Email</option>
-		    </select>
-		</div>
--->
 	    </div>
 
 
@@ -94,40 +85,6 @@
                          <td>{{inventory.create_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
-<!--
-		    <tr>
-			<td></td>
-			<td>1121812000002040007</td>
-			<td>12-Nov-2015</td>
-			<td>Belcher Powerhouse Account</td>
-			<td>test@gmail.com</td>
-			<td>Diesel</td>
-		    </tr>
-		    <tr>
-			<td></td>
-			<td>1121812000002040007</td>
-			<td>11-Nov-2015</td>
-			<td>Lorem Ipsum</td>
-			<td>lorem@gmail.com</td>
-			<td>Product Test</td>
-		    </tr>
-		    <tr>
-			<td></td>
-			<td>1121812000002040007</td>
-			<td>12-Nov-2015</td>
-			<td>Belcher Powerhouse Account</td>
-			<td>test@gmail.com</td>
-			<td>Lorem</td>
-		    </tr>
-		    <tr>
-			<td></td>
-			<td>1121812000002040007</td>
-			<td>12-Nov-2015</td>
-			<td>Belcher Powerhouse Account</td>
-			<td>test@gmail.com</td>
-			<td>Diesel</td>
-		    </tr>
--->
 		</tbody>
 	    </table>
 	</div>
@@ -185,22 +142,17 @@
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-<!--
-    <div id="remove_user" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="bootbox-body">Are you sure you want to delete the items?
-                </div>
-            </div>
-        </div>
-    </div>
--->
+<div id='variables' style="display:none">
+    <span id="auto_complete">{{inven_names}}</span>
+</div>
 
 {% endblock%}
 
 {% block extra_js %}
     <script src="/static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/js/bootbox.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-ui-1.10.1.custom.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-typeahead.js"></script>
     <script src="/static/js/hidden.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>

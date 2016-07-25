@@ -10,7 +10,12 @@ import simplejson as json
 def inventories(request):
     options = {}
     inventories = Inventory.objects.all()
-    options.update({'inventories': inventories})
+    account_names = []
+    m2m_accounts = Account.objects.all()
+    for account in m2m_accounts:
+        account_names.append(account.name)
+    print account_names
+    options.update({'inventories': inventories, 'inven_names':account_names})
     render_to_url = 'hidden/inventory.html'
     return render_to_response(render_to_url, options)
 

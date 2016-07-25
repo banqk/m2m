@@ -177,6 +177,12 @@ $(function(){
             $('#type').parent().parent().append(hedgeTab);
         }
     });
+   
+   $('m2m_account').autocomplete({
+//    $('m2m_account').typeahead({
+//        local: $('auto_complete').text()
+        source: $('auto_complete').text()
+    });
 });
 
 function add_user() {
