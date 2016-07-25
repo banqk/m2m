@@ -7,14 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('counter_party', '0001_initial'),
-        ('inventory', '0004_auto_20160712_1056'),
         ('product', '0001_initial'),
+        ('counter_party', '0001_initial'),
+        ('inventory', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Inventory',
+            name='Physical',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=100)),

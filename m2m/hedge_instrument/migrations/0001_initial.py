@@ -7,16 +7,16 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('fuel_class', '0001_initial'),
         ('counter_party', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Hedge_Account',
+            name='Instrument',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=100)),
-                ('fuel_class', models.CharField(max_length=100)),
+                ('symbol', models.CharField(max_length=100)),
                 ('contract_year', models.CharField(max_length=10)),
                 ('contract_month', models.CharField(max_length=10)),
                 ('expiration_date', models.DateTimeField(null=True)),
@@ -25,6 +25,7 @@ class Migration(migrations.Migration):
                 ('strike_price', models.CharField(max_length=100)),
                 ('create_date', models.DateTimeField(auto_now=True, null=True)),
                 ('counter_party', models.ForeignKey(to='counter_party.Counter')),
+                ('fuel_class', models.ForeignKey(to='fuel_class.Fuel_Class')),
             ],
         ),
     ]
