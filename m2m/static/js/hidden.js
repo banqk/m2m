@@ -674,7 +674,7 @@ function add_physical() {
     $.ajax({
         type: "POST",
         url: "/transaction/create_phy/",
-        data: ({ name : text_vals[0], type: text_vals[1], inventory: text_vals[2], product: text_vals[3], volume: text_vals[4], price: text_vals[5],counter: text_vals[6]}),
+        data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], volume: text_vals[3], price: text_vals[4],counter: text_vals[5]}),
         success: function(html){
 
             json_data = JSON.parse(html);
@@ -708,7 +708,7 @@ function add_hedge_tran() {
     $.ajax({
         type: "POST",
         url: "/hedge_tran/create_ht/",
-        data: ({ name : text_vals[0], type: text_vals[1], hedge_account: text_vals[2], contract: text_vals[3], volume: text_vals[4], price: text_vals[5],initial_pos: text_vals[6]}),
+        data: ({ name : text_vals[0], type: $("#physical_info select").val(), hedge_account: text_vals[1], contract: text_vals[2], volume: text_vals[3], price: text_vals[4],initial_pos: text_vals[5]}),
         success: function(html){
 
             json_data = JSON.parse(html);
