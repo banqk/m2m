@@ -320,7 +320,7 @@ function add_inventory(entityType) {
 	    $.ajax({
 		type: "POST",
 		url: "/inventory/create_inventory/",
-		data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3], account_id: m2m_account_id}),
+		data: ({ name : text_vals[0], fuel_type: $("#inven_hedge_info select").val(), in_location: text_vals[1], id_number: text_vals[2], account_id: m2m_account_id}),
 		success: function(html){
 		    json_data = JSON.parse(html);
                     console.log(json_data['account_id'])
