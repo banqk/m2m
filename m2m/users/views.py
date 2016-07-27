@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from users.models import User
 import simplejson as json
+from django.core.mail import send_mail
 
 def users(request):
     options = {}
@@ -39,6 +40,15 @@ def create_user(request):
         email = email
     )
     user.save()
+    email_address_list = []
+    message = '%s has been created!' % user_name
+    email_address_list.append(user.email)
+    try:
+        # send the email
+        send_mail('Notifation from the M2M application', message, '847706317@qq.com',
+                  email_address_list, fail_silently=False)
+    except:
+        return 'Sending email failed'
 
     return HttpResponse(json.dumps({'response': 'success'}))
 
