@@ -708,7 +708,7 @@ function add_hedge_tran() {
     $.ajax({
         type: "POST",
         url: "/hedge_tran/create_ht/",
-        data: ({ name : text_vals[0], type: $("#physical_info select").val(), hedge_account: text_vals[1], contract: text_vals[2], volume: text_vals[3], price: text_vals[4],initial_pos: text_vals[5]}),
+        data: ({ name : text_vals[0], type: $("#hedge_tran_info select").val(), hedge_account: text_vals[1], contract: text_vals[2], volume: text_vals[3], price: text_vals[4],initial_pos: text_vals[5]}),
         success: function(html){
 
             json_data = JSON.parse(html);
