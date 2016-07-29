@@ -122,8 +122,12 @@
                             <input type="text" id="name" class="form-control"> 
                         </div>
                         <div class="form-group">
-                            <label for="">type(sell or buy) </label>
-                            <input type="text" id="phy_type" class="form-control">
+                            <label for="">transaction type</label>
+                            <select id="phy_type" class="form-control">
+                              <option value="Purchase">Purchase</option>
+                              <option value="Sell">Sell</option>
+                              <option value="Transfer">Transfer</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="">inventory </label>
@@ -147,7 +151,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">program</label>
-                            <input type="text" id="price" class="form-control">
+                            <input type="text" id="program" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">counter party </label>

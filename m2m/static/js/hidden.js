@@ -320,7 +320,7 @@ function add_inventory(entityType) {
 	    $.ajax({
 		type: "POST",
 		url: "/inventory/create_inventory/",
-		data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3], account_id: m2m_account_id}),
+		data: ({ name : text_vals[0], fuel_type: $("#inven_hedge_info select").val(), in_location: text_vals[1], id_number: text_vals[2], account_id: m2m_account_id}),
 		success: function(html){
 		    json_data = JSON.parse(html);
                     console.log(json_data['account_id'])
@@ -674,7 +674,7 @@ function add_physical() {
     $.ajax({
         type: "POST",
         url: "/transaction/create_phy/",
-        data: ({ name : text_vals[0], type: text_vals[1], inventory: text_vals[2], product: text_vals[3], volume: text_vals[4], price: text_vals[5],counter: text_vals[6]}),
+        data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], volume: text_vals[3], price: text_vals[4],counter: text_vals[5]}),
         success: function(html){
 
             json_data = JSON.parse(html);
@@ -708,7 +708,7 @@ function add_hedge_tran() {
     $.ajax({
         type: "POST",
         url: "/hedge_tran/create_ht/",
-        data: ({ name : text_vals[0], type: text_vals[1], hedge_account: text_vals[2], contract: text_vals[3], volume: text_vals[4], price: text_vals[5],initial_pos: text_vals[6]}),
+        data: ({ name : text_vals[0], type: $("#hedge_tran_info select").val(), hedge_account: text_vals[1], contract: text_vals[2], volume: text_vals[3], price: text_vals[4],initial_pos: text_vals[5]}),
         success: function(html){
 
             json_data = JSON.parse(html);
