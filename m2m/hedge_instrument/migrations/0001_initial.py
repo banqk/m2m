@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('fuel_class', '0001_initial'),
         ('counter_party', '0001_initial'),
+        ('fuel_class', '0001_initial'),
     ]
 
     operations = [

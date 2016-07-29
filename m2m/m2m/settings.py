@@ -24,7 +24,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'xwb3lkiyzz4zpsxqb079w@9-sb7y!^^ce8u=&3n0g2mhc*)s-e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+#DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 #APPEND_SLASH=False
@@ -54,6 +55,7 @@ INSTALLED_APPS = (
     'hedge_transaction',
     'hedge_instrument',
     'fuel_class',
+    'user_privilages',
 )
 
 MIDDLEWARE_CLASSES = (

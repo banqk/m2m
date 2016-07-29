@@ -7,9 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hedge_instrument', '0001_initial'),
-        ('inventory', '0001_initial'),
         ('hedge_account', '0001_initial'),
+        ('hedge_instrument', '0001_initial'),
     ]
 
     operations = [
@@ -23,9 +22,12 @@ class Migration(migrations.Migration):
                 ('volume', models.IntegerField(default=0, null=True)),
                 ('initial_pos', models.BooleanField(default=False)),
                 ('create_date', models.DateTimeField(auto_now=True, null=True)),
+                ('confirm_number', models.CharField(max_length=100)),
+                ('trader', models.CharField(max_length=100)),
+                ('status', models.CharField(max_length=20)),
+                ('program', models.CharField(max_length=100)),
                 ('hedge_account', models.ForeignKey(to='hedge_account.Hedge_Account')),
                 ('instrument', models.ForeignKey(to='hedge_instrument.Instrument')),
-                ('inventory', models.ForeignKey(to='inventory.Inventory')),
             ],
         ),
     ]

@@ -7,6 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('user_privilages', '0002_add_roles'),
     ]
 
     operations = [
@@ -20,6 +21,7 @@ class Migration(migrations.Migration):
                 ('lastName', models.CharField(max_length=250)),
                 ('email', models.CharField(max_length=50)),
                 ('create_date', models.DateTimeField(auto_now=True)),
+                ('user_privilages', models.ForeignKey(to='user_privilages.User_Privilage')),
             ],
         ),
     ]

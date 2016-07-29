@@ -10,7 +10,11 @@ import simplejson as json
 def fuels(request):
     options = {}
     fuels = Fuel_Class.objects.all()
-    options.update({'fuel_classes': fuels})
+    account_names = ''
+    m2m_accounts = Account.objects.all()
+    for account in m2m_accounts:
+        account_names += account.name + ','
+    options.update({'fuel_classes': fuels, 'account_list': account_names})
     render_to_url = 'hidden/fuel_class.html'
     return render_to_response(render_to_url, options)
 
@@ -20,16 +24,23 @@ def create_fuel(request):
     request_vals = request.POST
     code = request_vals.get('code')
     description = request_vals.get('description')
+    account_name = request_vals.get('account_id')
+    print account_name
 
     try:
         fuel = Fuel_Class.objects.get(name=name)
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The code already exists in the application'}))
     except Exception:
         pass
+    try:
+        account = Account.objects.get(name=account_name)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of m2m account is incorrectly'}))
 
     fuel = Fuel_Class.objects.create(
         code = code,
         description = description,
+        m2m_account = account,
     )
     fuel.save()
 

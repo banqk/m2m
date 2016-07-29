@@ -77,7 +77,7 @@
                          <td></td>
                          <td><a href="/api/product/?product_id={{product.id}}">{{product.id}}</a></td>
                          <td><a href="/api/product/?product_id={{product.id}}">{{product.name}}</td>
-                         <td>{{product.fuel_class}}</td>
+                         <td>{{product.fuel_class.code}}</td>
                      </tr>
                     {% endfor %}
 		</tbody>
@@ -101,8 +101,12 @@
                   <div class="modal-body clearfix">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label for="">name</label>
+                            <label for="">product name</label>
                             <input type="text" id="name" class="form-control"> 
+                        </div>
+                        <div class="form-group">
+                            <label for="">description</label>
+                            <input type="text" id="description" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">fuel class</label>
@@ -112,7 +116,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button id="add_user_btn" type="submit" class="btn btn-primary" onclick="add_product()">Save</button>
+                    <button id="add_user_btn" type="button" class="btn btn-primary" onclick="add_product()">Save</button>
                   </div>
                 </form>
 
@@ -130,6 +134,9 @@
         </div>
     </div>
 -->
+<div id='variables' style="display:none">
+    <span id="auto_fuel_class">{{fuels}}</span>
+</div>
 
 {% endblock%}
 

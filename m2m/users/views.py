@@ -6,6 +6,7 @@ from users.models import User
 import simplejson as json
 from django.core.mail import send_mail
 from m2m.settings import ADMIN_EMAILS
+from user_privilages.models import User_Privilage
 
 def users(request):
     options = {}
@@ -31,12 +32,14 @@ def create_user(request):
     except User.DoesNotExist:
         pass 
 
+    role = User_Privilage.objects.get(code = 0)
     user = User.objects.create(
         name = user_name,
         password = password,
         firstName = first_name,
         lastName = last_name,
-        email = email
+        email = email,
+        user_privilages = role
     )
     user.save()
     email_address_list = []

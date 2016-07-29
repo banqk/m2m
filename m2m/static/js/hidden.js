@@ -177,16 +177,20 @@ $(function(){
             $('#type').parent().parent().append(hedgeTab);
         }
     });
+
+    if ($('#auto_account').text().split(",").length > 1) {
    
-//   var input = $("#m2m_account");
-    var input = document.getElementById('m2m_account')
-    new Awesomplete(input, {
-        list: $('#auto_inventory').text().split(",")
-    });
-    var input = document.getElementById('m2m_account')
-    new Awesomplete(input, {
-        list: $('#auto_hedge_account').text().split(",")
-    });
+        var input = document.getElementById('m2m_account')
+        new Awesomplete(input, {
+            list: $('#auto_account').text().split(",")
+        });
+    }
+    if($('#auto_fuel_class').text().split(",").length > 1){
+        var fuel_input = document.getElementById('fuel_class')
+        new Awesomplete(fuel_input, {
+            list: $('#auto_fuel_class').text().split(",")
+        });
+    }
 
 });
 
@@ -645,14 +649,19 @@ function add_product() {
     $.ajax({
         type: "POST",
         url: "/product/create_product/",
-        data: ({ name : text_vals[0], fuel_class: text_vals[1]}),
+        data: ({ name : text_vals[0], fuel_class: text_vals[1], description: text_vals[2]}),
         success: function(html){
 
             json_data = JSON.parse(html);
             if (json_data.error) {
                 bootbox.alert(json_data['response'])
             } else {
-                bootbox.alert(json_data['response'])
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/product/products";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
             }
         },
         error: function(html){
@@ -743,7 +752,7 @@ function add_fuel_class() {
     $.ajax({
         type: "POST",
         url: "/fuel/create_fuel/",
-        data: ({ code : text_vals[0], description: text_vals[1]}),
+        data: ({ code : text_vals[0], description: text_vals[1], account_id: text_vals[2]}),
         success: function(html){
 
             json_data = JSON.parse(html);
