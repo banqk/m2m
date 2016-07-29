@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 CSRF_COOKIE_SECURE = False
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+ADMIN_EMAILS = ['yornab@outlook.com']
 
 
 # Application definition

@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from users.models import User
 import simplejson as json
 from django.core.mail import send_mail
+from m2m.settings import ADMIN_EMAILS
 
 def users(request):
     options = {}
@@ -23,8 +24,6 @@ def create_user(request):
     first_name = request_vals.get('first_name')
     last_name = request_vals.get('last_name')
     email = request_vals.get('email')
-    print first_name
-    print last_name
 
     try:
         users = User.objects.get(name = user_name)
@@ -43,6 +42,10 @@ def create_user(request):
     email_address_list = []
     message = '%s has been created!' % user_name
     email_address_list.append(user.email)
+
+    for email in ADMIN_EMAILS:
+        email_address_list.append(email)
+    print email_address_list
     try:
         # send the email
         send_mail('Notifation from the M2M application', message, '847706317@qq.com',
