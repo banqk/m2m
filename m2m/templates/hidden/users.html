@@ -80,8 +80,8 @@
                     {% for user in users %}
                      <tr>
                          <td></td>
-                         <td>{{user.id}}</td>
-                         <td>{{user.name}}</td>
+                         <td><a href="/api/user/?user_id={{user.id}}">{{user.id}}</a></td>
+                         <td><a href="/api/user/?user_id={{user.id}}">{{user.name}}</a></td>
                          <td>{{user.firstName}}</td>
                          <td>{{user.lastName}}</td>
                          <td>{{user.email}}</td>

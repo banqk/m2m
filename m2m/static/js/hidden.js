@@ -570,6 +570,31 @@ function update_hedge() {
         }
     });
 }
+function update_user() {
+
+    var user_id = $('#user_id').text()
+    $.ajax({
+        type: "POST",
+        url: "/users/update/",
+        data: ({ permission:$('#permission_id').val(),user_id: user_id}),
+        success: function(html){
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                if(json_data['response'] == 'success'){
+                    bootbox.alert(json_data['info']);
+                    //window.location = "/users/users";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+}
 
 function add_account() {
 

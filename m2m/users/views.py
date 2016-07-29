@@ -43,18 +43,38 @@ def create_user(request):
     )
     user.save()
     email_address_list = []
+    role = User_Privilage.objects.get(code = 1)
+    try:
+        admin_users = User.objects.filter(user_privilages=role)
+        for admin in admin_users:
+            email_address_list.append(admin.email)    
+    except User.DoesNotExist:
+        pass
     message = '%s has been created!' % user_name
     email_address_list.append(user.email)
 
-    for email in ADMIN_EMAILS:
-        email_address_list.append(email)
     print email_address_list
-    try:
-        # send the email
-        send_mail('Notifation from the M2M application', message, '847706317@qq.com',
+    send_mail('Notifation from the M2M application', message, '847706317@qq.com',
                   email_address_list, fail_silently=False)
-    except:
-        return 'Sending email failed'
 
     return HttpResponse(json.dumps({'response': 'success'}))
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def update(request):
+    request_vals = request.POST
+    user_id = request_vals.get('user_id')
+    permission = request_vals.get('permission')
+    if permission.strip() == 'user':
+        code = 0
+    else:
+        code = 1
+    try:
+        role = User_Privilage.objects.get(code = code)
+        user = User.objects.get(pk=user_id)
+        user.user_privilages = role
+        user.save()
+        return HttpResponse(json.dumps({'response': 'success', 'info':'Update success.'}))
+    except User_Privilage.DoesNotExist:
+        return HttpResponse(json.dumps({'response':'failure','info': 'The permission is not exists in the application.'}))
 

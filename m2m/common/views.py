@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from accounts.models import Account
 from inventory.models import Inventory
 from hedge_account.models import Hedge_Account
+from users.models import User
 
 
 def account(request):
@@ -26,6 +27,19 @@ def account(request):
     options.update({'inventories': inventories})
     options.update({'hedge_accounts': hedge_accounts})
     render_to_url = 'hidden/single_account.html'
+    return render_to_response(render_to_url, options)
+def user(request):
+    options = {}
+    user_id = request.GET.get('user_id', '')
+
+    try:
+        user = User.objects.get(pk=user_id)
+    except Account.DoesNotExist:
+        pass
+    
+#    options.update({'current_account_name': account.name})
+    options.update({'user': user})
+    render_to_url = 'hidden/single_user.html'
     return render_to_response(render_to_url, options)
 
 def company(request):
