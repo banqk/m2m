@@ -3,6 +3,9 @@ from accounts.models import Account
 from inventory.models import Inventory
 from hedge_account.models import Hedge_Account
 from users.models import User
+from product.models import Product
+from counter_party.models import Counter
+from fuel_class.models import Fuel_Class
 
 
 def account(request):
@@ -76,4 +79,52 @@ def hedge(request):
     
     options.update({'hedge': hedge_account})
     render_to_url = 'hidden/edit_hedge_account.html'
+    return render_to_response(render_to_url, options)
+def product(request):
+    options = {}
+    product_id = request.GET.get('product_id', '')
+
+    try:
+        product = Product.objects.get(pk=product_id)
+    except Hedge_Account.DoesNotExist:
+        product = {}
+    
+    options.update({'product': product})
+    render_to_url = 'hidden/edit_product.html'
+    return render_to_response(render_to_url, options)
+def counter(request):
+    options = {}
+    counter_id = request.GET.get('counter_id', '')
+
+    try:
+        counter = Counter.objects.get(pk=counter_id)
+    except Hedge_Account.DoesNotExist:
+        counter = {}
+    
+    options.update({'counter': counter})
+    render_to_url = 'hidden/edit_counter.html'
+    return render_to_response(render_to_url, options)
+def instrument(request):
+    options = {}
+    hedge_id = request.GET.get('hedge_id', '')
+
+    try:
+        hedge_account = Hedge_Account.objects.get(pk=hedge_id)
+    except Hedge_Account.DoesNotExist:
+        hedge_account = {}
+    
+    options.update({'hedge': hedge_account})
+    render_to_url = 'hidden/edit_hedge_account.html'
+    return render_to_response(render_to_url, options)
+def fuel_class(request):
+    options = {}
+    fuel_id = request.GET.get('fuel_id', '')
+
+    try:
+        fuel = Fuel_Class.objects.get(pk=fuel_id)
+    except Fuel_Class.DoesNotExist:
+        fuel = {}
+    
+    options.update({'fuel': fuel})
+    render_to_url = 'hidden/edit_fuel.html'
     return render_to_response(render_to_url, options)

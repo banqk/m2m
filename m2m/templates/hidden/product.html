@@ -60,11 +60,13 @@
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
 			<th>ProductName</th>
+			<th>Description</th>
 			<th>Fuel Class</th>
 		    </tr>
 		</thead>
 		<tfoot>
 		    <tr class="filters">
+			<th></th>
 			<th></th>
 			<th></th>
 			<th></th>
@@ -77,6 +79,7 @@
                          <td></td>
                          <td><a href="/api/product/?product_id={{product.id}}">{{product.id}}</a></td>
                          <td><a href="/api/product/?product_id={{product.id}}">{{product.name}}</td>
+                         <td>{{product.description}}</td>
                          <td>{{product.fuel_class.code}}</td>
                      </tr>
                     {% endfor %}

@@ -75,8 +75,8 @@
                     {% for fuel_class in fuel_classes %}
                      <tr>
                          <td></td>
-                         <td><a href="/api/fuel_class/?fuel_class_id={{fuel_class.id}}">{{fuel_class.id}}</a></td>
-                         <td><a href="/api/fuel_class/?fuel_class_id={{fuel_class.id}}">{{fuel_class.code}}</a></td>
+                         <td><a href="/api/fuel/?fuel_id={{fuel_class.id}}">{{fuel_class.id}}</a></td>
+                         <td><a href="/api/fuel/?fuel_id={{fuel_class.id}}">{{fuel_class.code}}</a></td>
                          <td>{{fuel_class.description}}</td>
                      </tr>
                     {% endfor %}

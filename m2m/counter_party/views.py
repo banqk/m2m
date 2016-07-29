@@ -36,3 +36,27 @@ def create_counter(request):
     counter.save()
 
     return HttpResponse(json.dumps({'response': 'success'}))
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def update_counter(request):
+    request_vals = request.POST
+    counter_id = request_vals.get('counter_id')
+    name = request_vals.get('name')
+    counter_type = request_vals.get('counter_type')
+    address = request_vals.get('address')
+    try:
+        counter = Counter.objects.get(name=name)
+        print counter.id
+        if str(counter.id) != counter_id:
+            return HttpResponse(json.dumps({'response':'faliure', 'info':'The counter name already exists in the application'}))
+    except Exception:
+        pass
+
+    counter = Counter.objects.get(pk=counter_id)
+    counter.name = name
+    counter.counter_type = counter_type
+    counter.address = address
+    counter.save()
+
+    return HttpResponse(json.dumps({'response': 'success', 'info': 'Update success.'}))

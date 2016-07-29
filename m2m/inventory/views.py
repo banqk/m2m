@@ -28,6 +28,9 @@ def create_inventory(request):
     in_location = request_vals.get('in_location')
     id_number = request_vals.get('id_number')
     account_name = request_vals.get('account_id').strip()
+    volume = request_vals.get('volume').strip()
+    if volume or volume == '':
+        volume = 0
 
     try:
         inventory = Inventory.objects.get(name=name)
@@ -45,6 +48,7 @@ def create_inventory(request):
         fuel_type = fuel_type,
         location = in_location,
         id_number = id_number,
+        volumn = volume,
         m2m_account = account
     )
     inventory.save()

@@ -2,6 +2,7 @@
 
 {% block extra_css %}
   <link href="/static/css/hidden.css" type="text/css" rel="stylesheet">
+  <link href="/static/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css"/>
 {% endblock %}
 
@@ -115,7 +116,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">fuel class</label>
-                            <input type="text" id="phy_type" class="form-control">
+                            <input type="text" id="fuel_class" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">contract year</label>
@@ -127,7 +128,12 @@
                         </div>
                         <div class="form-group">
                             <label for="">expiration_date</label>
-                            <input type="text" id="expiration_date" class="form-control">
+                            <input type="text" id="expiration_date" class="form-datatime" readonly>
+                        </div>
+                        <div class="date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                            <input class="form-control" size="16" type="text" value="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+			    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
                         <div class="form-group">
                             <label for="">instrument</label>
@@ -157,17 +163,11 @@
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-<!--
-    <div id="remove_user" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="bootbox-body">Are you sure you want to delete the items?
-                </div>
-            </div>
-        </div>
-    </div>
--->
 
+<div id='variables' style="display:none">
+    <span id="auto_fuel_class">{{fuels}}</span>
+    <span id="auto_counter_party">{{counters}}</span>
+</div>
 {% endblock%}
 
 {% block extra_js %}

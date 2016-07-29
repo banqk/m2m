@@ -11,7 +11,15 @@ import simplejson as json
 def hedge_inst(request):
     options = {}
     instruments = Instrument.objects.all()
-    options.update({'instruments': instruments})
+    fuels = Fuel_Class.objects.all()
+    fuel_codes = ''
+    for fuel in fuels:
+        fuel_codes += fuel.code + ','
+    counter_names = ''
+    counters = Counter.objects.all()
+    for counter in counters:
+        counter_names += counter.name + ','
+    options.update({'instruments': instruments, 'fuels':fuel_codes, 'counters':counter_names})
     render_to_url = 'hidden/hedge_instrument.html'
     return render_to_response(render_to_url, options)
 
@@ -28,12 +36,13 @@ def create_inst(request):
     put_call = request_vals.get('put_call')
     strike_price = request_vals.get('strike_price')
     counter_id = request_vals.get('counter_party')
+    print fuel_id
     try:
-        fuel_class = Fuel_Class.objects.get(pk=fuel_id)
+        fuel_class = Fuel_Class.objects.get(code=fuel_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of fuel_class is incorrectly'}))
     try:
-        counter = Counter.objects.get(pk=counter_id)
+        counter = Counter.objects.get(name=counter_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of counter party is incorrectly'}))
 

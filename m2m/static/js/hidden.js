@@ -195,6 +195,16 @@ $(function(){
             list: $('#auto_fuel_class').text().split(",")
         });
     }
+    if($('#auto_counter_party').text().split(",").length > 1){
+        var fuel_input = document.getElementById('counter_party')
+        new Awesomplete(fuel_input, {
+            minChars: 1,
+            autoFirst: true,
+            list: $('#auto_counter_party').text().split(",")
+        });
+    }
+
+    $('.form_datetime').datetimepicker({show: true, format: 'yyyy-mm-dd hh:ii'});
 
 });
 
@@ -388,7 +398,7 @@ function new_inventory() {
     $.ajax({
 	type: "POST",
 	url: "/inventory/create_inventory/",
-	data: ({ name : text_vals[0], fuel_type: $("#inventory_info select").val(), in_location: text_vals[1], id_number: text_vals[2], account_id: text_vals[3]}),
+	data: ({ name : text_vals[0], fuel_type: $("#inventory_info select").val(), in_location: text_vals[1], id_number: text_vals[2],volume:text_vals[3], account_id: text_vals[4]}),
 	success: function(html){
 	    json_data = JSON.parse(html);
 //	    console.log(json_data['account_id'])
@@ -515,7 +525,6 @@ function update_account() {
     });
 }
 function update_inventory() {
-
     var text_vals = new Array(11);
     var i = 0;
     $("#edit_inventory input").each(function(){
@@ -530,14 +539,15 @@ function update_inventory() {
         data: ({ name : text_vals[0], fuel_type: text_vals[1], in_location: text_vals[2], id_number: text_vals[3],volumn: text_vals[4], inventory_id: inventory_id}),
         success: function(html){
             json_data = JSON.parse(html);
-//          console.log(json_data['account_id'])
-//          window.location.href='/api/account/?account_id=' + json_data['account_id']
-            bootbox.alert("Update success.")
             if (json_data.error) {
-                feedback(json_data.error_message, 'error')
+                bootbox.alert(json_data['response'])
             } else {
-
-                feedback('Success', 'ok');
+                if(json_data['response'] == 'success'){
+                    bootbox.alert(json_data['info']);
+                    //window.location = "/users/users";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
             }
         },
         error: function(html){
@@ -567,6 +577,99 @@ function update_hedge() {
                 bootbox.alert(json_data.error_message)
             } else {
                 bootbox.alert("Update success.")
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+}
+function update_product() {
+    var text_vals = new Array(11);
+    var i = 0;
+    $("#edit_product input").each(function(){
+        console.log( '#########::::::' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    var product_id = $('#product_id').text()
+    $.ajax({
+        type: "POST",
+        url: "/product/update_product/",
+        data: ({ name : text_vals[0], description: text_vals[1], fuel_class: text_vals[2], product_id: product_id}),
+        success: function(html){
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                if(json_data['response'] == 'success'){
+                    bootbox.alert(json_data['info']);
+                    //window.location = "/users/users";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+}
+function update_counter() {
+    var text_vals = new Array(11);
+    var i = 0;
+    $("#edit_counter input").each(function(){
+        console.log( '#########::::::' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    var counter_id = $('#counter_id').text()
+    $.ajax({
+        type: "POST",
+        url: "/counter/update_counter/",
+        data: ({ name : text_vals[0], counter_type: text_vals[1], address: text_vals[2], counter_id: counter_id}),
+        success: function(html){
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                if(json_data['response'] == 'success'){
+                    bootbox.alert(json_data['info']);
+                    //window.location = "/users/users";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+}
+function update_fuel() {
+    var text_vals = new Array(11);
+    var i = 0;
+    $("#edit_fuel input").each(function(){
+        console.log( '#########::::::' + $(this).val())
+        text_vals[i] = $(this).val()
+        i = i + 1
+    })
+    var fuel_id = $('#fuel_id').text()
+    $.ajax({
+        type: "POST",
+        url: "/fuel/update_fuel/",
+        data: ({ code : text_vals[0], description: text_vals[1], fuel_id: fuel_id}),
+        success: function(html){
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                if(json_data['response'] == 'success'){
+                    bootbox.alert(json_data['info']);
+                    //window.location = "/users/users";
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
             }
         },
         error: function(html){

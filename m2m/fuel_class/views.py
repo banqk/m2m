@@ -61,18 +61,20 @@ def remove_fuel(request):
 def update_fuel(request):
     request_vals = request.POST
     fuel_id = request_vals.get('fuel_id')
-    name = request_vals.get('name')
-    fuel_type = request_vals.get('fuel_type')
-    location = request_vals.get('in_location')
-    id_number = request_vals.get('id_number')
-    volumn = request_vals.get('volumn')
+    code = request_vals.get('code').strip()
+    description = request_vals.get('description')
 
-    fuel = Inventory.objects.get(pk=fuel_id)
-    fuel.name = name
-    fuel.fuel_type = fuel_type
-    fuel.location = location
-    fuel.id_number = id_number
-    fuel.volumn = volumn
+    try:
+        fuel = Fuel_Class.objects.get(code=code)
+        print fuel.id
+        if str(fuel.id) != fuel_id:
+            return HttpResponse(json.dumps({'response':'faliure', 'info':'The fuel class code already exists in the application'}))
+    except Exception:
+        pass
+
+    fuel = Fuel_Class.objects.get(pk=fuel_id)
+    fuel.code = code
+    fuel.description = description
     fuel.save()
 
-    return HttpResponse(json.dumps({'response': 'success'}))
+    return HttpResponse(json.dumps({'response': 'success', 'info':'Update success'}))

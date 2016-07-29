@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+
+{% block extra_css %}
+  <link href="/static/css/hidden.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css"/>
+{% endblock %}
+
+{% block content %}
+
+<div class="content-body">
+  <div class="col-lg-12 main-box-container">
+    <div class="box">
+	<div class="box-head clearfix">
+	    <h1 class="pull-left">Fuel Class</h1>
+
+	</div>
+    <div class="box-content">
+	<div class="table-container">
+	    <table id="edit_fuel" class="table is-datatable">
+                <thead>
+                     <tr>
+                         <th>Column name</th>       
+                         <th>Content</th>       
+                         <th>Description</th>       
+                     </tr>
+                </thead>
+		<tbody>
+                     <tr>
+                         <td>Id</td>
+                         <td><a>{{fuel.id}}</a></td>
+                         <td><td>
+                     </tr>
+                     <tr>
+                         <td>Code</td>
+                         <td><input type="text" value="{{fuel.code}}" class="form-control"></td>
+                         <td></td>
+                     </tr>
+                     <tr>
+                         <td>Description</td>
+                         <td><input type="text" value="{{fuel.description}}" class="form-control"></td>
+                         <td></td>
+                     </tr>
+		</tbody>
+	    </table>
+	</div>
+        <div class="modal-footer">
+                    <button id="update_fuel" type="submit" class="btn btn-primary" onclick="update_fuel()">Save</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div id='variables' style="display:none">
+    <span id="fuel_id">{{fuel.id}}</span>
+</div>
+
+
+{% endblock%}
+
+{% block extra_js %}
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootbox.min.js"></script>
+    <script src="/static/js/hidden.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="/static/js/moment.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}
