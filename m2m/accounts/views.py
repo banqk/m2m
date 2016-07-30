@@ -7,6 +7,10 @@ from django.http import HttpResponse
 import simplejson as json
 import logging
 
+def login(request):
+    options = {}
+    render_to_url = 'login.html'
+    return render_to_response(render_to_url, options)
 
 def index(request):
     render_to_url = 'value/value.html'
