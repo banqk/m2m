@@ -182,12 +182,16 @@ $(function(){
    
         var input = document.getElementById('m2m_account')
         new Awesomplete(input, {
+            minChars: 1,
+            autoFirst: true,
             list: $('#auto_account').text().split(",")
         });
     }
     if($('#auto_fuel_class').text().split(",").length > 1){
         var fuel_input = document.getElementById('fuel_class')
         new Awesomplete(fuel_input, {
+            minChars: 1,
+            autoFirst: true,
             list: $('#auto_fuel_class').text().split(",")
         });
     }
@@ -674,7 +678,7 @@ function add_product() {
     $.ajax({
         type: "POST",
         url: "/product/create_product/",
-        data: ({ name : text_vals[0], fuel_class: text_vals[1], description: text_vals[2]}),
+        data: ({ name : text_vals[0], fuel_class: text_vals[2], description: text_vals[1]}),
         success: function(html){
 
             json_data = JSON.parse(html);
