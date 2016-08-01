@@ -10,7 +10,7 @@ class Hedge_Tran(models.Model):
     hedge_type = models.CharField(max_length=100)
     hedge_account = models.ForeignKey(Hedge_Account)
     instrument = models.ForeignKey(Instrument)
-#    inventory = models.ForeignKey(Inventory)
+    inventory = models.ForeignKey(Inventory)
     price = models.FloatField(null=True, default=0)
     volume = models.IntegerField(null=True, default=0)
     initial_pos = models.BooleanField(default=False)

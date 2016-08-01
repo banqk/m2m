@@ -133,8 +133,12 @@
                             <input type="text" id="hedge_account" class="form-control">
                         </div>
                         <div class="form-group">
+                            <label for="">inventory </label>
+                            <input type="text" id="inventory" class="form-control">
+                        </div>
+                        <div class="form-group">
                             <label for="">contract</label>
-                            <input type="text" id="contract" class="form-control">
+                            <input type="text" id="instrument" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">volume </label>
@@ -146,7 +150,31 @@
                         </div>
                         <div class="form-group">
                             <label for="">initial position </label>
-                            <input type="text" id="initial_position" class="form-control">
+                            <select id="initial_pos" class="form-control">
+                              <option value="true">True</option>
+                              <option value="false">False</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">confirm number </label>
+                            <input type="text" id="confirm number" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">trader </label>
+                            <input type="text" id="trader" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">status </label>
+                            <select id="status" class="form-control">
+                              <option value="working">Working</option>
+                              <option value="confirmed">Confirmed</option>
+                              <option value="reconiled">Reconciled</option>
+                              <option value="canceled">Canceled</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">program </label>
+                            <input type="text" id="program" class="form-control">
                         </div>
                     </div>
                   </div>
@@ -170,6 +198,11 @@
         </div>
     </div>
 -->
+<div id='variables' style="display:none">
+    <span id="auto_inventory">{{invent_list}}</span>
+    <span id="auto_hedge_account">{{hedge_list}}</span>
+    <span id="auto_instrument">{{instrument_list}}</span>
+</div>
 
 {% endblock%}
 

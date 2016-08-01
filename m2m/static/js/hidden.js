@@ -219,6 +219,22 @@ $(function(){
             list: $('#auto_inventory').text().split(",")
         });
     }
+    if($('#auto_hedge_account').text().split(",").length > 1){
+        var fuel_input = document.getElementById('hedge_account')
+        new Awesomplete(fuel_input, {
+            minChars: 1,
+            autoFirst: true,
+            list: $('#auto_hedge_account').text().split(",")
+        });
+    }
+    if($('#auto_instrument').text().split(",").length > 1){
+        var fuel_input = document.getElementById('instrument')
+        new Awesomplete(fuel_input, {
+            minChars: 1,
+            autoFirst: true,
+            list: $('#auto_instrument').text().split(",")
+        });
+    }
 
     $('.form_datetime').datetimepicker({show: true, format: 'yyyy-mm-dd hh:ii'});
 
@@ -865,7 +881,7 @@ function add_hedge_tran() {
     $.ajax({
         type: "POST",
         url: "/hedge_tran/create_ht/",
-        data: ({ name : text_vals[0], type: $("#hedge_tran_info select").val(), hedge_account: text_vals[1], contract: text_vals[2], volume: text_vals[3], price: text_vals[4],initial_pos: text_vals[5]}),
+        data: ({ name : text_vals[0], type: $("#phy_type").val(), hedge_account: text_vals[1], inventory: text_vals[2], contract: text_vals[3], volume: text_vals[4], price: text_vals[5],initial_pos: $('#initial_pos').val(), confirm_number:text_vals[6], trader: text_vals[7],ht_status: $("#status").val(), program:text_vals[8]}),
         success: function(html){
 
             json_data = JSON.parse(html);

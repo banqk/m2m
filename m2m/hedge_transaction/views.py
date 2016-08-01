@@ -3,6 +3,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from hedge_transaction.models import Hedge_Tran
 from hedge_account.models import Hedge_Account
+from inventory.models import Inventory
 from hedge_instrument.models import Instrument
 from django.http import HttpResponse
 import simplejson as json
@@ -13,7 +14,20 @@ import logging
 def hedge_tran(request):
     options = {}
     hedge_trans = Hedge_Tran.objects.all()
-    options.update({'hedge_trans': hedge_trans})
+    hedge_accounts = Hedge_Account.objects.all()
+    hedge_names = ''
+    for hedge in hedge_accounts:
+        hedge_names += hedge.name + ','
+    instrument_names = ''
+    instruments = Instrument.objects.all()
+    for instrumet in instruments:
+        instrument_names += instrument.name + ','
+    inventory_names = ''
+    invents = Inventory.objects.all()
+    for invent in invents:
+        inventory_names += invent.name + ','
+
+    options.update({'hedge_trans': hedge_trans, 'hedge_list': hedge_names, 'instrument_list': instrument_names, 'invent_list':inventory_names})
     render_to_url = 'hidden/hedge_transaction.html'
     return render_to_response(render_to_url, options)
 
@@ -24,19 +38,28 @@ def create_hedge_tran(request):
     name = request_vals.get('name')
     hedge_type = request_vals.get('type')
     hedge_id = request_vals.get('hedge_account')
+    inventory_id = request_vals.get('inventory')
     instrument_id = request_vals.get('contract')
     volume = request_vals.get('volume')
     price = request_vals.get('price')
     initial_pos = request_vals.get('initial_pos')
+    confirm_number = request_vals.get('confirm_number')
+    trader = request_vals.get('trader')
+    status = request_vals.get('ht_status')
+    program = request_vals.get('program')
 
     #hedge_account = Hedge_Account.objects.get(pk=hedge_id)
     #instrument = Instrument.objects.get(pk=instrument_id)
     try:
-        hedge_account = Hedge_Account.objects.get(pk=hedge_id)
+        hedge_account = Hedge_Account.objects.get(name=hedge_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of hedge account is incorrectly'}))
     try:
-        instrument = Instrument.objects.get(pk=instrument_id)
+        inventory = Inventory.objects.get(name=inventory_id)
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
+    try:
+        instrument = Instrument.objects.get(symbol=instrument_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of contract is incorrectly'}))
 
@@ -47,7 +70,11 @@ def create_hedge_tran(request):
         instrument = instrument,
         volume = volume,
         price = price,
-        initial_pos = initial_pos
+        initial_pos = initial_pos,
+        confirm_number = confirm_number,
+        trader = trader,
+        status = status,
+        program = program
     )
     hedge_tran.save()
     
