@@ -200,7 +200,7 @@ $(function(){
         new Awesomplete(fuel_input, {
             minChars: 1,
             autoFirst: true,
-            list: $('#auto_counter_party').text().split(",")
+            list: $('#auto_counter_party').text().split("$")
         });
     }
     if($('#auto_product').text().split(",").length > 1){
