@@ -236,7 +236,7 @@ $(function(){
         });
     }
 
-    $('.form_datetime').datetimepicker({show: true, format: 'yyyy-mm-dd hh:ii'});
+    $('.form_datetime').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
 
 });
 
