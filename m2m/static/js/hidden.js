@@ -203,6 +203,22 @@ $(function(){
             list: $('#auto_counter_party').text().split(",")
         });
     }
+    if($('#auto_product').text().split(",").length > 1){
+        var fuel_input = document.getElementById('product')
+        new Awesomplete(fuel_input, {
+            minChars: 1,
+            autoFirst: true,
+            list: $('#auto_product').text().split(",")
+        });
+    }
+    if($('#auto_inventory').text().split(",").length > 1){
+        var fuel_input = document.getElementById('inventory')
+        new Awesomplete(fuel_input, {
+            minChars: 1,
+            autoFirst: true,
+            list: $('#auto_inventory').text().split(",")
+        });
+    }
 
     $('.form_datetime').datetimepicker({show: true, format: 'yyyy-mm-dd hh:ii'});
 
@@ -815,7 +831,7 @@ function add_physical() {
     $.ajax({
         type: "POST",
         url: "/transaction/create_phy/",
-        data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], volume: text_vals[3], price: text_vals[4],counter: text_vals[5]}),
+        data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3], gross_volume: text_vals[4], price: text_vals[5], program: text_vals[6], counter: text_vals[7]}),
         success: function(html){
 
             json_data = JSON.parse(html);

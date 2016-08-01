@@ -63,7 +63,7 @@
 			<th>Type</th>
 			<th>Inventory</th>
 			<th>Product</th>
-			<th>Volume</th>
+			<th>Net Volume</th>
                         <th>Price</th>
                         <th>Counter Party</th>
 	                <th>Create Date</th>
@@ -92,7 +92,7 @@
                          <td>{{physical.phy_type}}</td>
                          <td>{{physical.inventory.name}}</td>
                          <td>{{physical.product.name}}</td>
-                         <td>{{physical.volume}}</td>
+                         <td>{{physical.net_volume}}</td>
                          <td>{{physical.price}}</td>
                          <td>{{physical.counter_party.name}}</td>
                          <td>{{physical.create_date | date:'Y-m-d H:i'}}</td>
@@ -179,6 +179,11 @@
         </div>
     </div>
 -->
+<div id='variables' style="display:none">
+    <span id="auto_inventory">{{invent_list}}</span>
+    <span id="auto_product">{{product_list}}</span>
+    <span id="auto_counter_party">{{counter_list}}</span>
+</div>
 
 {% endblock%}
 

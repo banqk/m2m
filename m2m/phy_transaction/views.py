@@ -14,7 +14,20 @@ import logging
 def physicals(request):
     options = {}
     physicals = Physical.objects.all()
-    options.update({'physicals': physicals})
+    products = Product.objects.all()
+    product_names = ''
+    for product in products:
+        product_names += product.name + ','
+    counter_names = ''
+    counters = Counter.objects.all()
+    for counter in counters:
+        counter_names += counter.name + ','
+    inventory_names = ''
+    invents = Inventory.objects.all()
+    for invent in invents:
+        inventory_names += invent.name + ','
+
+    options.update({'physicals': physicals, 'counter_list': counter_names, 'product_list': product_names, 'invent_list':inventory_names})
     render_to_url = 'hidden/phy_transaction.html'
     return render_to_response(render_to_url, options)
 
@@ -23,23 +36,33 @@ def physicals(request):
 def create_physical(request):
     request_vals = request.POST
     name = request_vals.get('name')
-    phy_type = request_vals.get('type')
+    phy_type = request_vals.get('type').strip()
     inventory_id = request_vals.get('inventory')
     product_id = request_vals.get('product')
-    volume = request_vals.get('volume')
+    net_volume = request_vals.get('net_volume')
+    gross_volume = request_vals.get('gross_volume')
     price = request_vals.get('price')
     counter_id = request_vals.get('counter')
+    program = request_vals.get('program')
     print counter_id
     try:
-        inventory = Inventory.objects.get(pk=inventory_id)
+        inventory = Inventory.objects.get(name=inventory_id)
+        if phy_type.lower() == 'purchase':
+            inventory.volumn += int(net_volume)
+        elif phy_type.lower() == 'sell':
+            if inventory.volumn < int(net_volume):
+                return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the inventory'}))
+            else:
+                inventory.volumn -= int(net_volume)
+         
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
     try:
-        product = Product.objects.get(pk=product_id)
+        product = Product.objects.get(name=product_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of product is incorrectly'}))
     try:
-        counter = Counter.objects.get(pk=counter_id)
+        counter = Counter.objects.get(name=counter_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of counter is incorrectly'}))
          
@@ -49,11 +72,14 @@ def create_physical(request):
         phy_type = phy_type,
         inventory = inventory,
         product = product,
-        volume = volume,
+        net_volume = net_volume,
+        gross_volume = gross_volume,
         price = price,
+        program = program,
         counter_party = counter
     )
     physical.save()
+    inventory.save() 
     
     return HttpResponse(json.dumps({'response': 'success'}))
 
