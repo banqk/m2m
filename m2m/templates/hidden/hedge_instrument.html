@@ -88,7 +88,7 @@
                          <td>{{instrument.fuel_class.code}}</td>
                          <td>{{instrument.contract_year}}</td>
                          <td>{{instrument.contract_month}}</td>
-                         <td>{{instrument.expiration_date}}</td>
+                         <td>{{instrument.expiration_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
 		</tbody>
