@@ -236,7 +236,8 @@ $(function(){
         });
     }
 
-    $('.form_datetime').datetimepicker({show: true, format: 'yyyy-mm-dd hh:ii'});
+    $('#expiration_date').datetimepicker();
+    //$('#expirattion_date').datetimepicker({show: true, format: 'yyyy-mm-dd hh:ii'});
 
 });
 
