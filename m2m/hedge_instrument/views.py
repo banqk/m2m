@@ -18,7 +18,7 @@ def hedge_inst(request):
     counter_names = ''
     counters = Counter.objects.all()
     for counter in counters:
-        counter_names += counter.name + ','
+        counter_names += counter.name + '$'
     options.update({'instruments': instruments, 'fuels':fuel_codes, 'counters':counter_names})
     render_to_url = 'hidden/hedge_instrument.html'
     return render_to_response(render_to_url, options)
