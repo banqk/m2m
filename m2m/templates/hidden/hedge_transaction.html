@@ -61,12 +61,11 @@
 			<th class="no-filter">ID</th>
 			<th>Name</th>
 			<th>Type</th>
-			<th>Hedge Account</th>
-			<th>Contract</th>
+			<th>Inventory</th>
+			<th>Status</th>
 			<th>Volume</th>
                         <th>Price</th>
                         <th>Initial Position</th>
-                        <th>Create Date</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -89,12 +88,12 @@
                          <td><a href="/api/hedge_tran/?hedge_tran_id={{hedge_tran.id}}">{{hedge_tran.id}}</a></td>
                          <td><a href="/api/hedge_tran/?hedge_tran_id={{hedge_tran.id}}">{{hedge_tran.name}}</td>
 
-                         <td>{{hedge_tran.type}}</td>
+                         <td>{{hedge_tran.hedge_type}}</td>
                          <td>{{hedge_tran.inventory.name}}</td>
-                         <td>{{hedge_tran.product.name}}</td>
+                         <td>{{hedge_tran.status}}</td>
                          <td>{{hedge_tran.volume}}</td>
                          <td>{{hedge_tran.price}}</td>
-                         <td>{{hedge_tran.counter.name}}</td>
+                         <td>{{hedge_tran.initial_pos}}</td>
                      </tr>
                     {% endfor %}
 		</tbody>
