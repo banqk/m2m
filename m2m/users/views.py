@@ -50,12 +50,14 @@ def create_user(request):
             email_address_list.append(admin.email)    
     except User.DoesNotExist:
         pass
-    message = '%s has been created!' % user_name
-    email_address_list.append(user.email)
+    try:
+        message = '%s has been created!' % user_name
+        email_address_list.append(user.email)
 
-    print email_address_list
-    send_mail('Notifation from the M2M application', message, '847706317@qq.com',
+        send_mail('Notifation from the M2M application', message, '847706317@qq.com',
                   email_address_list, fail_silently=False)
+    except Exception:
+        pass
 
     return HttpResponse(json.dumps({'response': 'success'}))
 
