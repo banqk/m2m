@@ -1,16 +1,25 @@
 from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from users.models import User
 import simplejson as json
 from django.core.mail import send_mail
 from m2m.settings import ADMIN_EMAILS
 from user_privilages.models import User_Privilage
 
+def login(request):
+    options = {}
+    render_to_url = 'login.html'
+    return render_to_response(render_to_url, options)
 def users(request):
     options = {}
-    users = User.objects.all()
+    print '############'
+    if request.user.user_privilages.code == 1:
+        users = User.objects.all()
+    else:
+        users = User.objects.filter(pk=request.user.id)
     options.update({'users': users})
     render_to_url = 'hidden/users.html'
     return render_to_response(render_to_url, options)
@@ -18,6 +27,7 @@ def users(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def create_user(request):
     request_vals = request.POST
     user_name = request_vals.get('name')
@@ -27,18 +37,19 @@ def create_user(request):
     email = request_vals.get('email')
 
     try:
-        users = User.objects.get(name = user_name)
+        users = User.objects.get(username = user_name)
         return HttpResponse(json.dumps({'response':'failure','info': 'The username is already exists in the application.'}))
     except User.DoesNotExist:
         pass 
 
     role = User_Privilage.objects.get(code = 0)
     user = User.objects.create(
-        name = user_name,
+        username = user_name,
         password = password,
-        firstName = first_name,
-        lastName = last_name,
+        first_name = first_name,
+        last_name = last_name,
         email = email,
+        is_active = 1,
         user_privilages = role
     )
     user.save()
@@ -63,6 +74,7 @@ def create_user(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def update(request):
     request_vals = request.POST
     user_id = request_vals.get('user_id')

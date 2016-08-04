@@ -1,17 +1,29 @@
 from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from inventory.models import Inventory
 from accounts.models import Account
+from users.models import User
 import simplejson as json
 
-
+@login_required
 def inventories(request):
     options = {}
-    inventories = Inventory.objects.all()
     account_names = ''
-    m2m_accounts = Account.objects.all()
+    m2m_accounts = []
+    try:
+        if request.user.user_privilages.code == 1:
+            inventories = Inventory.objects.all()
+            m2m_accounts = Account.objects.all()
+        else:
+            user = User.objects.filter(pk=request.user.id)
+            m2m_accounts = Account.objects.filter(user = user)
+            inventories = Inventory.objects.filter(m2m_account__in=m2m_accounts)
+    except Exception:
+        inventories = {}
+                
     for account in m2m_accounts:
         account_names += account.name + ','
     print account_names
@@ -21,6 +33,7 @@ def inventories(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def create_inventory(request):
     request_vals = request.POST
     name = request_vals.get('name')
@@ -57,6 +70,7 @@ def create_inventory(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def remove_inventory(request):
     request_vals = request.POST
     inventories = request_vals.getlist('inventories[]', '')
@@ -67,6 +81,7 @@ def remove_inventory(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def update_inventory(request):
     request_vals = request.POST
     inventory_id = request_vals.get('inventory_id')

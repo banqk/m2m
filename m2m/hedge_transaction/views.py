@@ -1,16 +1,18 @@
 from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse,HttpResponseRedirect
 from hedge_transaction.models import Hedge_Tran
 from hedge_account.models import Hedge_Account
 from inventory.models import Inventory
 from hedge_instrument.models import Instrument
-from django.http import HttpResponse
 import simplejson as json
 import logging
 
 
 
+@login_required
 def hedge_tran(request):
     options = {}
     hedge_trans = Hedge_Tran.objects.all()
@@ -33,6 +35,7 @@ def hedge_tran(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def create_hedge_tran(request):
     request_vals = request.POST
     name = request_vals.get('name')
@@ -83,7 +86,8 @@ def create_hedge_tran(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
-def remove_hedge_tran(request):
+@login_required
+def remove_ht(request):
     request_vals = request.POST
     logger = logging.getLogger('')
     logger.info(str(request))
@@ -98,7 +102,8 @@ def search_hedge_tran(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
-def update_hedge_tran(request):
+@login_required
+def update_ht(request):
     request_vals = request.POST
     hedge_tran_id = request_vals.get('hedge_tran_id')
     name = request_vals.get('name')
@@ -114,7 +119,3 @@ def update_hedge_tran(request):
     
     return HttpResponse(json.dumps({'response': 'success'}))
 
-def search_hedge_tran(request):
-    hedge_tran_name = request.GET.get('hedge_tran_name', '')
-    hedge_trans = Hedge_Tran.objects.filter(name__icontains=hedge_tran_name)
-    return HttpResponse(json.dumps({'response':hedge_trans}))

@@ -8,12 +8,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('product', '0001_initial'),
+        ('phy_transaction', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='description',
-            field=models.CharField(max_length=250, null=True),
+            model_name='physical',
+            name='product',
+            field=models.ForeignKey(to='product.Product'),
         ),
     ]

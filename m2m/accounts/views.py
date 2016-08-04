@@ -1,24 +1,50 @@
 from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse,HttpResponseRedirect
 from accounts.models import Account
 from users.models import User
 from django.http import HttpResponse
 import simplejson as json
 import logging
 
+@csrf_exempt
 def login(request):
-    options = {}
-    render_to_url = 'login.html'
-    return render_to_response(render_to_url, options)
+    if request.method == 'GET':
+        render_to_url = 'login.html'
+        return render_to_response(render_to_url)
+    else:
+        print request.method
+        print request
+        print request.POST
+        if 'username' in request.POST:
+            username = request.POST['username']
+        if 'password' in request.POST:
+            password = request.POST['password']
+        try:
+            User.objects.get(name=username, password=password)
+            return HttpResponseRedirect('/')
+        except Exception:
+            return 
 
+@login_required
 def index(request):
+    print request.user
+    print request.user.id
+    options = {}
+    options.update({'username': request.user})
     render_to_url = 'value/value.html'
     return render_to_response(render_to_url)
 
+@login_required
 def accounts(request):
     options = {}
-    accounts = Account.objects.all()
+    try:
+        user = User.objects.get(pk=request.user.id)
+        accounts = Account.objects.filter(user = user)
+    except Exception:
+        accounts = {}
     options.update({'accounts': accounts})
     render_to_url = 'hidden/account.html'
     return render_to_response(render_to_url, options)
@@ -28,6 +54,7 @@ def log(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def create_account(request):
     request_vals = request.POST
     logger = logging.getLogger('')
@@ -35,13 +62,14 @@ def create_account(request):
     user_name = request_vals.get('name').strip()
     address = request_vals.get('address')
     email = request_vals.get('email')
+    user_id = request.user.id
     try:
-        inventory = Account.objects.get(name=user_name)
+        account = Account.objects.get(name=user_name)
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The name already exists in the application'}))
     except Exception:
         pass
 
-    user = User.objects.get(pk=1)
+    user = User.objects.get(pk=user_id)
 
     account = Account.objects.create(
         name = user_name,
@@ -56,6 +84,7 @@ def create_account(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def remove_account(request):
     request_vals = request.POST
     logger = logging.getLogger('')
@@ -71,6 +100,7 @@ def search_account(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def update_account(request):
     request_vals = request.POST
     logger = logging.getLogger('')
@@ -89,7 +119,3 @@ def update_account(request):
     
     return HttpResponse(json.dumps({'response': 'success'}))
 
-def search_account(request):
-    account_name = request.GET.get('account_name', '')
-    accounts = Account.objects.filter(name__icontains=account_name)
-    return HttpResponse(json.dumps({'response':accounts}))

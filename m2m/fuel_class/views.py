@@ -1,17 +1,28 @@
 from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from fuel_class.models import Fuel_Class
 from accounts.models import Account
+from users.models import User
 import simplejson as json
+from django.http import HttpResponse,HttpResponseRedirect
 
 
+@login_required
 def fuels(request):
     options = {}
-    fuels = Fuel_Class.objects.all()
     account_names = ''
-    m2m_accounts = Account.objects.all()
+    try:
+        if request.user.user_privilages.code == 1:
+            fuels = Fuel_Class.objects.all()
+            m2m_accounts = Account.objects.all()
+        else:
+            user = User.objects.filter(pk=request.user.id)
+            m2m_accounts = Account.objects.filter(user = user)
+            fuels = Fuel_Class.objects.filter(m2m_account__in=m2m_accounts)
+    except Exception:
+        fuels = {}
     for account in m2m_accounts:
         account_names += account.name + ','
     options.update({'fuel_classes': fuels, 'account_list': account_names})
@@ -20,6 +31,7 @@ def fuels(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def create_fuel(request):
     request_vals = request.POST
     code = request_vals.get('code')
@@ -48,6 +60,7 @@ def create_fuel(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def remove_fuel(request):
     request_vals = request.POST
     inventories = request_vals.getlist('inventories[]', '')
@@ -58,6 +71,7 @@ def remove_fuel(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def update_fuel(request):
     request_vals = request.POST
     fuel_id = request_vals.get('fuel_id')

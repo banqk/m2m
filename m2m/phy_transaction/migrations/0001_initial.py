@@ -9,7 +9,6 @@ class Migration(migrations.Migration):
     dependencies = [
         ('inventory', '0001_initial'),
         ('counter_party', '0001_initial'),
-        ('product', '0001_initial'),
     ]
 
     operations = [
@@ -26,7 +25,6 @@ class Migration(migrations.Migration):
                 ('create_date', models.DateTimeField(auto_now=True, null=True)),
                 ('counter_party', models.ForeignKey(to='counter_party.Counter')),
                 ('inventory', models.ForeignKey(to='inventory.Inventory')),
-                ('product', models.ForeignKey(to='product.Product')),
             ],
         ),
     ]

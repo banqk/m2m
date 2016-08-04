@@ -34,6 +34,15 @@ CSRF_COOKIE_SECURE = False
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ADMIN_EMAILS = ['yornab@outlook.com']
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'users.backends.Login',
+)
+LOGIN_URL = 'login/'
+LOGIN_REDIRECT_URL = '/'
+
+AUTH_USER_MODEL = 'users.User'
+
 
 # Application definition
 

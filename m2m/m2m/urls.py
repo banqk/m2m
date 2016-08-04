@@ -20,6 +20,10 @@ urlpatterns = [
     url(r'^hedge_tran', include('hedge_transaction.urls')),
     url(r'^fuel', include('fuel_class.urls')),
     url(r'^inst', include('hedge_instrument.urls')),
+    url(r'^login/$', 'django.contrib.auth.views.login',
+        {'template_name': 'login.html'}),
+    url(r'^logout/$', 'django.contrib.auth.views.logout',
+        {'template_name': 'login.html'}),
 ]
 
 urlpatterns += patterns('',

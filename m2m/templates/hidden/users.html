@@ -81,11 +81,11 @@
                      <tr>
                          <td></td>
                          <td><a href="/api/user/?user_id={{user.id}}">{{user.id}}</a></td>
-                         <td><a href="/api/user/?user_id={{user.id}}">{{user.name}}</a></td>
-                         <td>{{user.firstName}}</td>
-                         <td>{{user.lastName}}</td>
+                         <td><a href="/api/user/?user_id={{user.id}}">{{user.username}}</a></td>
+                         <td>{{user.first_name}}</td>
+                         <td>{{user.last_name}}</td>
                          <td>{{user.email}}</td>
-						 <td>{{user.create_date | date:'Y-m-d H:i'}}</td>
+			 <td>{{user.date_joined | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
 <!--

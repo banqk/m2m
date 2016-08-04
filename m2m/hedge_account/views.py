@@ -1,17 +1,30 @@
 from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse,HttpResponseRedirect
 from hedge_account.models import Hedge_Account
 from accounts.models import Account
+from users.models import User
 import simplejson as json
 
 
+@login_required
 def hedges(request):
     options = {}
     hedges = Hedge_Account.objects.all()
     m2m_accounts = Account.objects.all()
     account_names = ''
+    try:
+        if request.user.user_privilages.code == 1:
+            hedges = Hedge_Account.objects.all()
+            m2m_accounts = Account.objects.all()
+        else:
+            user = User.objects.filter(pk=request.user.id)
+            m2m_accounts = Account.objects.filter(user = user)
+            hedges = Hedge_Account.objects.filter(m2m_account__in=m2m_accounts)
+    except Exception:
+            hedges = []
     for account in m2m_accounts:
         account_names += account.name + ','
     print account_names
@@ -21,6 +34,7 @@ def hedges(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def create_hedge_account(request):
     request_vals = request.POST
     name = request_vals.get('name')
@@ -51,6 +65,7 @@ def create_hedge_account(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def remove_hedge_account(request):
     request_vals = request.POST
     hedge_accounts = request_vals.getlist('hedge_accounts[]', '')
@@ -61,6 +76,7 @@ def remove_hedge_account(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def update_hedge_account(request):
     request_vals = request.POST
     hedge_id = request_vals.get('hedge_id')

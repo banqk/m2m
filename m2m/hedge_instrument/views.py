@@ -1,13 +1,15 @@
 from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse,HttpResponseRedirect
 from hedge_instrument.models import Instrument
 from fuel_class.models import Fuel_Class
 from counter_party.models import Counter
 import simplejson as json
 
 
+@login_required
 def hedge_inst(request):
     options = {}
     instruments = Instrument.objects.all()
@@ -25,6 +27,7 @@ def hedge_inst(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def create_inst(request):
     request_vals = request.POST
     symbol = request_vals.get('symbol')
@@ -63,7 +66,8 @@ def create_inst(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
-def remove_hedge_account(request):
+@login_required
+def remove_inst(request):
     request_vals = request.POST
     hedge_accounts = request_vals.getlist('hedge_accounts[]', '')
 
@@ -73,7 +77,8 @@ def remove_hedge_account(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
-def update_hedge_account(request):
+@login_required
+def update_inst(request):
     request_vals = request.POST
     hedge_id = request_vals.get('hedge_id')
     name = request_vals.get('name')

@@ -16,6 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=250)),
+                ('description', models.CharField(max_length=250, null=True)),
                 ('create_date', models.DateTimeField(help_text=b'This is create date', auto_now=True)),
                 ('fuel_class', models.ForeignKey(to='fuel_class.Fuel_Class')),
             ],

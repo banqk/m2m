@@ -1,6 +1,8 @@
 from django.shortcuts import render, render_to_response
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse,HttpResponseRedirect
 from phy_transaction.models import Physical
 from inventory.models import Inventory
 from product.models import Product
@@ -10,7 +12,7 @@ import simplejson as json
 import logging
 
 
-
+@login_required
 def physicals(request):
     options = {}
     physicals = Physical.objects.all()
@@ -33,6 +35,7 @@ def physicals(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def create_physical(request):
     request_vals = request.POST
     name = request_vals.get('name')
@@ -86,6 +89,7 @@ def create_physical(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def remove_physical(request):
     request_vals = request.POST
     logger = logging.getLogger('')
@@ -101,6 +105,7 @@ def search_physical(request):
 
 @require_http_methods(['POST'])
 @csrf_exempt
+@login_required
 def update_physical(request):
     request_vals = request.POST
     logger = logging.getLogger('')
@@ -119,7 +124,3 @@ def update_physical(request):
     
     return HttpResponse(json.dumps({'response': 'success'}))
 
-def search_physical(request):
-    physical_name = request.GET.get('physical_name', '')
-    physicals = Physical.objects.filter(name__icontains=physical_name)
-    return HttpResponse(json.dumps({'response':physicals}))

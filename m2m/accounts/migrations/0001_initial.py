@@ -2,12 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
@@ -19,7 +20,7 @@ class Migration(migrations.Migration):
                 ('address', models.CharField(max_length=250, null=True)),
                 ('email', models.CharField(max_length=250)),
                 ('create_date', models.DateTimeField(help_text=b'When the account logined, will change the column', auto_now=True)),
-                ('user', models.ForeignKey(to='users.User')),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]
