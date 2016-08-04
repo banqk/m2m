@@ -23,7 +23,7 @@ def physicals(request):
     counter_names = ''
     counters = Counter.objects.all()
     for counter in counters:
-        counter_names += counter.name + ','
+        counter_names += counter.name + '$'
     inventory_names = ''
     invents = Inventory.objects.all()
     for invent in invents:

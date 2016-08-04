@@ -195,7 +195,7 @@ $(function(){
             list: $('#auto_fuel_class').text().split(",")
         });
     }
-    if($('#auto_counter_party').text().split(",").length > 1){
+    if($('#auto_counter_party').text().split("$").length > 1){
         var fuel_input = document.getElementById('counter_party')
         new Awesomplete(fuel_input, {
             minChars: 1,

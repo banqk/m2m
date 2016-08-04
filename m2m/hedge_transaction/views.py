@@ -22,8 +22,8 @@ def hedge_tran(request):
         hedge_names += hedge.name + ','
     instrument_names = ''
     instruments = Instrument.objects.all()
-    for instrumet in instruments:
-        instrument_names += instrument.name + ','
+    for instrument in instruments:
+        instrument_names += instrument.symbol + ','
     inventory_names = ''
     invents = Inventory.objects.all()
     for invent in invents:
@@ -71,6 +71,7 @@ def create_hedge_tran(request):
         hedge_type = hedge_type,
         hedge_account = hedge_account,
         instrument = instrument,
+        inventory = inventory,
         volume = volume,
         price = price,
         initial_pos = initial_pos,
