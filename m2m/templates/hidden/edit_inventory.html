@@ -72,6 +72,39 @@
                     <button id="update_inventory" type="submit" class="btn btn-primary" onclick="update_inventory()">Save</button>
         </div>
     </div>
+
+    <div class="box-head clearfix">
+        <h1 class="pull-left">Products</h1>
+    </div>
+    <div class="box-content">
+        <div class="table-container">
+            <table id="products" class="table is-datatable">
+                <thead>
+                    <tr>
+                        <th class="select-checkbox no-filter"></th>
+                        <th class="no-filter">ID</th>
+
+                        <th>Product Name</th>
+                        <th>Desctiption</th>
+                        <th>Fuel Class</th>
+                        <th>Create Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                     <tr>
+                         <td></td>
+                         <td>{{product.id}}</td>
+                         <td>{{product.name}}</td>
+                         <td>{{product.description}}</td>
+                         <td>{{product.fuel_class.code}}</td>
+                         <td>{{product.create_date | date:'Y-m-d H:i'}}</td>
+                     </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </div>
 </div>

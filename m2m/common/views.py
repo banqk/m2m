@@ -60,11 +60,15 @@ def inventory(request):
     try:
         inventory = Inventory.objects.get(pk=inventory_id)
     except Inventory.DoesNotExist:
-        print '##############'
         inventory = {}
-    print inventory.id
+#    try:
+    products = Product.objects.filter(inventory=inventory)
+    print products
+#    except Product.DoesNotExist:
+#        products = {}
     
     options.update({'inventory': inventory})
+    options.update({'products': products})
     render_to_url = 'hidden/edit_inventory.html'
     return render_to_response(render_to_url, options)
 
