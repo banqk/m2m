@@ -9,6 +9,7 @@ import simplejson as json
 from fuel_class.models import Fuel_Class
 from accounts.models import Account
 from inventory.models import Inventory
+from users.models import User
 
 @login_required
 def products(request):
