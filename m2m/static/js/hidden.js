@@ -813,7 +813,7 @@ function add_product() {
     $.ajax({
         type: "POST",
         url: "/product/create_product/",
-        data: ({ name : text_vals[0], fuel_class: text_vals[2], description: text_vals[1]}),
+        data: ({ name : text_vals[0], fuel_class: text_vals[2], description: text_vals[1], account: text_vals[3], inventory: text_vals[4]}),
         success: function(html){
 
             json_data = JSON.parse(html);

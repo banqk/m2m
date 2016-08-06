@@ -41,8 +41,12 @@ def index(request):
 def accounts(request):
     options = {}
     try:
-        user = User.objects.get(pk=request.user.id)
-        accounts = Account.objects.filter(user = user)
+        if request.user.user_privilages.code == 1:
+            accounts = Account.objects.all()
+        else:
+            
+#        user = User.objects.get(pk=request.user.id)
+            accounts = Account.objects.filter(user = request.user)
     except Exception:
         accounts = {}
     options.update({'accounts': accounts})
