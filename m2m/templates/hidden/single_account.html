@@ -96,8 +96,6 @@
 		<thead>
 		    <tr>
 			<th class="select-checkbox no-filter"></th>
-			<th class="no-filter">ID</th>
-			
 			<th>Inventory Name</th>
 			<th>Fuel Type</th>
 			<th>Location</th>
@@ -109,9 +107,7 @@
                     {% for inventory in inventories %}
                      <tr>
                          <td></td>
-                         <td><a>{{inventory.id}}</a></td>
-                         
-                         <td>{{inventory.name}}</td>
+                         <td><a href="/api/inventory/?inventory_id={{inventory.id}}">{{inventory.name}}</td>
                          <td>{{inventory.fuel_type}}</td>
                          <td>{{inventory.location}}</td>
                          <td>{{inventory.id_number}}</td>
@@ -131,8 +127,6 @@
                 <thead>
                     <tr>
                         <th class="select-checkbox no-filter"></th>
-                        <th class="no-filter">ID</th>
-                        
                         <th>Hedge Name</th>
                         <th>Institution</th>
                         <th>Account Number</th>
@@ -143,12 +137,40 @@
                     {% for hedge_account in hedge_accounts %}
                      <tr>
                          <td></td>
-                         <td><a>{{hedge_account.id}}</a></td>
-                         
-                         <td>{{hedge_account.name}}</td>
+                         <td><a href="/api/hedge/?hedge_id={{hedge_account.id}}">{{hedge_account.name}}</a></td>
                          <td>{{hedge_account.institution}}</td>
                          <td>{{hedge_account.id_number}}</td>
                          <td>{{hedge_account.create_date | date:'Y-m-d H:i'}}</td>
+                     </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="box-head clearfix">
+        <h1 class="pull-left">Products</h1>
+    </div>
+    <div class="box-content">
+        <div class="table-container">
+            <table id="products" class="table is-datatable">
+                <thead>
+                    <tr>
+                        <th class="select-checkbox no-filter"></th>
+                        <th>Product Name</th>
+                        <th>Desctiption</th>
+                        <th>Fuel Class</th>
+                        <th>Create Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                     <tr>
+                         <td></td>
+                         <td><a href="/api/product/?product_id={{product.id}}">{{product.name}}</a></td>
+                         <td>{{product.description}}</td>
+                         <td>{{product.fuel_class.code}}</td>
+                         <td>{{product.create_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
                 </tbody>
@@ -191,6 +213,10 @@
                         <div class="form-group">
                             <label for="">id number</label>
                             <input type="text" name="id_number" class="form-control">
+                        </div>
+                         <div class="form-group">
+                            <label for="">volume</label>
+                            <input type="text" name="volume" class="form-control">
                         </div>
                     </div>
                   </div>

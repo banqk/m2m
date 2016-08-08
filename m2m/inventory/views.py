@@ -42,7 +42,7 @@ def create_inventory(request):
     id_number = request_vals.get('id_number')
     account_name = request_vals.get('account_id').strip()
     volume = request_vals.get('volume').strip()
-    if volume or volume == '':
+    if volume == '':
         volume = 0
 
     try:
