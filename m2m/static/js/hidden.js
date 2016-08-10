@@ -972,3 +972,39 @@ function add_instrument() {
     });
 
 }
+
+function add_to_inventory() {
+    var text_vals = new Array(9);
+    var i = 0;
+    console.log($("#add_to_inventory input"))
+    $("#add_to_inventory input").each(function(){
+        console.log('AAAAAAA' + this.checked)
+        if(this.checked){
+            console.log('********' + $(this).val())
+            text_vals[i] = $(this).val()
+            i = i + 1
+        }
+    })
+    $.ajax({
+        type: "POST",
+        url: "/inventory/add_product/",
+        data: ({ invent_id: $('#inventory_id').text(), products: text_vals}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    window.location = "/api/inventory/?inventory_id=" + $('#inventory_id').text();
+                } else {
+                    bootbox.alert(json_data['info']);
+                }
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+}

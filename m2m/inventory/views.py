@@ -100,3 +100,24 @@ def update_inventory(request):
     inventory.save()
 
     return HttpResponse(json.dumps({'response': 'success'}))
+
+@require_http_methods(['POST'])
+@csrf_exempt
+@login_required
+def add_product(request):
+    request_vals = request.POST
+    inventory_id = request_vals.get('invent_id')
+    products = request_vals.getlist('products[]', '')
+
+    inventory = Inventory.objects.get(pk=inventory_id)
+    try:
+        ps = json.loads(inventory.products)
+    except Exception:
+        ps = []
+    products += ps
+    print '************'
+    print products
+    inventory.products = json.dumps(products)
+    inventory.save()
+
+    return HttpResponse(json.dumps({'response': 'success'}))

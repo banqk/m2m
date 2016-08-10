@@ -115,7 +115,7 @@
     <div id="add-products" class="modal fade" tabindex="-1" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
-                <form id="inventory_info" action="">
+                <form id="add_to_inventory" action="">
                   {% csrf_token %}
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -123,7 +123,7 @@
                   </div>
                   <div class="modal-body clearfix">
                     <div class="col-lg-12">
-                        {% for product in products %}
+                        {% for product in ex_products %}
                            <span style="display:inline-block;width: 20px;margin-left: 30px">
                              <input type="checkbox" value="{{product.id}}"/>
                            </span> 

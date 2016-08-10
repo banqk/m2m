@@ -6,6 +6,8 @@ from users.models import User
 from product.models import Product
 from counter_party.models import Counter
 from fuel_class.models import Fuel_Class
+from django.contrib.auth.decorators import login_required
+import json
 
 
 def account(request):
@@ -53,6 +55,7 @@ def company(request):
     render_to_url = 'hidden/single_company.html'
     return render_to_response(render_to_url, options)
 
+@login_required
 def inventory(request):
     options = {}
     inventory_id = request.GET.get('inventory_id', '')
@@ -63,13 +66,25 @@ def inventory(request):
     except Inventory.DoesNotExist:
         inventory = {}
 #    try:
-    products = Product.objects.filter(inventory=inventory)
-    print products
+    print inventory.m2m_account
+    try:
+        ps = json.loads(inventory.products)
+    except Exception:
+        ps = []
+    products = Product.objects.filter(pk__in=ps)
 #    except Product.DoesNotExist:
 #        products = {}
-    
+    e_products = Product.objects.filter(m2m_account = inventory.m2m_account)
+    ex_products = []
+    ps = [int(x) for x in ps]
+    for e in e_products:
+        if e.id not in ps:
+            print e.id
+            print e.name
+            ex_products.append(e) 
     options.update({'inventory': inventory})
     options.update({'products': products})
+    options.update({'ex_products': ex_products})
     render_to_url = 'hidden/edit_inventory.html'
     return render_to_response(render_to_url, options)
 
