@@ -180,59 +180,144 @@ $(function(){
 
     if ($('#auto_account').text().split(",").length > 1) {
    
+        $('#m2m_account').attr('data-list', $('#auto_account').text().split(","))
         var input = document.getElementById('m2m_account')
-        new Awesomplete(input, {
-            minChars: 1,
-            autoFirst: true,
-            list: $('#auto_account').text().split(",")
+        comboplete = new Awesomplete(input, {
+            minChars: 0,
+            //autoFirst: true,
+            //list: $('#auto_account').text().split(","),
+        });
+        Awesomplete.$('#m2m_account').addEventListener("click", function() {
+	    if (comboplete.ul.childNodes.length === 0) {
+		comboplete.minChars = 0;
+		comboplete.evaluate();
+	    }
+	    else if (comboplete.ul.hasAttribute('hidden')) {
+		comboplete.open();
+  	    }
+	    else {
+		comboplete.close();
+ 	    }
         });
     }
     if($('#auto_fuel_class').text().split(",").length > 1){
         var fuel_input = document.getElementById('fuel_class')
-        new Awesomplete(fuel_input, {
+        fuel_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             autoFirst: true,
             list: $('#auto_fuel_class').text().split(",")
         });
+        Awesomplete.$('#fuel_class').addEventListener("click", function() {
+	    if (fuel_comboplete.ul.childNodes.length === 0) {
+		fuel_comboplete.minChars = 0;
+		fuel_comboplete.evaluate();
+	    }
+	    else if (fuel_comboplete.ul.hasAttribute('hidden')) {
+		fuel_comboplete.open();
+  	    }
+	    else {
+		fuel_comboplete.close();
+ 	    }
+        });
     }
     if($('#auto_counter_party').text().split("$").length > 1){
         var fuel_input = document.getElementById('counter_party')
-        new Awesomplete(fuel_input, {
+        counter_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             autoFirst: true,
             list: $('#auto_counter_party').text().split("$")
         });
+        Awesomplete.$('#counter_party').addEventListener("click", function() {
+	    if (counter_comboplete.ul.childNodes.length === 0) {
+		counter_comboplete.minChars = 0;
+		counter_comboplete.evaluate();
+	    }
+	    else if (counter_comboplete.ul.hasAttribute('hidden')) {
+		counter_comboplete.open();
+  	    }
+	    else {
+		counter_comboplete.close();
+ 	    }
+        });
     }
     if($('#auto_product').text().split(",").length > 1){
         var fuel_input = document.getElementById('product')
-        new Awesomplete(fuel_input, {
+        prod_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             autoFirst: true,
             list: $('#auto_product').text().split(",")
         });
+        Awesomplete.$('#product').addEventListener("click", function() {
+	    if (prod_comboplete.ul.childNodes.length === 0) {
+		prod_comboplete.minChars = 0;
+		prod_comboplete.evaluate();
+	    }
+	    else if (prod_comboplete.ul.hasAttribute('hidden')) {
+		prod_comboplete.open();
+  	    }
+	    else {
+		prod_comboplete.close();
+ 	    }
+        });
     }
     if($('#auto_inventory').text().split(",").length > 1){
         var fuel_input = document.getElementById('inventory')
-        new Awesomplete(fuel_input, {
+        invent_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             autoFirst: true,
             list: $('#auto_inventory').text().split(",")
         });
+        Awesomplete.$('#inventory').addEventListener("click", function() {
+	    if (invent_comboplete.ul.childNodes.length === 0) {
+		invent_comboplete.minChars = 0;
+		invent_comboplete.evaluate();
+	    }
+	    else if (invent_comboplete.ul.hasAttribute('hidden')) {
+		invent_comboplete.open();
+  	    }
+	    else {
+		invent_comboplete.close();
+ 	    }
+        });
     }
     if($('#auto_hedge_account').text().split(",").length > 1){
         var fuel_input = document.getElementById('hedge_account')
-        new Awesomplete(fuel_input, {
+        hedge_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             autoFirst: true,
             list: $('#auto_hedge_account').text().split(",")
         });
+        Awesomplete.$('#hedge_account').addEventListener("click", function() {
+	    if (hedge_comboplete.ul.childNodes.length === 0) {
+		hedge_comboplete.minChars = 0;
+		hedge_comboplete.evaluate();
+	    }
+	    else if (hedge_comboplete.ul.hasAttribute('hidden')) {
+		hedge_comboplete.open();
+  	    }
+	    else {
+		hedge_comboplete.close();
+ 	    }
+        });
     }
     if($('#auto_instrument').text().split(",").length > 1){
         var fuel_input = document.getElementById('instrument')
-        new Awesomplete(fuel_input, {
+        inst_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             autoFirst: true,
             list: $('#auto_instrument').text().split(",")
+        });
+        Awesomplete.$('#instrument').addEventListener("click", function() {
+	    if (inst_comboplete.ul.childNodes.length === 0) {
+		inst_comboplete.minChars = 0;
+		inst_comboplete.evaluate();
+	    }
+	    else if (inst_comboplete.ul.hasAttribute('hidden')) {
+		inst_comboplete.open();
+  	    }
+	    else {
+		inst_comboplete.close();
+ 	    }
         });
     }
 
