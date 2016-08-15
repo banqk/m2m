@@ -142,39 +142,23 @@ $(function(){
     });
     
     
-    $('#type').change(function(){
-        type = $('#type').val()
-        if(type == "Inventory") {
-            $('#institution').parent().remove()
-            $('#account_number').parent().remove()
+    $('#phy_type').change(function(){
+        type = $('#phy_type').val()
+        if(type == "Purchase") {
+            //$('#account_number').parent().remove()
 
             invenTab = $('<div class="form-group">'
-                   + '<label for="">fuel type</label>'
-                   + '<input type="text" id="fuel_type" class="form-control">'
+                   + '<label for="">to m2m account</label>'
+                   + '<input type="text" id="to_m2m_account" class="form-control">'
                    + '</div>'
                    + '<div class="form-group">'
-                   + '<label for="">location</label>'
-                   + '<input type="text" id="location" class="form-control">'
-                   + '</div>'
-                   + '<div class="form-group">'
-                   + '<label for="">id number</label>'
-                   + '<input type="text" id="id_number" class="form-control">'
+                   + '<label for="">to inventory</label>'
+                   + '<input type="text" id="to_inventory" class="form-control">'
                    + '</div>');
 
-            $('#type').parent().parent().append(invenTab);
+            $('#phy_type').parent().parent().append(invenTab);
         } else {
-            $('#fuel_type').parent().remove()
-            $('#location').parent().remove()
-            $('#id_number').parent().remove()
-            hedgeTab = $('<div class="form-group">'
-                   + '<label for="">institution</label>'
-                   + '<input type="text" id="institution" class="form-control">'
-                   + '</div>'
-                   + '<div class="form-group">'
-                   + '<label for="">account number</label>'
-                   + '<input type="text" id="account_number" class="form-control">'
-                   + '</div>');
-            $('#type').parent().parent().append(hedgeTab);
+            //$('#fuel_type').parent().remove()
         }
     });
 

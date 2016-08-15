@@ -59,7 +59,7 @@ def create_hedge_tran(request):
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of hedge account is incorrectly'}))
     try:
         inventory = Inventory.objects.get(name=inventory_id)
-        if ht_status.lower() == 'confirmed'
+        if ht_status.lower() == 'confirmed':
             if hedge_type.lower() == 'purchase':
                 inventory.volumn += int(net_volume)
             elif hedge_type.lower() == 'sell':
