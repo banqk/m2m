@@ -59,6 +59,14 @@ def create_hedge_tran(request):
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of hedge account is incorrectly'}))
     try:
         inventory = Inventory.objects.get(name=inventory_id)
+        if ht_status.lower() == 'confirmed'
+            if hedge_type.lower() == 'purchase':
+                inventory.volumn += int(net_volume)
+            elif hedge_type.lower() == 'sell':
+                if inventory.volumn < int(net_volume):
+                    return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the inventory'}))
+                else:
+                    inventory.volumn -= int(net_volume)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
     try:
@@ -81,6 +89,7 @@ def create_hedge_tran(request):
         program = program
     )
     hedge_tran.save()
+    inventory.save()
     
     return HttpResponse(json.dumps({'response': 'success'}))
 
