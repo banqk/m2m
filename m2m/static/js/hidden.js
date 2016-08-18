@@ -157,6 +157,7 @@ $(function(){
                    + '</div>');
 
             $('#phy_type').parent().parent().append(invenTab);
+            fresh_autocomplete()
         } else {
             $('#to_m2m_account').parent().remove()
             $('#to_inventory').parent().remove()
@@ -182,6 +183,25 @@ $(function(){
   	    }
 	    else {
 		comboplete.close();
+ 	    }
+        });
+        var data1 = $('#auto_account').text()
+        var input1 = document.getElementById('to_m2m_account')
+        comboplete1 = new Awesomplete(input1, {
+            minChars: 0,
+            //autoFirst: true,
+            list: data1,
+        });
+        Awesomplete.$('#to_m2m_account').addEventListener("click", function() {
+	    if (comboplete1.ul.childNodes.length === 0) {
+		comboplete1.minChars = 0;
+		comboplete1.evaluate();
+	    }
+	    else if (comboplete1.ul.hasAttribute('hidden')) {
+		comboplete1.open();
+  	    }
+	    else {
+		comboplete1.close();
  	    }
         });
     }
@@ -264,6 +284,24 @@ $(function(){
 		invent_comboplete.close();
  	    }
         });
+        var fuel_input1 = document.getElementById('to_inventory')
+        invent_comboplete1 = new Awesomplete(fuel_input1, {
+            minChars: 1,
+            //autoFirst: true,
+            list: $('#auto_inventory').text().split(",")
+        });
+        Awesomplete.$('#to_inventory').addEventListener("click", function() {
+	    if (invent_comboplete1.ul.childNodes.length === 0) {
+		invent_comboplete1.minChars = 0;
+		invent_comboplete1.evaluate();
+	    }
+	    else if (invent_comboplete1.ul.hasAttribute('hidden')) {
+		invent_comboplete1.open();
+  	    }
+	    else {
+		invent_comboplete1.close();
+ 	    }
+        });
     }
     if($('#auto_hedge_account').text().split(",").length > 1){
         var fuel_input = document.getElementById('hedge_account')
@@ -309,6 +347,51 @@ $(function(){
     $('.form_datetime').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
 
 });
+
+function fresh_autocomplete(){
+    if ($('#auto_account').text().split(",").length > 1) {
+        var data1 = $('#auto_account').text()
+        var input1 = document.getElementById('to_m2m_account')
+        comboplete1 = new Awesomplete(input1, {
+            minChars: 0,
+            //autoFirst: true,
+            list: data1,
+        });
+        Awesomplete.$('#to_m2m_account').addEventListener("click", function() {
+	    if (comboplete1.ul.childNodes.length === 0) {
+		comboplete1.minChars = 0;
+		comboplete1.evaluate();
+	    }
+	    else if (comboplete1.ul.hasAttribute('hidden')) {
+		comboplete1.open();
+  	    }
+	    else {
+		comboplete1.close();
+ 	    }
+        });
+    }
+    if($('#auto_inventory').text().split(",").length > 1){
+        var fuel_input1 = document.getElementById('to_inventory')
+        invent_comboplete1 = new Awesomplete(fuel_input1, {
+            minChars: 1,
+            //autoFirst: true,
+            list: $('#auto_inventory').text().split(",")
+        });
+        Awesomplete.$('#to_inventory').addEventListener("click", function() {
+	    if (invent_comboplete1.ul.childNodes.length === 0) {
+		invent_comboplete1.minChars = 0;
+		invent_comboplete1.evaluate();
+	    }
+	    else if (invent_comboplete1.ul.hasAttribute('hidden')) {
+		invent_comboplete1.open();
+  	    }
+	    else {
+		invent_comboplete1.close();
+ 	    }
+        });
+    }
+
+}
 
 function add_user() {
 
