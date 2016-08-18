@@ -144,7 +144,7 @@ $(function(){
     
     $('#phy_type').change(function(){
         type = $('#phy_type').val()
-        if(type == "Purchase") {
+        if(type == "Transfer") {
             //$('#account_number').parent().remove()
 
             invenTab = $('<div class="form-group">'
@@ -158,18 +158,19 @@ $(function(){
 
             $('#phy_type').parent().parent().append(invenTab);
         } else {
-            //$('#fuel_type').parent().remove()
+            $('#to_m2m_account').parent().remove()
+            $('#to_inventory').parent().remove()
         }
     });
 
     if ($('#auto_account').text().split(",").length > 1) {
    
-        $('#m2m_account').attr('data-list', $('#auto_account').text().split(","))
+        var data = $('#auto_account').text()
         var input = document.getElementById('m2m_account')
         comboplete = new Awesomplete(input, {
             minChars: 0,
             //autoFirst: true,
-            //list: $('#auto_account').text().split(","),
+            list: data,
         });
         Awesomplete.$('#m2m_account').addEventListener("click", function() {
 	    if (comboplete.ul.childNodes.length === 0) {
@@ -188,7 +189,7 @@ $(function(){
         var fuel_input = document.getElementById('fuel_class')
         fuel_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
-            autoFirst: true,
+            //autoFirst: true,
             list: $('#auto_fuel_class').text().split(",")
         });
         Awesomplete.$('#fuel_class').addEventListener("click", function() {
@@ -208,7 +209,7 @@ $(function(){
         var fuel_input = document.getElementById('counter_party')
         counter_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
-            autoFirst: true,
+            //autoFirst: true,
             list: $('#auto_counter_party').text().split("$")
         });
         Awesomplete.$('#counter_party').addEventListener("click", function() {
@@ -228,7 +229,7 @@ $(function(){
         var fuel_input = document.getElementById('product')
         prod_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
-            autoFirst: true,
+            //autoFirst: true,
             list: $('#auto_product').text().split(",")
         });
         Awesomplete.$('#product').addEventListener("click", function() {
@@ -248,7 +249,7 @@ $(function(){
         var fuel_input = document.getElementById('inventory')
         invent_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
-            autoFirst: true,
+            //autoFirst: true,
             list: $('#auto_inventory').text().split(",")
         });
         Awesomplete.$('#inventory').addEventListener("click", function() {
@@ -268,7 +269,7 @@ $(function(){
         var fuel_input = document.getElementById('hedge_account')
         hedge_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
-            autoFirst: true,
+            //autoFirst: true,
             list: $('#auto_hedge_account').text().split(",")
         });
         Awesomplete.$('#hedge_account').addEventListener("click", function() {
@@ -288,7 +289,7 @@ $(function(){
         var fuel_input = document.getElementById('instrument')
         inst_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
-            autoFirst: true,
+            //autoFirst: true,
             list: $('#auto_instrument').text().split(",")
         });
         Awesomplete.$('#instrument').addEventListener("click", function() {
@@ -905,36 +906,62 @@ function add_product() {
 }
 function add_physical() {
 
-    var text_vals = new Array(9);
+    var text_vals = new Array(15);
     var i = 0;
     $("#physical_info input").each(function(){
         console.log('##############' + $(this).val())
         text_vals[i] = $(this).val()
         i = i + 1
     })
-    
-    $.ajax({
-        type: "POST",
-        url: "/transaction/create_phy/",
-        data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3], gross_volume: text_vals[4], price: text_vals[5], program: text_vals[6], counter: text_vals[7]}),
-        success: function(html){
+    phy_type = $('#phy_type').val()
+    if (phy_type == 'Transfer') {
+        $.ajax({
+            type: "POST",
+            url: "/transaction/create_phy/",
+            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3],to_m2m_account: text_vals[4], to_inventory: text_vals[5], gross_volume: text_vals[6], price: text_vals[7], program: text_vals[8], counter: text_vals[9]}),
+            success: function(html){
 
-            json_data = JSON.parse(html);
-            if (json_data.error) {
-                bootbox.alert(json_data['response'])
-            } else {
-                //bootbox.alert(json_data['response'])
-                if(json_data['response'] == 'success'){
-                    window.location = "/transaction/physical";
+                json_data = JSON.parse(html);
+                if (json_data.error) {
+                    bootbox.alert(json_data['response'])
                 } else {
-                    bootbox.alert(json_data['info']);
+                    //bootbox.alert(json_data['response'])
+                    if(json_data['response'] == 'success'){
+                        window.location = "/transaction/physical";
+                    } else {
+                        bootbox.alert(json_data['info']);
+                    }
                 }
+            },
+            error: function(html){
+                bootbox.alert("There was an error.")
             }
-        },
-        error: function(html){
-            bootbox.alert("There was an error.")
-        }
-    });
+        });
+
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "/transaction/create_phy/",
+            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3], gross_volume: text_vals[4], price: text_vals[5], program: text_vals[6], counter: text_vals[7]}),
+            success: function(html){
+
+                json_data = JSON.parse(html);
+                if (json_data.error) {
+                    bootbox.alert(json_data['response'])
+                } else {
+                    //bootbox.alert(json_data['response'])
+                    if(json_data['response'] == 'success'){
+                        window.location = "/transaction/physical";
+                    } else {
+                        bootbox.alert(json_data['info']);
+                    }
+                }
+            },
+            error: function(html){
+                bootbox.alert("There was an error.")
+            }
+        });
+    }
 
 }
 function add_hedge_tran() {

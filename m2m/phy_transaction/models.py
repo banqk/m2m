@@ -3,6 +3,7 @@ from inventory.models import Inventory
 from hedge_account.models import Hedge_Account
 from counter_party.models import Counter 
 from product.models import Product
+from accounts.models import Account
 
 class Physical(models.Model):
 
@@ -16,3 +17,5 @@ class Physical(models.Model):
     gross_volume = models.IntegerField(null=True, default=0)
     program = models.CharField(max_length=50, null=True)
     create_date = models.DateTimeField(null=True, auto_now=True)
+    to_m2m_account = models.CharField(max_length=100)
+    to_inventory = models.CharField(max_length=100)

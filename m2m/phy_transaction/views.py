@@ -57,7 +57,15 @@ def create_physical(request):
                 return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the inventory'}))
             else:
                 inventory.volumn -= int(net_volume)
-         
+        elif phy_type.lower() == 'transfer':
+            to_m2m_account = request_vals.get('to_m2m_account')
+            to_inventory = request_vals.get('to_inventory')
+            try:
+                to_invent = Inventory.objects.get(name=to_inventory)
+                to_invent.volumn += int(new_volume)
+            except Exception:
+                return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory is incorrectly'}))
+                
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
     try:
@@ -83,6 +91,8 @@ def create_physical(request):
     )
     physical.save()
     inventory.save() 
+    if phy_type.lower == 'transfer':
+        to_invent.save()
     
     return HttpResponse(json.dumps({'response': 'success'}))
 
