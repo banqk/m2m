@@ -85,6 +85,7 @@ def inventory(request):
     options.update({'inventory': inventory})
     options.update({'products': products})
     options.update({'ex_products': ex_products})
+    print ex_products
     render_to_url = 'hidden/edit_inventory.html'
     return render_to_response(render_to_url, options)
 

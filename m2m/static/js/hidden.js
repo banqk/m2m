@@ -185,7 +185,9 @@ $(function(){
 		comboplete.close();
  	    }
         });
-        var data1 = $('#auto_account').text()
+    }
+    if ($('#auto_to_account').text().split(",").length > 1) {
+        var data1 = $('#auto_to_account').text()
         var input1 = document.getElementById('to_m2m_account')
         comboplete1 = new Awesomplete(input1, {
             minChars: 0,
@@ -205,12 +207,14 @@ $(function(){
  	    }
         });
     }
+    console.log('AAAAAAAAAAAAAAa  ' + $('#auto_fuel_class').text())
     if($('#auto_fuel_class').text().split(",").length > 1){
+        var data =  $('#auto_fuel_class').text()
         var fuel_input = document.getElementById('fuel_class')
         fuel_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             //autoFirst: true,
-            list: $('#auto_fuel_class').text().split(",")
+            list: data,
         });
         Awesomplete.$('#fuel_class').addEventListener("click", function() {
 	    if (fuel_comboplete.ul.childNodes.length === 0) {
@@ -230,7 +234,7 @@ $(function(){
         counter_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             //autoFirst: true,
-            list: $('#auto_counter_party').text().split("$")
+            list: $('#auto_counter_party').text().split("$"),
         });
         Awesomplete.$('#counter_party').addEventListener("click", function() {
 	    if (counter_comboplete.ul.childNodes.length === 0) {
@@ -266,11 +270,11 @@ $(function(){
         });
     }
     if($('#auto_inventory').text().split(",").length > 1){
-        var fuel_input = document.getElementById('inventory')
-        invent_comboplete = new Awesomplete(fuel_input, {
+        var invent_input = document.getElementById('inventory')
+        invent_comboplete = new Awesomplete(invent_input, {
             minChars: 1,
             //autoFirst: true,
-            list: $('#auto_inventory').text().split(",")
+            list: $('#auto_inventory').text()
         });
         Awesomplete.$('#inventory').addEventListener("click", function() {
 	    if (invent_comboplete.ul.childNodes.length === 0) {
@@ -284,11 +288,13 @@ $(function(){
 		invent_comboplete.close();
  	    }
         });
-        var fuel_input1 = document.getElementById('to_inventory')
-        invent_comboplete1 = new Awesomplete(fuel_input1, {
+    }
+    if($('#auto_to_inventory').text().split(",").length > 1){
+        var invent_input1 = document.getElementById('to_inventory')
+        invent_comboplete1 = new Awesomplete(invent_input1, {
             minChars: 1,
             //autoFirst: true,
-            list: $('#auto_inventory').text().split(",")
+            list: $('#auto_to_inventory').text().split(",")
         });
         Awesomplete.$('#to_inventory').addEventListener("click", function() {
 	    if (invent_comboplete1.ul.childNodes.length === 0) {

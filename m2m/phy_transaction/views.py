@@ -48,6 +48,7 @@ def create_physical(request):
     counter_id = request_vals.get('counter')
     program = request_vals.get('program')
     print counter_id
+    to_inventory = ''
     try:
         inventory = Inventory.objects.get(name=inventory_id)
         if phy_type.lower() == 'purchase':
@@ -63,6 +64,7 @@ def create_physical(request):
             try:
                 to_invent = Inventory.objects.get(name=to_inventory)
                 to_invent.volumn += int(new_volume)
+                inventory.volumn -= int(net_volume)
             except Exception:
                 return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory is incorrectly'}))
                 
@@ -87,7 +89,8 @@ def create_physical(request):
         gross_volume = gross_volume,
         price = price,
         program = program,
-        counter_party = counter
+        counter_party = counter,
+        to_inventory = to_inventory 
     )
     physical.save()
     inventory.save() 

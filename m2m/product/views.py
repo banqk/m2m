@@ -35,6 +35,8 @@ def products(request):
     for inventory in inventories:
         inven_names += inventory.name + ','
     print fuel_codes
+    print account_names
+    print inven_names
     options.update({'products': products, 'fuels': fuel_codes, 'account_list': account_names, 'invent_list': inven_names})
     render_to_url = 'hidden/product.html'
     return render_to_response(render_to_url, options)
