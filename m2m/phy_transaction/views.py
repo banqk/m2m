@@ -49,27 +49,7 @@ def create_physical(request):
     program = request_vals.get('program')
     print counter_id
     to_inventory = ''
-    try:
-        inventory = Inventory.objects.get(name=inventory_id)
-        if phy_type.lower() == 'purchase':
-            inventory.volumn += int(net_volume)
-        elif phy_type.lower() == 'sell':
-            if inventory.volumn < int(net_volume):
-                return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the inventory'}))
-            else:
-                inventory.volumn -= int(net_volume)
-        elif phy_type.lower() == 'transfer':
-            to_m2m_account = request_vals.get('to_m2m_account')
-            to_inventory = request_vals.get('to_inventory')
-            try:
-                to_invent = Inventory.objects.get(name=to_inventory)
-                to_invent.volumn += int(new_volume)
-                inventory.volumn -= int(net_volume)
-            except Exception:
-                return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory is incorrectly'}))
-                
-    except Exception:
-        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
+    to_product = ''
     try:
         product = Product.objects.get(name=product_id)
     except Exception:
@@ -78,6 +58,60 @@ def create_physical(request):
         counter = Counter.objects.get(name=counter_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of counter is incorrectly'}))
+    try:
+        inventory = Inventory.objects.get(name=inventory_id)
+        product = Product.objects.get(inventory=inventory,name=product_id)
+        if phy_type.lower() == 'purchase':
+            out_price = product.price
+            out_volume = product.volume
+            out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
+            print '!!!!!!!!!!!!!'
+            print out_price
+            print out_volume
+            print out_new_price
+            product.volume -= int(net_volume)
+            product.price = out_new_price
+        elif phy_type.lower() == 'sell':
+            if product.volume < int(net_volume):
+                return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the product from the inventory'}))
+            else:
+                out_price = product.price
+                out_volume = product.volume
+                out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
+                print '!!!!!!!!!!!!!'
+                print out_price
+                print out_volume
+                print out_new_price
+                product.volume -= int(net_volume)
+                product.price = out_new_price
+        elif phy_type.lower() == 'transfer':
+            if product.volume < int(net_volume):
+                return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the product from the inventory'}))
+            else:
+                out_price = product.price
+                out_volume = product.volume
+                out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
+                product.volume -= int(net_volume)
+                product.price = out_new_price
+            to_product = request_vals.get('to_product')
+            to_inventory = request_vals.get('to_inventory')
+            if to_inventory == inventory_id and product_id == to_product:
+                return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of product and to_product is equivalent'}))
+                
+            try:
+                to_invent = Inventory.objects.get(name=to_inventory)
+                to_prod = Product.objects.get(inventory=to_invent,name=to_product)
+                now_volume = to_prod.volumn 
+                now_price = to_prod.volumn
+                new_volume = now_volume + int(net_volume)
+                new_price = (now_volume*now_price + int(net_volume)* float(price))/new_volume
+                to_prod.price = new_price
+                to_prod.volumn = new_volume
+            except Exception:
+                return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory or to product is incorrectly'}))
+                
+    except Exception:
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
          
 
     physical = Physical.objects.create(
@@ -90,12 +124,13 @@ def create_physical(request):
         price = price,
         program = program,
         counter_party = counter,
-        to_inventory = to_inventory 
+        to_inventory = to_inventory,
+        to_product = to_product
     )
     physical.save()
-    inventory.save() 
+    product.save() 
     if phy_type.lower == 'transfer':
-        to_invent.save()
+        to_prod.save()
     
     return HttpResponse(json.dumps({'response': 'success'}))
 

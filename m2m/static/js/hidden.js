@@ -151,9 +151,12 @@ $(function(){
 //                   + '<label for="">to m2m account</label>'
 //                   + '<input type="text" id="to_m2m_account" class="form-control">'
 //                   + '</div>'
-                   + '<div class="form-group">'
                    + '<label for="">to inventory</label>'
                    + '<input type="text" id="to_inventory" class="form-control">'
+                   + '</div>'
+                   + '<div class="form-group">'
+                   + '<label for="">to product</label>'
+                   + '<input type="text" id="to_product" class="form-control">'
                    + '</div>');
 
             $('#phy_type').parent().parent().append(invenTab);
@@ -349,6 +352,26 @@ $(function(){
  	    }
         });
     }
+    if($('#auto_to_product').text().split(",").length > 1){
+        var fuel_input = document.getElementById('to_product')
+        prod_comboplete = new Awesomplete(fuel_input, {
+            minChars: 1,
+            //autoFirst: true,
+            list: $('#auto_to_product').text().split(",")
+        });
+        Awesomplete.$('#to_product').addEventListener("click", function() {
+	    if (prod_comboplete.ul.childNodes.length === 0) {
+		prod_comboplete.minChars = 0;
+		prod_comboplete.evaluate();
+	    }
+	    else if (prod_comboplete.ul.hasAttribute('hidden')) {
+		prod_comboplete.open();
+  	    }
+	    else {
+		prod_comboplete.close();
+ 	    }
+        });
+    }
 
     $('.form_datetime').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
 
@@ -373,6 +396,26 @@ function fresh_autocomplete(){
   	    }
 	    else {
 		comboplete1.close();
+ 	    }
+        });
+    }
+    if($('#auto_to_product').text().split(",").length > 1){
+        var fuel_input = document.getElementById('to_product')
+        prod_comboplete = new Awesomplete(fuel_input, {
+            minChars: 1,
+            //autoFirst: true,
+            list: $('#auto_to_product').text().split(",")
+        });
+        Awesomplete.$('#to_product').addEventListener("click", function() {
+	    if (prod_comboplete.ul.childNodes.length === 0) {
+		prod_comboplete.minChars = 0;
+		prod_comboplete.evaluate();
+	    }
+	    else if (prod_comboplete.ul.hasAttribute('hidden')) {
+		prod_comboplete.open();
+  	    }
+	    else {
+		prod_comboplete.close();
  	    }
         });
     }
@@ -1007,7 +1050,7 @@ function add_physical() {
         $.ajax({
             type: "POST",
             url: "/transaction/create_phy/",
-            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3],to_m2m_account: text_vals[4], to_inventory: text_vals[5], gross_volume: text_vals[6], price: text_vals[7], program: text_vals[8], counter: text_vals[9]}),
+            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3],to_inventory: text_vals[4],to_product: text_vals[5], gross_volume: text_vals[6], price: text_vals[7], program: text_vals[8], counter: text_vals[9]}),
             success: function(html){
 
                 json_data = JSON.parse(html);
