@@ -5,6 +5,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from inventory.models import Inventory
 from accounts.models import Account
+from product.models import Product
 from users.models import User
 import simplejson as json
 
@@ -107,17 +108,32 @@ def update_inventory(request):
 def add_product(request):
     request_vals = request.POST
     inventory_id = request_vals.get('invent_id')
-    products = request_vals.getlist('products[]', '')
+    products = request_vals.get('products', '')
+    #products = request_vals.getlist('products[]', '')
+    print '************'
+    print products
+    products = json.loads(products)
+    product_ids = []
+    except_products = []
+    for p in products:
+        print p['id']
+        product_ids.append(p['id']) 
 
     inventory = Inventory.objects.get(pk=inventory_id)
     try:
         ps = json.loads(inventory.products)
     except Exception:
         ps = []
-    products += ps
-    print '************'
-    print products
-    inventory.products = json.dumps(products)
+    product_ids += ps
+    inventory.products = json.dumps(product_ids)
     inventory.save()
+    for p in products:
+#        try:
+            product = Product.objects.get(pk=p['id'])
+            product.volume = p['volume']
+            product.price = p['price']
+            product.save()
+#        except Exception:
+#            except_products.append(p['id'])
 
     return HttpResponse(json.dumps({'response': 'success'}))

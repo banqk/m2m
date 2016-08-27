@@ -8,7 +8,8 @@ class Product(models.Model):
     fuel_class = models.ForeignKey(Fuel_Class)
     m2m_account = models.ForeignKey(Account)
     inventory = models.ForeignKey(Inventory)
-    volumn = models.IntegerField(null=True, default=0)
+    volume = models.IntegerField(null=True, default=0)
+    price = models.FloatField(null=True, default=0) 
     description = models.CharField(max_length=250, null=True)
     create_date = models.DateTimeField(
         auto_now=True,

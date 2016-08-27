@@ -148,9 +148,9 @@ $(function(){
             //$('#account_number').parent().remove()
 
             invenTab = $('<div class="form-group">'
-                   + '<label for="">to m2m account</label>'
-                   + '<input type="text" id="to_m2m_account" class="form-control">'
-                   + '</div>'
+//                   + '<label for="">to m2m account</label>'
+//                   + '<input type="text" id="to_m2m_account" class="form-control">'
+//                   + '</div>'
                    + '<div class="form-group">'
                    + '<label for="">to inventory</label>'
                    + '<input type="text" id="to_inventory" class="form-control">'
@@ -355,8 +355,8 @@ $(function(){
 });
 
 function fresh_autocomplete(){
-    if ($('#auto_account').text().split(",").length > 1) {
-        var data1 = $('#auto_account').text()
+    if ($('#auto_to_account').text().split(",").length > 1) {
+        var data1 = $('#auto_to_account').text()
         var input1 = document.getElementById('to_m2m_account')
         comboplete1 = new Awesomplete(input1, {
             minChars: 0,
@@ -376,12 +376,12 @@ function fresh_autocomplete(){
  	    }
         });
     }
-    if($('#auto_inventory').text().split(",").length > 1){
+    if($('#auto_to_inventory').text().split(",").length > 1){
         var fuel_input1 = document.getElementById('to_inventory')
         invent_comboplete1 = new Awesomplete(fuel_input1, {
             minChars: 1,
             //autoFirst: true,
-            list: $('#auto_inventory').text().split(",")
+            list: $('#auto_to_inventory').text().split(",")
         });
         Awesomplete.$('#to_inventory').addEventListener("click", function() {
 	    if (invent_comboplete1.ul.childNodes.length === 0) {
@@ -1159,21 +1159,44 @@ function add_instrument() {
 }
 
 function add_to_inventory() {
-    var text_vals = new Array(9);
+    //var text_vals = new Array(50);
+    var text_vals = new Array();
     var i = 0;
     console.log($("#add_to_inventory input"))
+    var check_flag = false;
+    var id = 0
+    var volume = 0
     $("#add_to_inventory input").each(function(){
         console.log('AAAAAAA' + this.checked)
-        if(this.checked){
+        //var row_value = {'id':'', 'volume': '', 'price': '0.0'}
+        if( $(this).attr('type') == 'checkbox' && this.checked){
             console.log('********' + $(this).val())
-            text_vals[i] = $(this).val()
-            i = i + 1
+            //text_vals[i] = $(this).val()
+            //i = i + 1
+            id = $(this).val()
+            check_flag = true
+        } else if($(this).attr('type') == 'checkbox'){
+            check_flag = false
+        }
+        if(check_flag && $(this).attr('type') == 'text') {
+            if($(this).attr('id') == 'p_price') {
+                var row_value = new Object()
+                row_value.id = id
+                row_value.volume = volume
+                row_value.price = $(this).val()
+                text_vals.push(row_value)
+                i = i + 1
+            } else{
+                volume = $(this).val()
+            
+            }
         }
     })
+    post_data = JSON.stringify(text_vals)
     $.ajax({
         type: "POST",
         url: "/inventory/add_product/",
-        data: ({ invent_id: $('#inventory_id').text(), products: text_vals}),
+        data: ({ invent_id: $('#inventory_id').text(), products: post_data}),
         success: function(html){
 
             json_data = JSON.parse(html);
