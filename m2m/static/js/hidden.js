@@ -141,6 +141,20 @@ $(function(){
         }
     });
     
+    $('#inventory').blur(function(){
+        invent_name = $('#inventory').val()
+        if(invent_name != ''){
+            console.log('AAAAAAAAAAAAAAAAAbBBB')
+            realtime_auto(invent_name, 'inventory')
+        }
+    });
+    $('#to_inventory').blur(function(){
+        invent_name = $('#to_inventory').val()
+        if(invent_name != ''){
+            console.log('AAAAAAAAAAAAAAAAAbCCCCC')
+            realtime_auto(invent_name, 'to_inventory')
+        }
+    });
     
     $('#phy_type').change(function(){
         type = $('#phy_type').val()
@@ -160,10 +174,17 @@ $(function(){
                    + '</div>');
 
             $('#phy_type').parent().parent().append(invenTab);
+            $('#to_inventory').blur(function(){
+                invent_name = $('#to_inventory').val()
+                if(invent_name != ''){
+                    console.log('AAAAAAAAAAAAAAAAAbCCCCC')
+                    realtime_auto(invent_name, 'to_inventory')
+                }
+            });
             fresh_autocomplete()
         } else {
-            $('#to_m2m_account').parent().remove()
-            $('#to_inventory').parent().remove()
+            $('#to_product').parent().parent().remove()
+            $('#to_inventory').parent().parent().remove()
         }
     });
 
@@ -354,21 +375,21 @@ $(function(){
     }
     if($('#auto_to_product').text().split(",").length > 1){
         var fuel_input = document.getElementById('to_product')
-        prod_comboplete = new Awesomplete(fuel_input, {
+        to_prod_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             //autoFirst: true,
             list: $('#auto_to_product').text().split(",")
         });
         Awesomplete.$('#to_product').addEventListener("click", function() {
-	    if (prod_comboplete.ul.childNodes.length === 0) {
-		prod_comboplete.minChars = 0;
-		prod_comboplete.evaluate();
+	    if (to_prod_comboplete.ul.childNodes.length === 0) {
+		to_prod_comboplete.minChars = 0;
+		to_prod_comboplete.evaluate();
 	    }
 	    else if (prod_comboplete.ul.hasAttribute('hidden')) {
-		prod_comboplete.open();
+		to_prod_comboplete.open();
   	    }
 	    else {
-		prod_comboplete.close();
+		to_prod_comboplete.close();
  	    }
         });
     }
@@ -376,6 +397,86 @@ $(function(){
     $('.form_datetime').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
 
 });
+
+function realtime_auto(name, type) {
+    var product_list = ''
+    $.ajax({
+        type: "POST",
+        url: "/api/get_prod/",
+        data: ({ name : name}),
+        success: function(html){
+
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data['response'])
+            } else {
+                //bootbox.alert(json_data['response'])
+                if(json_data['response'] == 'success'){
+                    product_list = json_data['products'] 
+                    console.log(product_list)
+                    if(product_list == '') {
+                        bootbox.alert("The inventory don't include anyone product.")
+                    } 
+                    if(product_list.split(",").length > 1){
+                        console.log('WWWWWWWWWWWWWWWWWWWWWWW44444')
+                        if(type == 'inventory'){
+                            invenTab = $('<input type="text" id="product" class="form-control">');
+                            var s_parent = $('#product').parent().parent()
+                            $('#product').parent().remove()
+                            s_parent.append(invenTab)
+                            var invent_input = document.getElementById('product')
+                            prod_comboplete = new Awesomplete(invent_input, {
+                                minChars: 1,
+                                list: product_list,
+                            });
+                            Awesomplete.$('#product').addEventListener("click", function() {
+	                        if (prod_comboplete.ul.childNodes.length === 0) {
+		                    prod_comboplete.minChars = 0;
+		                    prod_comboplete.evaluate();
+                                    console.log('WWWWWWWWWWWWWWWWWWWWWWW44444')
+	                        }
+	                        else if (prod_comboplete.ul.hasAttribute('hidden')) {
+		                    prod_comboplete.open();
+  	                        }
+	                        else {
+		                    prod_comboplete.close();
+ 	                        }
+                            });
+                        
+                        } else {
+                            invenTab = $('<input type="text" id="to_product" class="form-control">');
+                            var s_parent = $('#to_product').parent().parent()
+                            $('#to_product').parent().remove()
+                            s_parent.append(invenTab)
+                            var invent_input = document.getElementById('to_product')
+                            to_prod_comboplete = new Awesomplete(invent_input, {
+                                minChars: 1,
+                                list: product_list,
+                            });
+                            Awesomplete.$('#to_product').addEventListener("click", function() {
+	                        if (to_prod_comboplete.ul.childNodes.length === 0) {
+		                    to_prod_comboplete.minChars = 0;
+		                    to_prod_comboplete.evaluate();
+                                    console.log('WWWWWWWWWWWWWWWWWWWWWWW44444')
+	                        }
+	                        else if (to_prod_comboplete.ul.hasAttribute('hidden')) {
+		                    to_prod_comboplete.open();
+  	                        }
+	                        else {
+		                    to_prod_comboplete.close();
+ 	                        }
+                            });
+                            
+                        }
+                    }
+                }
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+}
 
 function fresh_autocomplete(){
     if ($('#auto_to_account').text().split(",").length > 1) {
@@ -401,21 +502,21 @@ function fresh_autocomplete(){
     }
     if($('#auto_to_product').text().split(",").length > 1){
         var fuel_input = document.getElementById('to_product')
-        prod_comboplete = new Awesomplete(fuel_input, {
+        to_prod_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             //autoFirst: true,
             list: $('#auto_to_product').text().split(",")
         });
         Awesomplete.$('#to_product').addEventListener("click", function() {
-	    if (prod_comboplete.ul.childNodes.length === 0) {
-		prod_comboplete.minChars = 0;
-		prod_comboplete.evaluate();
+	    if (to_prod_comboplete.ul.childNodes.length === 0) {
+		to_prod_comboplete.minChars = 0;
+		to_prod_comboplete.evaluate();
 	    }
-	    else if (prod_comboplete.ul.hasAttribute('hidden')) {
-		prod_comboplete.open();
+	    else if (to_prod_comboplete.ul.hasAttribute('hidden')) {
+		to_prod_comboplete.open();
   	    }
 	    else {
-		prod_comboplete.close();
+		to_prod_comboplete.close();
  	    }
         });
     }

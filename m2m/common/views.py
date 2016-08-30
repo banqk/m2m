@@ -7,7 +7,10 @@ from product.models import Product
 from counter_party.models import Counter
 from fuel_class.models import Fuel_Class
 from django.contrib.auth.decorators import login_required
-import json
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import simplejson as json
 
 
 def account(request):
@@ -149,3 +152,22 @@ def fuel_class(request):
     options.update({'fuel': fuel})
     render_to_url = 'hidden/edit_fuel.html'
     return render_to_response(render_to_url, options)
+
+@require_http_methods(['POST'])
+@csrf_exempt
+@login_required
+def get_prod(request):
+    options = {}
+    invent_name = request.POST.get('name')
+    inventory = Inventory.objects.filter(name=invent_name)
+    products = ''
+
+    try:
+        product = Product.objects.filter(inventory=inventory)
+    except Product.DoesNotExist:
+        product = []
+    for p in product:
+        products += p.name + ','
+    
+    options.update({'response':'success','products': products})
+    return HttpResponse(json.dumps(options))

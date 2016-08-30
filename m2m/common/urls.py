@@ -10,4 +10,5 @@ urlpatterns = patterns(
     url(r'product', 'product'),
     url(r'counter', 'counter'),
     url(r'fuel', 'fuel_class'),
+    url(r'get_prod', 'get_prod'),
 )
