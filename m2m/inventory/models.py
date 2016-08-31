@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import Account
+from product.models import Product
 
 class Inventory(models.Model):
 
@@ -12,3 +13,9 @@ class Inventory(models.Model):
     products = models.CharField(max_length=250)
     create_date = models.DateTimeField(null=True, auto_now=True)
     m2m_account = models.ForeignKey(Account)
+
+class SellPrice(models.Model):
+    inventory = models.ForeignKey(Inventory)
+    product = models.ForeignKey(Product)
+    volume = models.IntegerField(null=True, default=0)
+    price = models.FloatField(null=True, default=0)

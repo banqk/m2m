@@ -105,7 +105,6 @@
                 <thead>
                     <tr>
                         <th class="select-checkbox no-filter"></th>
-                        <th class="no-filter">ID</th>
                         <th>Product Name</th>
                         <th>Desctiption</th>
                         <th>Fuel Class</th>
@@ -123,19 +122,17 @@
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    {% for product in products %}
+                    {% for sell_price in sell_prices %}
                      <tr>
                          <td></td>
-                         <td>{{product.id}}</td>
-                         <td>{{product.name}}</td>
-                         <td>{{product.description}}</td>
-                         <td>{{product.fuel_class.code}}</td>
-                         <td>{{product.volume}}</td>
-                         <td>{{product.price}}</td>
+                         <td>{{sell_price.product.name}}</td>
+                         <td>{{sell_price.product.description}}</td>
+                         <td>{{sell_price.product.fuel_class.code}}</td>
+                         <td>{{sell_price.volume}}</td>
+                         <td>{{sell_price.price}}</td>
                          <td>{{product.create_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
@@ -172,8 +169,8 @@
                               <tr>
                                 <td><input type="checkbox" value="{{product.id}}" class="select-checkbox"/></td>
                                 <td>{{product.name}}</td>
-                                <td><input type="text" value="{{product.volume}}" class="form-control"></td>
-                                <td><input id = 'p_price' type="text" value="{{product.price}}" class="form-control"></td>
+                                <td><input type="text" value=0 class="form-control"></td>
+                                <td><input id = 'p_price' type="text" value=0  class="form-control"></td>
                               </tr>
                             {% endfor %}
                             </tbody>

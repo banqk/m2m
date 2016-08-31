@@ -3,7 +3,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from inventory.models import Inventory
+from inventory.models import Inventory, SellPrice
 from accounts.models import Account
 from product.models import Product
 from users.models import User
@@ -130,9 +130,16 @@ def add_product(request):
     for p in products:
 #        try:
             product = Product.objects.get(pk=p['id'])
-            product.volume = p['volume']
-            product.price = p['price']
-            product.save()
+            try:
+                sell_price = SellPrice.objects.get(inventory=inventory, product=product)
+            except Exception:
+                sell_price = SellPrice()
+
+            sell_price.inventory = inventory
+            sell_price.product = product
+            sell_price.volume = p['volume']
+            sell_price.price = p['price']
+            sell_price.save()
 #        except Exception:
 #            except_products.append(p['id'])
 

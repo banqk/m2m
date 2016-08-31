@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response
 from accounts.models import Account
-from inventory.models import Inventory
+from inventory.models import Inventory, SellPrice
 from hedge_account.models import Hedge_Account
 from users.models import User
 from product.models import Product
@@ -75,6 +75,7 @@ def inventory(request):
     except Exception:
         ps = []
     products = Product.objects.filter(pk__in=ps)
+    sell_prices = SellPrice.objects.filter(inventory=inventory, product__in=products)
 #    except Product.DoesNotExist:
 #        products = {}
     e_products = Product.objects.filter(m2m_account = inventory.m2m_account)
@@ -87,6 +88,7 @@ def inventory(request):
             ex_products.append(e) 
     options.update({'inventory': inventory})
     options.update({'products': products})
+    options.update({'sell_prices': sell_prices})
     options.update({'ex_products': ex_products})
     print ex_products
     render_to_url = 'hidden/edit_inventory.html'
@@ -159,15 +161,16 @@ def fuel_class(request):
 def get_prod(request):
     options = {}
     invent_name = request.POST.get('name')
-    inventory = Inventory.objects.filter(name=invent_name)
+    inventory = Inventory.objects.get(name=invent_name)
     products = ''
-
-    try:
-        product = Product.objects.filter(inventory=inventory)
-    except Product.DoesNotExist:
-        product = []
-    for p in product:
-        products += p.name + ','
+    if inventory.products and inventory.products != '':
+        try:
+            product = Product.objects.filter(pk__in=json.loads(inventory.products))
+        except Product.DoesNotExist:
+            product = []
+        for p in product:
+            products += p.name + ','
+        print products
     
     options.update({'response':'success','products': products})
     return HttpResponse(json.dumps(options))
