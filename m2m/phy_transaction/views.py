@@ -97,7 +97,11 @@ def create_physical(request):
                 
             try:
                 to_invent = Inventory.objects.get(name=to_inventory)
-                sellprice = SellPrice.objects.get(inventory=to_invent,product=product)
+                try:
+                    sellprice = SellPrice.objects.get(inventory=to_invent,product=product)
+                except SellPrice.DoesNotExist:
+                     return HttpResponse(json.dumps({'response':'faliure', 'info':'The to inventory does not include the product'}))
+                    
                 now_volume = sellprice.volume 
                 now_price = sellprice.volume
                 new_volume = now_volume + int(net_volume)
