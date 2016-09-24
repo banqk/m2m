@@ -148,6 +148,13 @@ $(function(){
             realtime_auto(invent_name, 'inventory')
         }
     });
+    $('#to_inventory').blur(function(){
+        invent_name = $('#to_inventory').val()
+        if(invent_name != ''){
+            console.log('AAAAAAAAAAAAAAAAAbCCCCC')
+            realtime_auto(invent_name, 'to_inventory')
+        }
+    });
     
     $('#phy_type').change(function(){
         type = $('#phy_type').val()
@@ -220,14 +227,14 @@ $(function(){
  	    }
         });
     }
-    console.log('AAAAAAAAAAAAAAa  ' + $('#auto_fuel_class').text())
+
     if($('#auto_fuel_class').text().split(",").length > 1){
         var data =  $('#auto_fuel_class').text()
         var fuel_input = document.getElementById('fuel_class')
         fuel_comboplete = new Awesomplete(fuel_input, {
             minChars: 1,
             //autoFirst: true,
-            list: data,
+            list: data
         });
         Awesomplete.$('#fuel_class').addEventListener("click", function() {
 	    if (fuel_comboplete.ul.childNodes.length === 0) {
@@ -242,26 +249,7 @@ $(function(){
  	    }
         });
     }
-    if($('#auto_counter_party').text().split("$").length > 1){
-        var fuel_input = document.getElementById('counter_party')
-        counter_comboplete = new Awesomplete(fuel_input, {
-            minChars: 1,
-            //autoFirst: true,
-            list: $('#auto_counter_party').text().split("$"),
-        });
-        Awesomplete.$('#counter_party').addEventListener("click", function() {
-	    if (counter_comboplete.ul.childNodes.length === 0) {
-		counter_comboplete.minChars = 0;
-		counter_comboplete.evaluate();
-	    }
-	    else if (counter_comboplete.ul.hasAttribute('hidden')) {
-		counter_comboplete.open();
-  	    }
-	    else {
-		counter_comboplete.close();
- 	    }
-        });
-    }
+    
     if($('#auto_product').text().split(",").length > 1){
         var fuel_input = document.getElementById('product')
         prod_comboplete = new Awesomplete(fuel_input, {
@@ -282,12 +270,74 @@ $(function(){
  	    }
         });
     }
+
+    if($('#auto_supplier_counter').text().split("$").length >= 1){
+        var counter_input = document.getElementById('counter_party')
+        if (counter_input) {
+            var counter_party_complete = new Awesomplete(counter_input, {
+                minChars: 1,
+                //autoFirst: true,
+                list: $('#auto_supplier_counter').text().split("$")
+            });
+            Awesomplete.$('#counter_party').addEventListener("click", function() {
+            var type = $('#phy_type').val()
+            document.getElementById('counter_party').value = "";
+            var counters = [];
+            if (type == "Sell") {
+                counters = $('#auto_customer_counter').text().split("$")
+            } else if (type == "Purchase") {
+                counters = $('#auto_supplier_counter').text().split("$")
+            } else {
+                counters = $('#auto_customer_counter').text().split("$")
+                counters.push.apply(counters, $('#auto_supplier_counter').text().split("$"))
+            }
+            console.log(counters);
+            counter_party_complete.list = counters
+            counter_party_complete.evaluate()
+            counter_party_complete.close();
+
+
+            if (counter_party_complete.ul.childNodes.length === 0) {
+            counter_party_complete.minChars = 0;
+            counter_party_complete.evaluate();
+            }
+            else if (counter_party_complete.ul.hasAttribute('hidden')) {
+            counter_party_complete.open();
+            }
+            else {
+            counter_party_complete.close();
+            }
+            });
+        }
+    }
+
+    if($('#auto_inventory_product').text().split(",").length > 1){
+        var product_input = document.getElementById('product')
+        var product_comboplete = new Awesomplete(product_input, {
+            minChars: 1,
+            //autoFirst: true,
+            list: $('#auto_inventory_product').text().split(",")
+        });
+        Awesomplete.$('#product').addEventListener("click", function() {
+	    if (product_comboplete.ul.childNodes.length === 0) {
+		product_comboplete.minChars = 0;
+		product_comboplete.evaluate();
+	    }
+	    else if (product_comboplete.ul.hasAttribute('hidden')) {
+		product_comboplete.open();
+  	    }
+	    else {
+		product_comboplete.close();
+ 	    }
+        });
+    }
+
     if($('#auto_inventory').text().split(",").length > 1){
         var invent_input = document.getElementById('inventory')
         invent_comboplete = new Awesomplete(invent_input, {
             minChars: 1,
             //autoFirst: true,
-            list: $('#auto_inventory').text()
+            list: $('#auto_inventory').text().split(",")
         });
         Awesomplete.$('#inventory').addEventListener("click", function() {
 	    if (invent_comboplete.ul.childNodes.length === 0) {
@@ -304,23 +354,25 @@ $(function(){
     }
     if($('#auto_to_inventory').text().split(",").length > 1){
         var invent_input1 = document.getElementById('to_inventory')
-        invent_comboplete1 = new Awesomplete(invent_input1, {
-            minChars: 1,
-            //autoFirst: true,
-            list: $('#auto_to_inventory').text().split(",")
-        });
-        Awesomplete.$('#to_inventory').addEventListener("click", function() {
-	    if (invent_comboplete1.ul.childNodes.length === 0) {
-		invent_comboplete1.minChars = 0;
-		invent_comboplete1.evaluate();
-	    }
-	    else if (invent_comboplete1.ul.hasAttribute('hidden')) {
-		invent_comboplete1.open();
-  	    }
-	    else {
-		invent_comboplete1.close();
- 	    }
-        });
+		if (invent_input1) {
+			invent_comboplete1 = new Awesomplete(invent_input1, {
+			    minChars: 1,
+			    //autoFirst: true,
+			    list: $('#auto_to_inventory').text().split(",")
+			});
+			Awesomplete.$('#to_inventory').addEventListener("click", function() {
+			if (invent_comboplete1.ul.childNodes.length === 0) {
+			invent_comboplete1.minChars = 0;
+			invent_comboplete1.evaluate();
+			}
+			else if (invent_comboplete1.ul.hasAttribute('hidden')) {
+			invent_comboplete1.open();
+	  	    }
+			else {
+			invent_comboplete1.close();
+	 	    }
+			});
+		}
     }
     if($('#auto_hedge_account').text().split(",").length > 1){
         var fuel_input = document.getElementById('hedge_account')
@@ -364,6 +416,10 @@ $(function(){
     }
 
     $('.form_datetime').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+    $('#trans_date').datetimepicker({
+        defaultDate: new Date(),
+        format: 'YYYY-MM-DD HH:mm'
+    });
 
 });
 
@@ -779,6 +835,32 @@ function remove_hedge_account(hedge_accounts) {
     });
 }
 
+
+function add_fuel_type() {
+    var m2m_account_id = $('#current_account_id').text()
+    var fuel_type = $("#fuel_type").val()
+    if (!fuel_type) {
+        bootbox.alert("please input fuel type.")
+        return;
+    }
+    $.ajax({
+        type: "POST",
+        url: "/update_account/",
+        data: ({ fuel_type : fuel_type, account_id: m2m_account_id}),
+        success: function(html){
+            json_data = JSON.parse(html);
+            if (json_data.error) {
+                bootbox.alert(json_data.error_message)
+            } else {
+                location.reload();
+            }
+        },
+        error: function(html){
+            bootbox.alert("There was an error.")
+        }
+    });
+}
+
 function update_account() {
 
     var text_vals = new Array(11);
@@ -1032,7 +1114,7 @@ function add_counter() {
     $.ajax({
         type: "POST",
         url: "/counter/create_counter/",
-        data: ({ name : text_vals[0], counter_type: text_vals[1], address: text_vals[2], identifier: text_vals[3]}),
+        data: ({ name : text_vals[0], counter_type: $("#counter_info select").val(), address: text_vals[1], identifier: text_vals[2]}),
         success: function(html){
 
             json_data = JSON.parse(html);
@@ -1100,7 +1182,10 @@ function add_physical() {
         $.ajax({
             type: "POST",
             url: "/transaction/create_phy/",
-            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3],to_inventory: text_vals[4], gross_volume: text_vals[5], price: text_vals[6], program: text_vals[7], counter: text_vals[8]}),
+            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1],
+                product: text_vals[2], net_volume: text_vals[3],to_inventory: text_vals[4],
+                to_product: text_vals[5], gross_volume: text_vals[6], price: text_vals[7],
+                program: text_vals[8], counter: text_vals[9], trans_date: text_vals[10]}),
             success: function(html){
 
                 json_data = JSON.parse(html);
@@ -1124,7 +1209,10 @@ function add_physical() {
         $.ajax({
             type: "POST",
             url: "/transaction/create_phy/",
-            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3], gross_volume: text_vals[4], price: text_vals[5], program: text_vals[6], counter: text_vals[7]}),
+            data: ({ name : text_vals[0], type: $("#physical_info select").val(),
+            inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3],
+            gross_volume: text_vals[4], price: text_vals[5], program: text_vals[6],
+            counter: text_vals[7], trans_date: text_vals[8]}),
             success: function(html){
 
                 json_data = JSON.parse(html);
@@ -1155,11 +1243,11 @@ function add_hedge_tran() {
         text_vals[i] = $(this).val()
         i = i + 1
     })
-    
+
     $.ajax({
         type: "POST",
         url: "/hedge_tran/create_ht/",
-        data: ({ name : text_vals[0], type: $("#phy_type").val(), hedge_account: text_vals[1], inventory: text_vals[2], contract: text_vals[3], volume: text_vals[4], price: text_vals[5],initial_pos: $('#initial_pos').val(), confirm_number:text_vals[6], trader: text_vals[7],ht_status: $("#status").val(), program:text_vals[8]}),
+        data: ({ name : text_vals[0], type: $("#hedge_trans_type").val(), hedge_account: text_vals[1], inventory: text_vals[2], contract: text_vals[3], volume: text_vals[4], price: text_vals[5],initial_pos: $('#initial_pos').val(), confirm_number:text_vals[6], trader: text_vals[7],ht_status: $("#status").val(), program:text_vals[8]}),
         success: function(html){
 
             json_data = JSON.parse(html);

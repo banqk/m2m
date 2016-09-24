@@ -13,6 +13,13 @@
 	<div class="box-head clearfix">
 	    <h1 class="pull-left">Inventory</h1>
 
+        <div class="actions pull-right">
+			<a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-phy-trans" title="Add Phy Transaction">
+                 <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Phy Transaction</a>
+            <a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-hedge-trans" title="Add Hedge Transaction">
+                 <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Hedge Transaction</a>
+        </div>
+
 	</div>
     <div class="box-content">
 	<div class="table-container">
@@ -51,12 +58,12 @@
                          <td></td>
                      </tr>
                      <tr>
-                         <td>Id Number</td>
+                         <td>Identifier Number</td>
                          <td><input type="text" value="{{inventory.id_number}}" class="form-control"></td>
                          <td></td>
                      </tr>
                      <tr>
-                         <td>Volumn</td>
+                         <td>Volume</td>
                          <td><input type="text" value="{{inventory.volumn}}" class="form-control"></td>
                          <td></td>
                      </tr>
@@ -72,50 +79,29 @@
                     <button id="update_inventory" type="submit" class="btn btn-primary" onclick="update_inventory()">Save</button>
         </div>
     </div>
-</div>
-</div>
-</div>
 
-<div class="content-body">
-  <div class="col-lg-12 main-box-container">
-    <div class="box">
     <div class="box-head clearfix">
-        <h1 class="pull-left">Products</h1>
-        <div class="actions pull-right">
-             <a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-products" title="Add Products"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Products</a>
-        </div>
+        <h1 class="pull-left">Products in "{{inventory.name}}"</h1>
+		<div class="actions pull-right">
+			<a href="javascript:;" class="btn btn-add" data-toggle="modal" data-target="#add-products" title="Add Products">
+				         <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Products</a>
+		</div>
     </div>
     <div class="box-content">
         <div class="table-container">
-            <div class="table-controls clearfix">
-                <div class="table-actions pull-right">
-                    <div class="separator">
-                        <a title="Print selected rows" class="btn-print" href="javascript:;"></a>
-                        <a class="btn-edit" href="javascript:;"></a>
-                        <a id="delete_product" title="Delete selected rows" class="btn-delete" data-target="#remove_product" href="javascript:;"></a>
-                    </div>
-                </div>
-                <div class=" input-group table-search col-lg-4 pull-right">
-                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                    <input type="search" placeholder="Search" class="form-control">
-                </div>
-            </div>
-
-            <table id="users" class="table is-datatable">
+            <table id="products" class="table is-datatable">
                 <thead>
                     <tr>
                         <th class="select-checkbox no-filter"></th>
                         <th>Product Name</th>
-                        <th>Desctiption</th>
+                        <th>Description</th>
                         <th>Fuel Class</th>
                         <th>Volume</th>
                         <th>Price</th>
-                        <th>Create Date</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr class="filters">
-                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -133,7 +119,6 @@
                          <td>{{sell_price.product.fuel_class.code}}</td>
                          <td>{{sell_price.volume}}</td>
                          <td>{{sell_price.price}}</td>
-                         <td>{{product.create_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
                 </tbody>
@@ -176,6 +161,20 @@
                             </tbody>
                         </table>
                     </div>
+<!--
+                    <div class="col-lg-12">
+                        {% for product in all_products %}
+                           <span style="display:inline-block;width: 20px;margin-left: 30px">
+                               {% if product.id not in ex_products %}
+                                <input type="checkbox" value="{{product.id}}" checked />
+                               {% else %}
+                                <input type="checkbox" value="{{product.id}}" />
+                               {% endif %}
+                           </span> 
+                           <td>{{product.name}}</td>
+                    {% endfor %}
+                     </div>
+-->
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -185,10 +184,165 @@
 
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+    </div><!-- /.modal -->
+
+    <div id="add-phy-trans" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="physical_info" action="">
+                  {% csrf_token %}
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Physical Transaction</h4>
+                  </div>
+                  <div class="modal-body clearfix">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="">name</label>
+                            <input type="text" id="name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">transaction type</label>
+                            <select id="phy_type" class="form-control">
+                              <option value="Purchase">Purchase</option>
+                              <option value="Sell">Sell</option>
+                              <option value="Transfer">Transfer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">inventory </label>
+                            <input type="text" id="inventory" value="{{inventory.name}}" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="">product</label>
+                            <input type="text" id="product" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">net volume </label>
+                            <input type="text" id="volumn" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="">gross volume </label>
+                            <input type="text"  class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">transaction price </label>
+                            <input type="text" id="price" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">program</label>
+                            <input type="text" id="program" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">counter party </label>
+                            <input type="text" id="counter_party" class="form-control">
+                        </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="add_user_btn" type="button" class="btn btn-primary" onclick="add_physical({{inventory.id}})">Save</button>
+                  </div>
+                </form>
+
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="add-hedge-trans" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="hedge_tran_info" action="">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Hedge Transaction</h4>
+              </div>
+              <div class="modal-body clearfix">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="">name</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">transaction type</label>
+                        <select id="hedge_trans_type" class="form-control">
+                          <option value="Purchase">Purchase</option>
+                          <option value="Sell">Sell</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">hedge account </label>
+                        <input type="text" id="hedge_account" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">inventory </label>
+                        <input type="text"  value="{{inventory.name}}" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="">contract</label>
+                        <input type="text" id="instrument" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">volume </label>
+                        <input type="text" name="volumn" class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="">transaction price </label>
+                        <input type="text" name="price" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">initial position </label>
+                        <select id="initial_pos" class="form-control">
+                          <option value="true">True</option>
+                          <option value="false">False</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">confirm number </label>
+                        <input type="text" id="confirm number" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">trader </label>
+                        <input type="text" id="trader" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="">status </label>
+                        <select id="status" class="form-control">
+                          <option value="working">Working</option>
+                          <option value="confirmed">Confirmed</option>
+                          <option value="reconiled">Reconciled</option>
+                          <option value="canceled">Canceled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">program </label>
+                        <input type="text" name="program" class="form-control">
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="add_hedge_tran()">Save</button>
+              </div>
+            </form>
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 
 <div id='variables' style="display:none">
     <span id="inventory_id">{{inventory.id}}</span>
+    <span id="auto_inventory_product">{{product_names}}</span>
+    <span id="auto_supplier_counter">{{supplier_ids}}</span>
+    <span id="auto_customer_counter">{{customer_ids}}</span>
+    <span id="auto_to_inventory">{{to_inventory}}</span>
+    <span id="auto_hedge_account">{{hedge_list}}</span>
+    <span id="auto_instrument">{{instrument_list}}</span>
 </div>
 
 
@@ -197,11 +351,11 @@
 {% block extra_js %}
     <script src="/static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/js/bootbox.min.js"></script>
-    <script src="/static/js/hidden.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
     <script type="text/javascript" src="/static/js/moment.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/js/hidden.js"></script>
 {% endblock %}

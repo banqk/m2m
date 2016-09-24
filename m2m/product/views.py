@@ -31,7 +31,7 @@ def products(request):
     for fuel in fuels:
         fuel_codes += fuel.code + ','
     for account in m2m_accounts:
-        account_names += account.name + ','         
+        account_names += account.name + ','
     for inventory in inventories:
         inven_names += inventory.name + ','
     print fuel_codes
@@ -50,7 +50,7 @@ def create_product(request):
     fuel_name = request_vals.get('fuel_class')
     description = request_vals.get('description')
     account_name = request_vals.get('account')
-    inventory_name = request_vals.get('inventory')
+    #inventory_name = request_vals.get('inventory')
     print account_name
     try:
         product = Product.objects.get(name=name)
@@ -66,17 +66,17 @@ def create_product(request):
         account = Account.objects.get(name=account_name)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of m2m account is incorrectly'}))
-    try:
-        inventory = Inventory.objects.get(name=inventory_name)
-    except Exception:
-        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
+    #try:
+    #    inventory = Inventory.objects.get(name=inventory_name)
+    #except Exception:
+    #    return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
 
     product = Product.objects.create(
         name = name,
         fuel_class = fuel_class,
         description = description,
         m2m_account = account,
-        inventory = inventory,
+    #    inventory = inventory,
     )
     product.save()
 

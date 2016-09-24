@@ -2,6 +2,7 @@
 
 {% block extra_css %}
   <link href="/static/css/hidden.css" type="text/css" rel="stylesheet">
+  <link href="/static/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css"/>
 {% endblock %}
 
@@ -57,29 +58,30 @@
 	    <table id="users" class="table is-datatable">
 		<thead>
 		    <tr>
-			<th class="select-checkbox no-filter"></th>
-			<th class="no-filter">ID</th>
-			<th>Name</th>
-			<th>Type</th>
-			<th>Inventory</th>
-			<th>Product</th>
-			<th>Net Volume</th>
-                        <th>Price</th>
-                        <th>Counter Party</th>
-	                <th>Create Date</th>
+                <th class="select-checkbox no-filter"></th>
+                <th class="no-filter">ID</th>
+                <th class="no-filter">Name</th>
+                <th>Type</th>
+                <th>Inventory</th>
+                <th>Product</th>
+                <th class="no-filter">Net Volume</th>
+                <th class="no-filter">Price</th>
+                <th>Counter Party</th>
+                <th>Transaction Date</th>
 		    </tr>
 		</thead>
 		<tfoot>
 		    <tr class="filters">
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
-			<th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
 		    </tr>
 		</tfoot>
 		<tbody>
@@ -87,15 +89,14 @@
                      <tr>
                          <td></td>
                          <td><a href="/api/physical/?physical_id={{physical.id}}">{{physical.id}}</a></td>
-                         <td><a href="/api/physical/?physical_id={{physical.id}}">{{physical.name}}</td>
-
+                         <td><a href="/api/physical/?physical_id={{physical.id}}">{{physical.name}}</a></td>
                          <td>{{physical.phy_type}}</td>
                          <td>{{physical.inventory.name}}</td>
                          <td>{{physical.product.name}}</td>
                          <td>{{physical.net_volume}}</td>
                          <td>{{physical.price}}</td>
                          <td>{{physical.counter_party.name}}</td>
-                         <td>{{physical.create_date | date:'Y-m-d H:i'}}</td>
+                         <td>{{physical.transaction_date | date:'Y-m-d H:i'}}</td>
                      </tr>
                     {% endfor %}
 		</tbody>
@@ -124,7 +125,7 @@
                         <div class="form-group">
                             <label for="">transaction type</label>
                             <select id="phy_type" class="form-control">
-                              <option value="Sell">Sell</option>
+						      <option value="Sell">Sell</option>
                               <option value="Purchase">Purchase</option>
                               <option value="Transfer">Transfer</option>
                             </select>
@@ -145,7 +146,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="">gross volume </label>
-                            <input type="text" id="volumn" class="form-control">
+                            <input type="text" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">transaction price </label>
@@ -158,6 +159,15 @@
                         <div class="form-group">
                             <label for="">counter party </label>
                             <input type="text" id="counter_party" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">transaction date</label>
+                            <div class='input-group date form_datetime'>
+                                <input type='text' class="form-control" id="trans_date"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                   </div>
@@ -185,7 +195,9 @@
     <span id="auto_inventory">{{invent_list}}</span>
     <span id="auto_to_inventory">{{invent_list}}</span>
     <span id="auto_product">{{product_list}}</span>
-    <span id="auto_counter_party">{{counter_list}}</span>
+    <span id="auto_to_product">{{product_list}}</span>
+    <span id="auto_supplier_counter">{{supplier_list}}</span>
+    <span id="auto_customer_counter">{{customer_list}}</span>
 </div>
 
 {% endblock%}

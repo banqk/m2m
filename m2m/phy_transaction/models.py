@@ -19,3 +19,4 @@ class Physical(models.Model):
     create_date = models.DateTimeField(null=True, auto_now=True)
     to_inventory = models.CharField(max_length=100)
     to_product = models.CharField(max_length=100)
+    transaction_date = models.DateTimeField(null=True)

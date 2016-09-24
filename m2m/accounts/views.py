@@ -102,6 +102,7 @@ def remove_account(request):
 def search_account(request):
     request_vals = request.GET
 
+
 @require_http_methods(['POST'])
 @csrf_exempt
 @login_required
@@ -110,16 +111,18 @@ def update_account(request):
     logger = logging.getLogger('')
     logger.info(str(request))
     account_id = request_vals.get('account_id')
+    account = Account.objects.get(pk=account_id)
+
+    fuel_type = request_vals.get('fuel_type')
+    if fuel_type is not None:
+        account.fuel_type = fuel_type
+        account.save()
+        return HttpResponse(json.dumps({'response': 'success'}))
     name = request_vals.get('name')
     address = request_vals.get('address')
     email = request_vals.get('email')
-   
-    account = Account.objects.get(pk=account_id)
     account.name = name
     account.address = address
     account.email = email
     account.save()
-    
-    
     return HttpResponse(json.dumps({'response': 'success'}))
-

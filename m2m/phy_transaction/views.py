@@ -29,6 +29,11 @@ def physicals(request):
     for invent in invents:
         inventory_names += invent.name + ','
 
+    suppliers = Counter.objects.filter(counter_type="Supplier")
+    customers = Counter.objects.filter(counter_type="Customer")
+    options.update({'supplier_list': '$'.join([x.name for x in suppliers])})
+    options.update({'customer_list': '$'.join([x.name for x in customers])})
+
     options.update({'physicals': physicals, 'counter_list': counter_names, 'product_list': product_names, 'invent_list':inventory_names})
     render_to_url = 'hidden/phy_transaction.html'
     return render_to_response(render_to_url, options)
@@ -47,6 +52,8 @@ def create_physical(request):
     price = request_vals.get('price')
     counter_id = request_vals.get('counter')
     program = request_vals.get('program')
+    trans_date = request_vals.get('trans_date')
+    print 'trans_date=', trans_date
     print counter_id
     to_inventory = ''
     sellprice = ''
@@ -97,11 +104,7 @@ def create_physical(request):
                 
             try:
                 to_invent = Inventory.objects.get(name=to_inventory)
-                try:
-                    sellprice = SellPrice.objects.get(inventory=to_invent,product=product)
-                except SellPrice.DoesNotExist:
-                     return HttpResponse(json.dumps({'response':'faliure', 'info':'The to inventory does not include the product'}))
-                    
+                sellprice = SellPrice.objects.get(inventory=to_invent,product=product)
                 now_volume = sellprice.volume 
                 now_price = sellprice.volume
                 new_volume = now_volume + int(net_volume)
@@ -131,12 +134,12 @@ def create_physical(request):
         program = program,
         counter_party = counter,
         to_inventory = to_inventory,
+        transaction_date = trans_date
     )
     physical.save()
-    sell_price.save() 
+    sell_price.save()
 #    if phy_type.lower == 'transfer':
-#        print 'VVVVVVVVVVVVVVVVVVV'
-#        sellprice.save()
+#        sell_price.save() 
     
     return HttpResponse(json.dumps({'response': 'success'}))
 
