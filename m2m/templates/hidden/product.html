@@ -59,11 +59,10 @@
 		    <tr>
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
-			<th>ProductName</th>
+			<th class="no-filter">ProductName</th>
 			<th>Description</th>
 			<th>Fuel Class</th>
 			<th>M2M Account</th>
-			<th>Inventory</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -86,7 +85,6 @@
                          <td>{{product.description}}</td>
                          <td>{{product.fuel_class.code}}</td>
                          <td>{{product.m2m_account.name}}</td>
-                         <td>{{product.inventory.name}}</td>
                      </tr>
                     {% endfor %}
 		</tbody>
@@ -111,7 +109,7 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="">product name</label>
-                            <input type="text" id="name" class="form-control"> 
+                            <input type="text" id="name" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">description</label>
@@ -125,10 +123,12 @@
                             <label for="">m2m account</label>
                             <input type="text" id="m2m_account" class="form-control">
                         </div>
+                        <!--
                         <div class="form-group">
                             <label for="">Inventory</label>
                             <input type="text" id="inventory" class="form-control">
                         </div>
+                        -->
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -162,11 +162,11 @@
 {% block extra_js %}
     <script src="/static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/js/bootbox.min.js"></script>
-    <script src="/static/js/hidden.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
     <script type="text/javascript" src="/static/js/moment.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/js/hidden.js"></script>
 {% endblock %}

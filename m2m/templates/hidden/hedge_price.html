@@ -1,0 +1,98 @@
+{% extends "index.html" %}
+
+{% block extra_css %}
+  <link href="/static/css/hidden.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css"/>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="content-body">
+  <div class="col-lg-12 main-box-container">
+    <div class="box">
+
+        <div class="box-head clearfix">
+            <h1 class="pull-left">Price for HOZ2016</h1>
+            <h1 class="pull-right">
+                <span>settlement price today {{settle_price1}}</span>,
+                <span>yesterday {{settle_price_y1}}</span>&nbsp;
+                <!--
+            <a href="javascript: location.reload();" class="btn btn-add" data-toggle="modal" data-target="#add-hedge-account">
+                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Update price</a> -->
+            </h1>
+        </div>
+        <div class="box-content">
+            <div class="table-container">
+                <div role="tabpanel" class="tab-pane">
+                    <table class="table data-table">
+                    <thead>
+                    <tr>
+                        {% for name in col_names %}
+                             <th>{{name}}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                     {% for ds in data1 %}
+                     <tr>
+                         {% for d in ds %}
+                          <td class="number">{{d}}</td>
+                         {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+           </div>
+        </div>
+
+        <div class="box-head clearfix">
+            <h1 class="pull-left">Price for RBZ2016</h1>
+            <h1 class="pull-right">
+                <span>settlement price today {{settle_price2}}</span>,
+                <span>yesterday {{settle_price_y2}}</span>&nbsp;
+            </h1>
+        </div>
+         <div class="box-content">
+            <div class="table-container">
+                <div role="tabpanel" class="tab-pane">
+                    <table class="table data-table">
+                    <thead>
+                    <tr>
+                        {% for name in col_names %}
+                             <th>{{name}}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                     {% for ds in data2 %}
+                     <tr>
+                         {% for d in ds %}
+                          <td class="number">{{d}}</td>
+                         {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+           </div>
+        </div>
+      </div>
+  </div>
+</div>
+{% endblock%}
+
+{% block extra_js %}
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootbox.min.js"></script>
+    <script src="/static/js/hidden.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="/static/js/moment.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}

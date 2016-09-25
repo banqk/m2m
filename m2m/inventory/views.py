@@ -24,7 +24,7 @@ def inventories(request):
             inventories = Inventory.objects.filter(m2m_account__in=m2m_accounts)
     except Exception:
         inventories = {}
-                
+
     for account in m2m_accounts:
         account_names += account.name + ','
     print account_names
@@ -56,7 +56,7 @@ def create_inventory(request):
         account = Account.objects.get(name=account_name)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of account is incorrectly'}))
-    
+
     inventory = Inventory.objects.create(
         name = name,
         fuel_type = fuel_type,
@@ -110,6 +110,10 @@ def add_product(request):
     inventory_id = request_vals.get('invent_id')
     products = request_vals.get('products', '')
     #products = request_vals.getlist('products[]', '')
+
+    
+    #if not isinstance(products, list):
+    #    products = [products]
     print '************'
     print products
     products = json.loads(products)
@@ -128,19 +132,15 @@ def add_product(request):
     inventory.products = json.dumps(product_ids)
     inventory.save()
     for p in products:
-#        try:
-            product = Product.objects.get(pk=p['id'])
-            try:
-                sell_price = SellPrice.objects.get(inventory=inventory, product=product)
-            except Exception:
-                sell_price = SellPrice()
+        product = Product.objects.get(pk=p['id'])
+        try:
+            sell_price = SellPrice.objects.get(inventory=inventory, product=product)
+        except Exception:
+            sell_price = SellPrice()
 
-            sell_price.inventory = inventory
-            sell_price.product = product
-            sell_price.volume = p['volume']
-            sell_price.price = p['price']
-            sell_price.save()
-#        except Exception:
-#            except_products.append(p['id'])
-
+        sell_price.inventory = inventory
+        sell_price.product = product
+        sell_price.volume = p['volume']
+        sell_price.price = p['price']
+        sell_price.save()
     return HttpResponse(json.dumps({'response': 'success'}))
