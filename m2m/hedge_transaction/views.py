@@ -9,27 +9,28 @@ from inventory.models import Inventory
 from hedge_instrument.models import Instrument
 import simplejson as json
 import logging
-
+import urllib2
 
 
 @login_required
 def hedge_tran(request):
     options = {}
     hedge_trans = Hedge_Tran.objects.all()
+
     hedge_accounts = Hedge_Account.objects.all()
     hedge_names = ''
     for hedge in hedge_accounts:
         hedge_names += hedge.name + ','
-    instrument_names = ''
-    instruments = Instrument.objects.all()
-    for instrument in instruments:
-        instrument_names += instrument.symbol + ','
+    #instrument_names = ''
+    #instruments = Instrument.objects.all()
+    #for instrument in instruments:
+    #    instrument_names += instrument.symbol + ','
     inventory_names = ''
     invents = Inventory.objects.all()
     for invent in invents:
         inventory_names += invent.name + ','
-
-    options.update({'hedge_trans': hedge_trans, 'hedge_list': hedge_names, 'instrument_list': instrument_names, 'invent_list':inventory_names})
+    print hedge_names
+    options.update({'hedge_trans': hedge_trans, 'hedge_account_list': hedge_names, 'invent_list': inventory_names})
     render_to_url = 'hidden/hedge_transaction.html'
     return render_to_response(render_to_url, options)
 
@@ -41,7 +42,7 @@ def create_hedge_tran(request):
     name = request_vals.get('name')
     hedge_type = request_vals.get('type')
     hedge_id = request_vals.get('hedge_account')
-    inventory_id = request_vals.get('inventory')
+    inventory_name = request_vals.get('inventory')
     instrument_id = request_vals.get('contract')
     volume = request_vals.get('volume')
     price = request_vals.get('price')
@@ -59,21 +60,21 @@ def create_hedge_tran(request):
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of hedge account is incorrectly'}))
     try:
-        inventory = Inventory.objects.get(name=inventory_id)
-        if ht_status.lower() == 'confirmed':
+        inventory = Inventory.objects.get(name=inventory_name)
+        if status.lower() == 'confirmed':
             if hedge_type.lower() == 'purchase':
-                inventory.volumn += int(net_volume)
+                inventory.volumn += int(volume)
             elif hedge_type.lower() == 'sell':
-                if inventory.volumn < int(net_volume):
+                if inventory.volumn < int(volume):
                     return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the inventory'}))
                 else:
-                    inventory.volumn -= int(net_volume)
+                    inventory.volumn -= int(volume)
             else:
                 to_inventory = request_vals.get('to_inventory')
                 try:
                     to_invent = Inventory.objects.get(name=to_inventory)
-                    to_invent.volumn += int(new_volume)
-                    inventory.volumn -= int(net_volume)
+                    to_invent.volumn += int(volume)
+                    inventory.volumn -= int(volume)
                 except Exception:
                     return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory is incorrectly'}))
     except Exception:
@@ -95,12 +96,12 @@ def create_hedge_tran(request):
         confirm_number = confirm_number,
         trader = trader,
         status = status,
-        program = program,
-        to_inventory = to_invetory
+        program = program
+       # to_inventory = to_invetory
     )
     hedge_tran.save()
     inventory.save()
-    if phy_type.lower == 'transfer':
+    if hedge_type.lower == 'transfer':
         to_invent.save()
     
     return HttpResponse(json.dumps({'response': 'success'}))
@@ -141,3 +142,64 @@ def update_ht(request):
     
     return HttpResponse(json.dumps({'response': 'success'}))
 
+
+def hedge_pos(request):
+    options = {}
+    inventories = Inventory.objects.all()
+    hedge_trans = Hedge_Tran.objects.all()
+    hedge_invs = [x.inventory for x in hedge_trans]
+    rows = []
+
+    for inv in inventories:
+        data = {}
+        data['name'] = inv.name
+        data['volume'] = inv.volumn
+        if inv in hedge_invs:
+            ht = [x for x in hedge_trans if x.inventory.name == inv.name][0]
+            data['pos'] = ht.volume
+            data['price'] = ht.price
+        else:
+            data['pos'] = 0
+            data['price'] = 0
+        rows.append(data)
+    '''
+    try:
+        hedge_tran = Hedge_Tran.objects.get(pk=hedge_tran_id)
+    except Hedge_Tran.DoesNotExist:
+        hedge_tran = {}
+    '''
+
+    options.update({'data': rows})
+    render_to_url = 'hidden/hedge_pos.html'
+    return render_to_response(render_to_url, options)
+
+
+def hedge_price(request):
+    options = {}
+    col_names = [
+        "Date",
+        "Open",
+        "High",
+        "Low",
+        "Last",
+        "Change",
+        "Settle",
+        "Volume",
+        "Open Interest"
+    ]
+    data1 = get_request_data('HOZ2016')
+    data2 = get_request_data('RBZ2016')
+
+    options.update({'col_names': col_names, 'data1': data1, 'data2': data2})
+    options.update({'settle_price1': data1[0][6], 'settle_price2': data2[0][6]})
+    options.update({'settle_price_y1': data1[1][6], 'settle_price_y2': data2[1][6]})
+    render_to_url = 'hidden/hedge_price.html'
+    return render_to_response(render_to_url, options)
+
+
+def get_request_data(market):
+    api = ('https://www.quandl.com/api/v3/datasets/CME/%s.json') % market
+    result = urllib2.urlopen(api)
+    content = json.loads(result.read())
+    data = content['dataset']['data'][0:10]
+    return data
