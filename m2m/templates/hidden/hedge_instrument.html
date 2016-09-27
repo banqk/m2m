@@ -60,7 +60,8 @@
 		    <tr>
 			<th class="select-checkbox no-filter"></th>
 			<th class="no-filter">ID</th>
-			<th class="no-filter">Contract Symbol</th>
+			<th class="no-filter">Instrument</th>
+			<th>Contract Symbol</th>
 			<th>Fuel Class</th>
 			<th>Contract Year</th>
 			<th>Contract Month</th>
@@ -76,6 +77,7 @@
 			<th></th>
 			<th></th>
 			<th></th>
+			<th></th>
 		    </tr>
 		</tfoot>
 		<tbody>
@@ -83,7 +85,8 @@
                      <tr>
                          <td></td>
                          <td><a href="/api/instrument/?instrument_id={{instrument.id}}">{{instrument.id}}</a></td>
-                         <td><a href="/api/instrument/?instrument_id={{instrument.id}}">{{instrument.symbol}}</td>
+                         <td><a href="/api/instrument/?instrument_id={{instrument.id}}">{{instrument.instrument}}</td>
+                         <td>{{instrument.symbol}}</td>
 
                          <td>{{instrument.fuel_class.code}}</td>
                          <td>{{instrument.contract_year}}</td>
@@ -111,8 +114,8 @@
                   <div class="modal-body clearfix">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="">contract symbol</label>
-                            <input type="text" id="symbol" class="form-control"> 
+                            <label for="">instrument</label>
+                            <input type="text" id="instrument" class="form-control"> 
                         </div>
                         <div class="form-group">
                             <label for="">fuel class</label>
@@ -138,8 +141,12 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="">instrument</label>
-                            <input type="text" id="instrument" class="form-control">
+                            <label for="">contract symbol</label>
+                            <select id="con_symbol" class="form-control">
+                              <option value="HOZ2016">HOZ2016</option>
+                              <option value="RBZ2016">RBZ2016</option>
+                            </select>
+                            <input type="text" id="symbol" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="">put call</label>
