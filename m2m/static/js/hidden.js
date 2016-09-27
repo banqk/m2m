@@ -1317,7 +1317,7 @@ function add_instrument() {
     $.ajax({
         type: "POST",
         url: "/inst/create_inst/",
-        data: ({ symbol : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: text_vals[3], expiration_date: text_vals[4], instrument: text_vals[5],put_call: text_vals[6], strike_price: text_vals[7], counter_party: text_vals[8]}),
+        data: ({ instrument : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: text_vals[3], expiration_date: text_vals[4], symbol: text_vals[5],put_call: text_vals[6], strike_price: text_vals[7], counter_party: text_vals[8]}),
         success: function(html){
 
             json_data = JSON.parse(html);
