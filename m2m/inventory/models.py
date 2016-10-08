@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import Account
 from product.models import Product
+from fuel_class.models import Fuel_Class
 
 class Inventory(models.Model):
 
@@ -18,4 +19,11 @@ class SellPrice(models.Model):
     inventory = models.ForeignKey(Inventory)
     product = models.ForeignKey(Product)
     volume = models.IntegerField(null=True, default=0)
+    price = models.FloatField(null=True, default=0)
+
+#hedge position
+class HedgePos(models.Model):
+    inventory = models.ForeignKey(Inventory)
+#    fuel_class = models.ForeignKey(Fuel_Class)
+    position = models.IntegerField(null=True, default=0)
     price = models.FloatField(null=True, default=0)
