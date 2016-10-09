@@ -270,6 +270,26 @@ $(function(){
  	    }
         });
     }
+    if($('#auto_contract').text().split(",").length > 1){
+        var fuel_input = document.getElementById('instrument')
+        contract_comboplete = new Awesomplete(fuel_input, {
+            minChars: 1,
+            //autoFirst: true,
+            list: $('#auto_contract').text().split(",")
+        });
+        Awesomplete.$('#instrument').addEventListener("click", function() {
+	    if (contract_comboplete.ul.childNodes.length === 0) {
+		contract_comboplete.minChars = 0;
+		contract_comboplete.evaluate();
+	    }
+	    else if (contract_comboplete.ul.hasAttribute('hidden')) {
+		contract_comboplete.open();
+  	    }
+	    else {
+		contract_comboplete.close();
+ 	    }
+        });
+    }
 
     if($('#auto_supplier_counter').text().split("$").length >= 1){
         var counter_input = document.getElementById('counter_party')
@@ -1247,7 +1267,7 @@ function add_hedge_tran() {
     $.ajax({
         type: "POST",
         url: "/hedge_tran/create_ht/",
-        data: ({ name : text_vals[0], type: $("#hedge_trans_type").val(), hedge_account: text_vals[1], inventory: text_vals[2], contract: text_vals[3], volume: text_vals[4], price: text_vals[5],initial_pos: $('#initial_pos').val(), confirm_number:text_vals[6], trader: text_vals[7],ht_status: $("#status").val(), program:text_vals[8]}),
+        data: ({ name : text_vals[0], type: $("#hedge_trans_type").val(), hedge_account: text_vals[1], inventory: text_vals[2],product: text_vals[3], contract: text_vals[4], volume: text_vals[5], price: text_vals[6],initial_pos: $('#initial_pos').val(), confirm_number:text_vals[7], trader: text_vals[8],ht_status: $("#status").val(), program:text_vals[9]}),
         success: function(html){
 
             json_data = JSON.parse(html);
@@ -1314,10 +1334,11 @@ function add_instrument() {
         i = i + 1
     })
     
+    console.log($("#con_symbol select").val())
     $.ajax({
         type: "POST",
         url: "/inst/create_inst/",
-        data: ({ instrument : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: text_vals[3], expiration_date: text_vals[4], symbol: text_vals[5],put_call: text_vals[6], strike_price: text_vals[7], counter_party: text_vals[8]}),
+        data: ({ instrument : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: text_vals[3], expiration_date: text_vals[4], symbol: $("#instrument_info select").val(),put_call: text_vals[5], strike_price: text_vals[6], counter_party: text_vals[7]}),
         success: function(html){
 
             json_data = JSON.parse(html);

@@ -25,5 +25,6 @@ class SellPrice(models.Model):
 class HedgePos(models.Model):
     inventory = models.ForeignKey(Inventory)
 #    fuel_class = models.ForeignKey(Fuel_Class)
+    product = models.ForeignKey(Product)
     position = models.IntegerField(null=True, default=0)
     price = models.FloatField(null=True, default=0)
