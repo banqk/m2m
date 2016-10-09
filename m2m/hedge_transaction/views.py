@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from hedge_transaction.models import Hedge_Tran
 from hedge_account.models import Hedge_Account
-from inventory.models import Inventory
+from inventory.models import Inventory, HedgePos
 from hedge_instrument.models import Instrument
 import simplejson as json
 import logging
@@ -61,6 +61,7 @@ def create_hedge_tran(request):
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of hedge account is incorrectly'}))
     try:
         inventory = Inventory.objects.get(name=inventory_name)
+        hedge_pos = HedgePos.objects.filter(inventory=inventory)
         if status.lower() == 'confirmed':
             if hedge_type.lower() == 'purchase':
                 inventory.volumn += int(volume)
@@ -77,6 +78,15 @@ def create_hedge_tran(request):
                     inventory.volumn -= int(volume)
                 except Exception:
                     return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory is incorrectly'}))
+            #hedge_pos = HedgePos.objects.filter(inventory=inventory)
+            if hedge_pos:
+                pass
+            else:
+                hedge_pos = HedgePos.objects.create(
+                    inventory = inventory,
+                    position = volume,
+                    price = price
+                )
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
     try:
@@ -100,6 +110,7 @@ def create_hedge_tran(request):
        # to_inventory = to_invetory
     )
     hedge_tran.save()
+    hedge_pos.save()
     inventory.save()
     if hedge_type.lower == 'transfer':
         to_invent.save()
@@ -143,24 +154,27 @@ def update_ht(request):
     return HttpResponse(json.dumps({'response': 'success'}))
 
 
+#@require_http_methods(['POST'])
+#@csrf_exempt
+#@login_required
 def hedge_pos(request):
     options = {}
-    inventories = Inventory.objects.all()
-    hedge_trans = Hedge_Tran.objects.all()
-    hedge_invs = [x.inventory for x in hedge_trans]
+#    inventories = Inventory.objects.all()
+#    hedge_trans = Hedge_Tran.objects.all()
+#    hedge_invs = [x.inventory for x in hedge_trans]
     rows = []
 
-    for inv in inventories:
+#    for inv in inventories:
+    hedge_pos = HedgePos.objects.all()
+    for h in hedge_pos:
         data = {}
-        data['name'] = inv.name
-        data['volume'] = inv.volumn
-        if inv in hedge_invs:
-            ht = [x for x in hedge_trans if x.inventory.name == inv.name][0]
-            data['pos'] = ht.volume
-            data['price'] = ht.price
-        else:
-            data['pos'] = 0
-            data['price'] = 0
+    
+        data['name'] = h.inventory.name
+        data['volume'] = h.inventory.volumn
+#        if inv in hedge_invs:
+#            ht = [x for x in hedge_trans if x.inventory.name == inv.name][0]
+        data['pos'] = h.position
+        data['price'] = h.price
         rows.append(data)
     '''
     try:
@@ -174,6 +188,9 @@ def hedge_pos(request):
     return render_to_response(render_to_url, options)
 
 
+#@require_http_methods(['POST'])
+#@csrf_exempt
+#@login_required
 def hedge_price(request):
     options = {}
     col_names = [
