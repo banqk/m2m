@@ -20,6 +20,7 @@ class SellPrice(models.Model):
     product = models.ForeignKey(Product)
     volume = models.IntegerField(null=True, default=0)
     price = models.FloatField(null=True, default=0)
+    avg_price = models.FloatField(null=True, default=0)
 
 #hedge position
 class HedgePos(models.Model):

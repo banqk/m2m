@@ -79,11 +79,13 @@ def create_hedge_tran(request):
         hedge_pos = HedgePos.objects.filter(inventory=inventory)
         if status.lower() == 'confirmed':
             if hedge_type.lower() == 'purchase':
+                position = int(volume)
                 inventory.volumn += int(volume)
             elif hedge_type.lower() == 'sell':
                 if inventory.volumn < int(volume):
                     return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the inventory'}))
                 else:
+                    position = -int(volume)
                     inventory.volumn -= int(volume)
             else:
                 to_inventory = request_vals.get('to_inventory')
@@ -95,12 +97,12 @@ def create_hedge_tran(request):
                     return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory is incorrectly'}))
             #hedge_pos = HedgePos.objects.filter(inventory=inventory)
             if hedge_pos:
-                pass
+                hedge_pos.position = hedge_pos.position + position
             else:
                 hedge_pos = HedgePos.objects.create(
                     inventory = inventory,
                     product = product,
-                    position = volume,
+                    position = position,
                     price = price
                 )
     except Exception:
@@ -185,7 +187,7 @@ def hedge_pos(request):
     for h in hedge_pos:
         data = {}
     
-        sell_price = SellPrice.objects.filter(inventory=h.inventory, product=h.product)
+        sell_price = SellPrice.objects.get(inventory=h.inventory, product=h.product)
         data['name'] = h.inventory.name
         #data['volume'] = h.inventory.volumn
         data['volume'] = sell_price.volume
@@ -193,7 +195,11 @@ def hedge_pos(request):
 #            ht = [x for x in hedge_trans if x.inventory.name == inv.name][0]
         data['pos'] = h.position
         data['price'] = h.price
-        data['cost_stats'] = sell_price.price
+        data['margin'] = 0
+        data['overview'] = 0
+        data['summary'] = 0
+        data['cost_stats'] = sell_price.avg_price
+#        data1 = get_request_data('HOZ2016')
         rows.append(data)
     '''
     try:

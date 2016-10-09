@@ -70,7 +70,15 @@ def create_physical(request):
         product = Product.objects.get(name=product_id)
         sell_price = SellPrice.objects.get(inventory=inventory,product=product)
         if phy_type.lower() == 'purchase':
-            out_price = sell_price.price
+            print sell_price.avg_price
+            if int(sell_price.avg_price) == 0:
+                print '1111111111111'
+                out_price = sell_price.price
+            else:
+                print '2222222222222222222'
+                out_price = sell_price.avg_price
+         
+            #out_price = sell_price.price
             out_volume = sell_price.volume
             out_new_price = (out_price*out_volume + float(price)*int(net_volume))/(out_volume + int(net_volume))
             print '!!!!!!!!!!!!!'
@@ -78,7 +86,7 @@ def create_physical(request):
             print out_volume
             print out_new_price
             sell_price.volume += int(net_volume)
-            sell_price.price = out_new_price
+            sell_price.avg_price = out_new_price
         elif phy_type.lower() == 'sell':
             if sell_price.volume < int(net_volume):
                 return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the product from the inventory'}))
