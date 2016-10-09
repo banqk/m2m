@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from hedge_transaction.models import Hedge_Tran
 from hedge_account.models import Hedge_Account
-from inventory.models import Inventory, HedgePos
+from inventory.models import Inventory, HedgePos, SellPrice
+from product.models import Product
 from hedge_instrument.models import Instrument
 import simplejson as json
 import logging
@@ -15,6 +16,18 @@ import urllib2
 @login_required
 def hedge_tran(request):
     options = {}
+
+    products = Product.objects.all()
+    product_names = ''
+    for product in products:
+        product_names += product.name + ','
+
+    instruments = Instrument.objects.all()
+    instrument_names = ''
+    for instrument in instruments:
+        instrument_names += instrument.instrument + ','
+    print instrument_names
+
     hedge_trans = Hedge_Tran.objects.all()
 
     hedge_accounts = Hedge_Account.objects.all()
@@ -30,7 +43,7 @@ def hedge_tran(request):
     for invent in invents:
         inventory_names += invent.name + ','
     print hedge_names
-    options.update({'hedge_trans': hedge_trans, 'hedge_account_list': hedge_names, 'invent_list': inventory_names})
+    options.update({'hedge_trans': hedge_trans, 'hedge_account_list': hedge_names, 'invent_list': inventory_names, 'product_list':product_names, 'instrument_list':instrument_names})
     render_to_url = 'hidden/hedge_transaction.html'
     return render_to_response(render_to_url, options)
 
@@ -43,6 +56,7 @@ def create_hedge_tran(request):
     hedge_type = request_vals.get('type')
     hedge_id = request_vals.get('hedge_account')
     inventory_name = request_vals.get('inventory')
+    product_name = request_vals.get('product')
     instrument_id = request_vals.get('contract')
     volume = request_vals.get('volume')
     price = request_vals.get('price')
@@ -61,6 +75,7 @@ def create_hedge_tran(request):
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of hedge account is incorrectly'}))
     try:
         inventory = Inventory.objects.get(name=inventory_name)
+        product = Product.objects.get(name=product_name)
         hedge_pos = HedgePos.objects.filter(inventory=inventory)
         if status.lower() == 'confirmed':
             if hedge_type.lower() == 'purchase':
@@ -84,6 +99,7 @@ def create_hedge_tran(request):
             else:
                 hedge_pos = HedgePos.objects.create(
                     inventory = inventory,
+                    product = product,
                     position = volume,
                     price = price
                 )
@@ -169,12 +185,15 @@ def hedge_pos(request):
     for h in hedge_pos:
         data = {}
     
+        sell_price = SellPrice.objects.filter(inventory=h.inventory, product=h.product)
         data['name'] = h.inventory.name
-        data['volume'] = h.inventory.volumn
+        #data['volume'] = h.inventory.volumn
+        data['volume'] = sell_price.volume
 #        if inv in hedge_invs:
 #            ht = [x for x in hedge_trans if x.inventory.name == inv.name][0]
         data['pos'] = h.position
         data['price'] = h.price
+        data['cost_stats'] = sell_price.price
         rows.append(data)
     '''
     try:
