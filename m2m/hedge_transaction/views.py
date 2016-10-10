@@ -69,46 +69,57 @@ def create_hedge_tran(request):
     #hedge_account = Hedge_Account.objects.get(pk=hedge_id)
     #instrument = Instrument.objects.get(pk=instrument_id)
     to_inventory = ''
+    print hedge_type.lower() + 'aaaaaaaaa'
+    print inventory_name + '!!!!!'
+    print product_name
     try:
         hedge_account = Hedge_Account.objects.get(name=hedge_id)
+        inventory = Inventory.objects.get(name=inventory_name)
+        product = Product.objects.get(name=product_name)
+        sell_price = SellPrice.objects.get(inventory=inventory,product=product)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of hedge account is incorrectly'}))
     try:
         inventory = Inventory.objects.get(name=inventory_name)
         product = Product.objects.get(name=product_name)
-        hedge_pos = HedgePos.objects.filter(inventory=inventory)
+        sell_price = SellPrice.objects.get(inventory=inventory,product=product)
+        #hedge_pos = HedgePos.objects.filter(inventory=inventory)
         if status.lower() == 'confirmed':
             if hedge_type.lower() == 'purchase':
                 position = int(volume)
-                inventory.volumn += int(volume)
+                sell_price.volume += int(volume)
             elif hedge_type.lower() == 'sell':
-                if inventory.volumn < int(volume):
-                    return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the inventory'}))
+                if sell_price.volume < int(volume):
+                    return HttpResponse(json.dumps({'response':'faliure', 'info':'The volume greater than the inventory'}))
                 else:
                     position = -int(volume)
-                    inventory.volumn -= int(volume)
-            else:
-                to_inventory = request_vals.get('to_inventory')
-                try:
-                    to_invent = Inventory.objects.get(name=to_inventory)
-                    to_invent.volumn += int(volume)
-                    inventory.volumn -= int(volume)
-                except Exception:
-                    return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory is incorrectly'}))
-            #hedge_pos = HedgePos.objects.filter(inventory=inventory)
-            if hedge_pos:
+                    sell_price.volume -= int(volume)
+#            else:
+#                to_inventory = request_vals.get('to_inventory')
+#                try:
+#                    to_invent = Inventory.objects.get(name=to_inventory)
+#                    to_invent.volumn += int(volume)
+#                    inventory.volumn -= int(volume)
+#                except Exception:
+#                    return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory is incorrectly'}))
+            try:
+                hedge_pos = HedgePos.objects.filter(inventory=inventory, product=product)
+                now_pos = hedge_pos.position
                 hedge_pos.position = hedge_pos.position + position
-            else:
+                now_price = hedge_pos.price
+                hedge_pos.price = (now_price*now_pos + float(price) * int(volume))/hedge_pos.position
+            except Exception:
                 hedge_pos = HedgePos.objects.create(
                     inventory = inventory,
                     product = product,
                     position = position,
                     price = price
                 )
-    except Exception:
+    except Exception, e:
+        print e
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
     try:
-        instrument = Instrument.objects.get(symbol=instrument_id)
+        instrument = Instrument.objects.get(instrument=instrument_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of contract is incorrectly'}))
 
@@ -130,8 +141,6 @@ def create_hedge_tran(request):
     hedge_tran.save()
     hedge_pos.save()
     inventory.save()
-    if hedge_type.lower == 'transfer':
-        to_invent.save()
     
     return HttpResponse(json.dumps({'response': 'success'}))
 
