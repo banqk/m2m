@@ -254,3 +254,10 @@ def get_request_data(market):
     content = json.loads(result.read())
     data = content['dataset']['data'][0:10]
     return data
+
+def hedge_pos_view(request):
+    options = {}
+    rows = []
+    options.update({'data': rows})
+    render_to_url = 'hidden/hedge_pos_view.html'
+    return render_to_response(render_to_url, options)
