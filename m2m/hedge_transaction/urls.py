@@ -8,4 +8,5 @@ urlpatterns = patterns(
     url(r'update_ht/$', 'update_ht'),
     url(r'hedge_pos/$', 'hedge_pos'),
     url(r'hedge_price/$', 'hedge_price'),
+    url(r'hedge_pos_view/$', 'hedge_pos_view'),
 )

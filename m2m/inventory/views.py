@@ -142,5 +142,6 @@ def add_product(request):
         sell_price.product = product
         sell_price.volume = p['volume']
         sell_price.price = p['price']
+        sell_price.avg_price = p['price']
         sell_price.save()
     return HttpResponse(json.dumps({'response': 'success'}))
