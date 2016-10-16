@@ -8,5 +8,6 @@ urlpatterns = patterns(
     url(r'remove_inventory/$', 'remove_inventory'),
     url(r'update_inventory/$', 'update_inventory'),
     url(r'add_product/$', 'add_product'),
+    url(r'invent_summ/$', 'invent_summ'),
 
 )
