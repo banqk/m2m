@@ -1,0 +1,150 @@
+{% extends "index.html" %}
+
+{% block extra_css %}
+  <link href="/static/css/hidden.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.1.2/css/select.dataTables.min.css"/>
+{% endblock %}
+
+{% block content %}
+
+<div class="content-body">
+  <div class="col-lg-12 main-box-container">
+    <div class="box">
+
+	<div class="box-head clearfix">
+	    <h1 class="pull-left">Inventory Summary -- Simple Hedge</h1>
+	</div>
+
+    <div class="box-content">
+	<div class="table-container">
+	    <!-- Table Controls -->
+	    <div class="table-controls clearfix">
+		<div class="table-actions pull-right">
+		    <div class="separator">
+			<a title="Print selected rows" class="btn-print" href="javascript:;"></a>
+			<a class="btn-edit" href="javascript:;"></a>
+			<a id="delete_account" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
+		    </div>
+		</div>
+	    </div>
+
+
+	    <table id="simple_hedge" class="table is-datatable">
+		<thead>
+		    <tr>
+			<th>Inventory</th>
+                        <th>Product</th>
+                        <th>Physical Inventory Volume</th>
+                        <th>Physical Position</th>
+                        <th>Hedge Position Volume</th>
+                        <th>Hedge Position</th>
+
+		    </tr>
+		</thead>
+		<tfoot>
+		    <tr class="filters">
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		    </tr>
+		</tfoot>
+		<tbody>
+                    {% for d in data %}
+                     <tr>
+                         <td>{{d.inventory.name}}</td>
+                         <td>{{d.product.name}}</a></td>
+                         <td>{{d.phy_volume}}</a></td>
+                         <td>{{d.phy_volume}}</a></td>
+                         <td>{{d.hedge_volume}}</a></td>
+                         <td>{{d.hedge_volume}}</a></td>
+                     </tr>
+                    {% endfor %}
+		</tbody>
+	    </table>
+	</div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="content-body">
+  <div class="col-lg-12 main-box-container">
+    <div class="box">
+
+	<div class="box-head clearfix">
+	    <h1 class="pull-left">Inventory Summary -- Roll Hedge</h1>
+	</div>
+    <div class="box-content">
+	<div class="table-container">
+	    <!-- Table Controls -->
+	    <div class="table-controls clearfix">
+		<div class="table-actions pull-right">
+		    <div class="separator">
+			<a title="Print selected rows" class="btn-print" href="javascript:;"></a>
+			<a class="btn-edit" href="javascript:;"></a>
+			<a id="delete_account" title="Delete selected rows" class="btn-delete" data-target="#remove_user" href="javascript:;"></a>
+		    </div>
+		</div>
+	    </div>
+
+
+	    <table id="roll_hedge" class="table is-datatable">
+		<thead>
+		    <tr>
+			<th>Inventory</th>
+                        <th>Product</th>
+                        <th>Physical Inventory Volume</th>
+                        <th>Physical Position</th>
+                        <th>Hedge Position Volume</th>
+                        <th>Hedge Position</th>
+
+		    </tr>
+		</thead>
+		<tfoot>
+		    <tr class="filters">
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		    </tr>
+		</tfoot>
+		<tbody>
+                    {% for d in data %}
+                     <tr>
+                         <td>{{d.inventory.name}}</td>
+                         <td>{{d.product.name}}</a></td>
+                         <td>{{d.phy_volume}}</a></td>
+                         <td>{{d.phy_volume}}</a></td>
+                         <td>{{d.hedge_volume}}</a></td>
+                         <td>{{d.hedge_volume}}</a></td>
+                     </tr>
+                    {% endfor %}
+		</tbody>
+	    </table>
+	</div>
+    </div>
+
+
+</div>
+</div>
+</div>
+
+
+{% endblock%}
+
+{% block extra_js %}
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootbox.min.js"></script>
+    <script src="/static/js/hidden.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.1.2/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="/static/js/moment.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}

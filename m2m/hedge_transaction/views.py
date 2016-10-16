@@ -86,13 +86,11 @@ def create_hedge_tran(request):
         #hedge_pos = HedgePos.objects.filter(inventory=inventory)
         if status.lower() == 'confirmed':
             if hedge_type.lower() == 'purchase':
-                position = int(volume)
                 sell_price.volume += int(volume)
             elif hedge_type.lower() == 'sell':
                 if sell_price.volume < int(volume):
                     return HttpResponse(json.dumps({'response':'faliure', 'info':'The volume greater than the inventory'}))
                 else:
-                    position = -int(volume)
                     sell_price.volume -= int(volume)
 #            else:
 #                to_inventory = request_vals.get('to_inventory')
@@ -102,19 +100,25 @@ def create_hedge_tran(request):
 #                    inventory.volumn -= int(volume)
 #                except Exception:
 #                    return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of to inventory is incorrectly'}))
-            try:
-                hedge_pos = HedgePos.objects.filter(inventory=inventory, product=product)
-                now_pos = hedge_pos.position
-                hedge_pos.position = hedge_pos.position + position
-                now_price = hedge_pos.price
-                hedge_pos.price = (now_price*now_pos + float(price) * int(volume))/hedge_pos.position
-            except Exception:
-                hedge_pos = HedgePos.objects.create(
-                    inventory = inventory,
-                    product = product,
-                    position = position,
-                    price = price
-                )
+#"""
+#            try:
+#                hedge_pos = HedgePos.objects.get(inventory=inventory, product=product)
+#                now_pos = hedge_pos.position
+#                hedge_pos.position = hedge_pos.position + position
+#                hedge_pos.last_price = hedge_pos.price
+                #now_price = hedge_pos.price
+                #hedge_pos.price = (now_price*now_pos + float(price) * int(volume))/hedge_pos.position
+#                hedge_pos.price = price
+#            except Exception as e:
+#                print e
+#                hedge_pos = HedgePos.objects.create(
+#                    inventory = inventory,
+#                    product = product,
+#                    position = position,
+#                    last_price = price,
+#                    price = price
+#                )
+#"""
     except Exception, e:
         print e
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory is incorrectly'}))
@@ -139,7 +143,22 @@ def create_hedge_tran(request):
        # to_inventory = to_invetory
     )
     hedge_tran.save()
+    print hedge_tran.id
+    if hedge_type.lower() == 'purchase':
+        position = int(volume)
+    elif hedge_type.lower() == 'sell':
+        position = -int(volume)
+
+    hedge_pos = HedgePos.objects.create(
+        inventory = inventory,
+        product = product,
+        position = position,
+        last_price = price,
+        price = price
+    )
     hedge_pos.save()
+    sell_price.hedge_volume = position
+    sell_price.save()
     inventory.save()
     
     return HttpResponse(json.dumps({'response': 'success'}))
@@ -198,6 +217,7 @@ def hedge_pos(request):
     
         sell_price = SellPrice.objects.get(inventory=h.inventory, product=h.product)
         data['name'] = h.inventory.name
+        data['product_name'] = h.product.name
         #data['volume'] = h.inventory.volumn
         data['volume'] = sell_price.volume
 #        if inv in hedge_invs:
@@ -208,6 +228,7 @@ def hedge_pos(request):
         data['overview'] = 0
         data['summary'] = 0
         data['cost_stats'] = sell_price.avg_price
+        data['create_date'] = h.create_date
 #        data1 = get_request_data('HOZ2016')
         rows.append(data)
     '''
@@ -255,9 +276,44 @@ def get_request_data(market):
     data = content['dataset']['data'][0:10]
     return data
 
+#@require_http_methods(['POST'])
+#@csrf_exempt
+#@login_required
 def hedge_pos_view(request):
     options = {}
+#    inventories = Inventory.objects.all()
+#    hedge_trans = Hedge_Tran.objects.all()
+#    hedge_invs = [x.inventory for x in hedge_trans]
     rows = []
+
+#    for inv in inventories:
+    hedge_pos = HedgePos.objects.all()
+    for h in hedge_pos:
+        data = {}
+    
+        sell_price = SellPrice.objects.get(inventory=h.inventory, product=h.product)
+        data['name'] = h.inventory.name
+        data['product_name'] = h.product.name
+        #data['volume'] = h.inventory.volumn
+        data['volume'] = sell_price.volume
+#        if inv in hedge_invs:
+#            ht = [x for x in hedge_trans if x.inventory.name == inv.name][0]
+        data['pos'] = h.position
+        data['price'] = h.price
+        data['margin'] = 0
+        data['overview'] = 0
+        data['summary'] = 0
+        data['cost_stats'] = sell_price.avg_price
+        data['create_date'] = h.create_date
+#        data1 = get_request_data('HOZ2016')
+        rows.append(data)
+    '''
+    try:
+        hedge_tran = Hedge_Tran.objects.get(pk=hedge_tran_id)
+    except Hedge_Tran.DoesNotExist:
+        hedge_tran = {}
+    '''
+
     options.update({'data': rows})
     render_to_url = 'hidden/hedge_pos_view.html'
     return render_to_response(render_to_url, options)

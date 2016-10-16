@@ -18,6 +18,8 @@ class Inventory(models.Model):
 class SellPrice(models.Model):
     inventory = models.ForeignKey(Inventory)
     product = models.ForeignKey(Product)
+    phy_volume = models.IntegerField(null=True, default=0)
+    hedge_volume = models.IntegerField(null=True, default=0)
     volume = models.IntegerField(null=True, default=0)
     price = models.FloatField(null=True, default=0)
     avg_price = models.FloatField(null=True, default=0)
@@ -27,5 +29,8 @@ class HedgePos(models.Model):
     inventory = models.ForeignKey(Inventory)
 #    fuel_class = models.ForeignKey(Fuel_Class)
     product = models.ForeignKey(Product)
+    trans = models.IntegerField(null=True, default=0)
     position = models.IntegerField(null=True, default=0)
+    last_price = models.FloatField(null=True, default=0)
     price = models.FloatField(null=True, default=0)
+    create_date = models.DateTimeField(null=True, auto_now=True)

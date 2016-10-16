@@ -27,6 +27,7 @@
                     <thead>
                     <tr>
                         <th>Inventory name</th>
+                        <th>Porduct name</th>
                         <th class="number">Volume</th>
                         <th class="number">Position</th>
                         <th class="number">Price</th>
@@ -34,6 +35,7 @@
                         <th class="number">Cost Stats</th>
                         <th class="number">Supply Overview</th>
                         <th class="number">Sales Summary</th>
+                        <th>Create Date</th>
                     </tr>
                     </thead>
 
@@ -42,6 +44,7 @@
                     {% for x in data %}
                     <tr>
                         <td>{{x.name}}</td>
+                        <td>{{x.product_name}}</td>
                         <td style="text-align:right">{{x.volume}}</td>
                         <td style="text-align:right">{{x.pos}}</td>
                         <td style="text-align:right">{{x.price}}</td>
@@ -49,6 +52,7 @@
                         <td style="text-align:right">{{x.cost_stats}}</td>
                         <td style="text-align:right">{{x.overview}}</td>
                         <td style="text-align:right">{{x.summary}}</td>
+                        <td>{{x.create_date | date:'Y-m-d H:i'}}</td>
 
                     </tr>
                     {% endfor %}
