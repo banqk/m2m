@@ -148,6 +148,7 @@ def create_hedge_tran(request):
         position = int(volume)
     elif hedge_type.lower() == 'sell':
         position = -int(volume)
+        sell_price.hedge_price = price
 
     hedge_pos = HedgePos.objects.create(
         inventory = inventory,
@@ -158,6 +159,7 @@ def create_hedge_tran(request):
     )
     hedge_pos.save()
     sell_price.hedge_volume += position
+#    sell_price.hedge_price = price
     sell_price.save()
     inventory.save()
     
