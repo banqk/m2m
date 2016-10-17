@@ -107,6 +107,7 @@ def create_physical(request):
                 out_volume = product.volume
                 #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
                 sell_price.volume -= int(gross_volume)
+                sell_price.phy_volume -= int(gross_volume)
                 #product.price = out_new_price
             to_inventory = request_vals.get('to_inventory')
             if to_inventory == inventory_id:
