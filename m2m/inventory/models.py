@@ -22,6 +22,8 @@ class SellPrice(models.Model):
     hedge_volume = models.IntegerField(null=True, default=0)
     volume = models.IntegerField(null=True, default=0)
     price = models.FloatField(null=True, default=0)
+    hedge_price = models.FloatField(null=True, default=0)
+    hedge_avg_price = models.FloatField(null=True, default=0)
     avg_price = models.FloatField(null=True, default=0)
 
 #hedge position

@@ -157,7 +157,7 @@ def create_hedge_tran(request):
         price = price
     )
     hedge_pos.save()
-    sell_price.hedge_volume = position
+    sell_price.hedge_volume += position
     sell_price.save()
     inventory.save()
     
