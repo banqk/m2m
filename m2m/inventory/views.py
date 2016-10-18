@@ -183,3 +183,39 @@ def invent_summ(request):
     options.update({'data': rows})
     render_to_url = 'hidden/invent_summ.html'
     return render_to_response(render_to_url, options)
+def invent_summ_hedge(request):
+    #request_vals = request.POST
+    #products = request_vals.getlist('products[]', '')
+
+
+    #if not isinstance(products, list):
+    #    products = [products]
+    try:
+        if request.user.user_privilages.code == 1:
+            inventories = Inventory.objects.all()
+            m2m_accounts = Account.objects.all()
+        else:
+            user = User.objects.filter(pk=request.user.id)
+            m2m_accounts = Account.objects.filter(user = user)
+            inventories = Inventory.objects.filter(m2m_account__in=m2m_accounts)
+    except Exception:
+        inventories = {}
+    rows = []
+    options = {}
+
+    for inventory in inventories:
+        products = inventory.products
+        sell_price = SellPrice.objects.filter(inventory=inventory)
+        for s in sell_price:
+            new_one = s 
+            rows.append(new_one)
+
+#        sell_price.inventory = inventory
+#        sell_price.product = product
+#        sell_price.volume = p['volume']
+#        sell_price.price = p['price']
+#        sell_price.avg_price = p['price']
+#        sell_price.save()
+    options.update({'data': rows})
+    render_to_url = 'hidden/invent_summ.html'
+    return render_to_response(render_to_url, options)

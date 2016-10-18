@@ -149,6 +149,35 @@ def create_hedge_tran(request):
     elif hedge_type.lower() == 'sell':
         position = -int(volume)
         sell_price.hedge_price = price
+    try:
+	one_pos = HedgePos.objects.get(inventory=inventory, product=product)
+	position = one_pos.position + position
+	#now_price = hedge_pos.price
+	#hedge_pos.price = (now_price*now_pos + float(price) * int(volume))/hedge_pos.position
+	#hedge_pos.price = price
+        
+	hedge_pos = HedgePos.objects.create(
+	    inventory = inventory,
+	    product = product,
+	    position = position,
+	    last_price = price,
+	    price = price
+	)
+    except Exception as e:
+	print e
+	hedge_pos = HedgePos.objects.create(
+	    inventory = inventory,
+	    product = product,
+	    position = position,
+	    last_price = price,
+	    price = price
+	)
+    print type(hedge_pos)
+    if hedge_type.lower() == 'purchase':
+        position = int(volume)
+    elif hedge_type.lower() == 'sell':
+        position = -int(volume)
+        sell_price.hedge_price = price
 
     hedge_pos = HedgePos.objects.create(
         inventory = inventory,
