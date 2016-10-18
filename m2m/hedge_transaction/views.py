@@ -150,19 +150,26 @@ def create_hedge_tran(request):
         position = -int(volume)
         sell_price.hedge_price = price
     try:
-	one_pos = HedgePos.objects.get(inventory=inventory, product=product)
+	one_pos = HedgePos.objects.filter(inventory=inventory, product=product).latest('id')
 	position = one_pos.position + position
 	#now_price = hedge_pos.price
 	#hedge_pos.price = (now_price*now_pos + float(price) * int(volume))/hedge_pos.position
 	#hedge_pos.price = price
-        
+        one_pos.status = 'CLOSED'
+        if position == 0:
+            status = 'CLOSED'
+        else:
+            status = 'OPEN'
 	hedge_pos = HedgePos.objects.create(
 	    inventory = inventory,
 	    product = product,
 	    position = position,
 	    last_price = price,
-	    price = price
+	    price = price,
+            status = status
 	)
+       one_pos.save()
+       hedge_pos.save()
     except Exception as e:
 	print e
 	hedge_pos = HedgePos.objects.create(
@@ -170,23 +177,11 @@ def create_hedge_tran(request):
 	    product = product,
 	    position = position,
 	    last_price = price,
-	    price = price
+	    price = price,
+            status = 'OPEN'
 	)
-    print type(hedge_pos)
-    if hedge_type.lower() == 'purchase':
-        position = int(volume)
-    elif hedge_type.lower() == 'sell':
-        position = -int(volume)
-        sell_price.hedge_price = price
+        hedge_pos.save()
 
-    hedge_pos = HedgePos.objects.create(
-        inventory = inventory,
-        product = product,
-        position = position,
-        last_price = price,
-        price = price
-    )
-    hedge_pos.save()
     sell_price.hedge_volume += position
 #    sell_price.hedge_price = price
     sell_price.save()
@@ -335,6 +330,7 @@ def hedge_pos_view(request):
         data['overview'] = 0
         data['summary'] = 0
         data['cost_stats'] = sell_price.avg_price
+        data['status'] = h.status
         data['create_date'] = h.create_date
 #        data1 = get_request_data('HOZ2016')
         rows.append(data)
