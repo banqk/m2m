@@ -169,8 +169,8 @@ def create_hedge_tran(request):
 	    price = price,
             status = status
 	)
-       #one_pos.save()
-       hedge_pos.save()
+        one_pos.save()
+        hedge_pos.save()
     except Exception as e:
 	print e
 	hedge_pos = HedgePos.objects.create(
