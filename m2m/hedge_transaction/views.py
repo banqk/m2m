@@ -156,6 +156,7 @@ def create_hedge_tran(request):
 	#hedge_pos.price = (now_price*now_pos + float(price) * int(volume))/hedge_pos.position
 	#hedge_pos.price = price
         one_pos.status = 'CLOSED'
+        print one_pos.status
         if position == 0:
             status = 'CLOSED'
         else:
@@ -168,7 +169,7 @@ def create_hedge_tran(request):
 	    price = price,
             status = status
 	)
-       one_pos.save()
+       #one_pos.save()
        hedge_pos.save()
     except Exception as e:
 	print e
