@@ -239,6 +239,9 @@ def hedge_pos(request):
 
 #    for inv in inventories:
     hedge_pos = HedgePos.objects.all()
+    data1 = get_request_data('HOZ2016')
+    data2 = get_request_data('RBZ2016')
+    now_price = data1[0]
     for h in hedge_pos:
         data = {}
     
