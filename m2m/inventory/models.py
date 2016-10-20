@@ -33,7 +33,7 @@ class HedgePos(models.Model):
     product = models.ForeignKey(Product)
     trans = models.IntegerField(null=True, default=0)
 #    trans = models.CharField(max_length=250)
-    #position = models.IntegerField(null=True, default=0)
+    position = models.IntegerField(null=True, default=0)
     last_price = models.FloatField(null=True, default=0)
     price = models.FloatField(null=True, default=0)
     create_date = models.DateTimeField(null=True, auto_now=True)

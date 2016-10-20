@@ -156,7 +156,7 @@ def hedge_tran(request):
         hedge_tran = {}
 
     options.update({'hedge_tran': hedge_tran})
-    render_to_url = 'hidden/edit_hedge_transaction.html'
+    render_to_url = 'hidden/edit_hedge_trans.html'
     return render_to_response(render_to_url, options)
 
 
