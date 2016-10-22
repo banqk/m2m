@@ -3,7 +3,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
-from hedge_transaction.models import Hedge_Tran
+from hedge_transaction.models import Hedge_Tran, Hedge_Price
 from hedge_account.models import Hedge_Account
 from inventory.models import Inventory, HedgePos, SellPrice
 from product.models import Product
@@ -11,6 +11,7 @@ from hedge_instrument.models import Instrument
 import simplejson as json
 import logging
 import urllib2
+import time
 
 
 @login_required
@@ -239,9 +240,15 @@ def hedge_pos(request):
 
 #    for inv in inventories:
     hedge_pos = HedgePos.objects.all()
-    data1 = get_request_data('HOZ2016')
-    data2 = get_request_data('RBZ2016')
-    now_price = data1[0]
+    #data1 = get_request_data('HOZ2016')
+    #data2 = get_request_data('RBZ2016')
+    current_date = time.strftime('%Y-%m-%d',time.localtime(time.time()-24*3600))
+    print current_date
+    one_hedge = Hedge_Price.objects.filter(h_date=str(current_date), h_type='HOZ2016')
+    for one in one_hedge:
+        print one.h_settle
+        now_price = one.h_settle
+        break
     for h in hedge_pos:
         data = {}
     
@@ -289,8 +296,33 @@ def hedge_price(request):
         "Volume",
         "Open Interest"
     ]
-    data1 = get_request_data('HOZ2016')
-    data2 = get_request_data('RBZ2016')
+    #data1 = get_request_data('HOZ2016')
+    #data2 = get_request_data('RBZ2016')
+    types = ['HOZ2016', 'RBZ2016']
+    price_list = {}
+    for t in types:
+        print t
+        data1 = get_request_data(t)
+        data1.reverse()
+        price_list[t] = data1
+        for d in data1:
+            hedge_price = Hedge_Price.objects.create(
+                h_date = d[0],
+                h_open = d[1],
+                h_high = d[2],
+                h_low = d[3],
+                h_last = d[4],
+                h_change = d[5],
+                h_settle = d[6],
+                h_volume = d[7],
+                h_interest = d[8],
+                h_type = t,
+            )
+            hedge_price.save()
+            print d
+    print price_list
+    data1 = price_list[types[0]]
+    data2 = price_list[types[1]]
 
     options.update({'col_names': col_names, 'data1': data1, 'data2': data2})
     options.update({'settle_price1': data1[0][6], 'settle_price2': data2[0][6]})

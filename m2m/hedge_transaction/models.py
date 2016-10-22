@@ -19,3 +19,16 @@ class Hedge_Tran(models.Model):
     trader = models.CharField(max_length=100)
     status = models.CharField(max_length=20) 
     program = models.CharField(max_length=100)
+
+class Hedge_Price(models.Model):
+    h_date = models.CharField(max_length=100)
+    h_open = models.FloatField(null=True, default=0)
+    h_high = models.FloatField(null=True, default=0)
+    h_low = models.FloatField(null=True, default=0)
+    h_last = models.FloatField(null=True, default=0)
+    h_change = models.FloatField(null=True, default=0)
+    h_settle = models.FloatField(null=True, default=0)
+    h_volume = models.IntegerField(null=True, default=0)
+    h_interest = models.FloatField(null=True, default=0)
+    h_type = models.CharField(max_length=20)
+    
