@@ -87,6 +87,7 @@ def create_physical(request):
             print out_new_price
             sell_price.volume += int(gross_volume)
             sell_price.phy_volume += int(gross_volume)
+            inventory.volume += int(gross_volume)
             sell_price.avg_price = out_new_price
         elif phy_type.lower() == 'sell':
             if sell_price.volume < int(net_volume):
@@ -97,6 +98,7 @@ def create_physical(request):
                 #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
                 print '!!!!!!!!!!!!!'
                 sell_price.volume -= int(gross_volume)
+                inventory.volume -= int(gross_volume)
                 if sell_price.phy_volume == 0:
                     sell_price.phy_volume = sell_price.volume - int(gross_volume)
                 else:
@@ -110,6 +112,7 @@ def create_physical(request):
                 out_volume = product.volume
                 #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
                 sell_price.volume -= int(gross_volume)
+                inventory.volume -= int(gross_volume)
                 if sell_price.phy_volume == 0:
                     sell_price.phy_volume = sell_price.volume - int(gross_volume)
                 else:
@@ -128,8 +131,9 @@ def create_physical(request):
                 new_price = (now_volume*now_price + int(gross_volume)* float(price))/new_volume
                 sellprice.price = new_price
                 sellprice.volume = new_volume
-                if sell_price.phy_volume == 0:
-                    sell_price.phy_volume = sell_price.volume + int(gross_volume)
+                to_invent.volume = new_volume
+                if sellprice.phy_volume == 0:
+                    sellprice.phy_volume = sell_price.volume + int(gross_volume)
                 else:
                     sellprice.phy_volume += new_volume
                 print 'AAAAAAAAAAAAAAAAAAA'
