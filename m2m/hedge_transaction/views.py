@@ -242,9 +242,10 @@ def hedge_pos(request):
     hedge_pos = HedgePos.objects.all()
     #data1 = get_request_data('HOZ2016')
     #data2 = get_request_data('RBZ2016')
-    current_date = time.strftime('%Y-%m-%d',time.localtime(time.time()-24*3600))
+    current_date = time.strftime('%Y-%m-%d',time.localtime(time.time()-2*24*3600))
     print current_date
     one_hedge = Hedge_Price.objects.filter(h_date=str(current_date), h_type='HOZ2016')
+    now_price = 0
     for one in one_hedge:
         print one.h_settle
         now_price = one.h_settle
@@ -261,8 +262,8 @@ def hedge_pos(request):
 #            ht = [x for x in hedge_trans if x.inventory.name == inv.name][0]
         data['pos'] = h.position
         data['price'] = h.price
-        data['margin'] = 0
-        data['overview'] = 0
+        data['margin'] = now_price - h.price 
+        data['overview'] = (now_price - h.price) * sell_price.volume
         data['summary'] = 0
         data['cost_stats'] = sell_price.avg_price
         data['create_date'] = h.create_date
@@ -350,6 +351,14 @@ def hedge_pos_view(request):
 
 #    for inv in inventories:
     hedge_pos = HedgePos.objects.all()
+    current_date = time.strftime('%Y-%m-%d',time.localtime(time.time()-2*24*3600))
+    print current_date
+    one_hedge = Hedge_Price.objects.filter(h_date=str(current_date), h_type='HOZ2016')
+    now_price = 0
+    for one in one_hedge:
+        print one.h_settle
+        now_price = one.h_settle
+        break
     for h in hedge_pos:
         data = {}
     
@@ -362,8 +371,8 @@ def hedge_pos_view(request):
 #            ht = [x for x in hedge_trans if x.inventory.name == inv.name][0]
         data['pos'] = h.position
         data['price'] = h.price
-        data['margin'] = 0
-        data['overview'] = 0
+        data['margin'] = now_price - h.price 
+        data['overview'] = (now_price - h.price) * sell_price.volume
         data['summary'] = 0
         data['cost_stats'] = sell_price.avg_price
         data['status'] = h.status
