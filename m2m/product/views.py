@@ -53,12 +53,6 @@ def create_product(request):
     #inventory_name = request_vals.get('inventory')
     print account_name
     try:
-        product = Product.objects.get(name=name)
-        return HttpResponse(json.dumps({'response':'faliure', 'info':'The product name already exists in the application'}))
-    except Exception:
-        pass
-
-    try:
         fuel_class = Fuel_Class.objects.get(code=fuel_name)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of fuel class is incorrectly'}))
@@ -66,6 +60,10 @@ def create_product(request):
         account = Account.objects.get(name=account_name)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of m2m account is incorrectly'}))
+    products = Product.objects.filter(m2m_account=account)
+    if name in [p.name for p in products]:
+        return HttpResponse(json.dumps({'response': 'faliure',
+                                        'info': 'The product name already exists in the account ' + account_name}))
     #try:
     #    inventory = Inventory.objects.get(name=inventory_name)
     #except Exception:
@@ -92,10 +90,11 @@ def update_product(request):
     fuel_class = request_vals.get('fuel_class').strip()
     description = request_vals.get('description')
     try:
-        product = Product.objects.get(name=name)
-        print product.id
-        if str(product.id) != product_id:
-            return HttpResponse(json.dumps({'response':'faliure', 'info':'The product name already exists in the application'}))
+        product = Product.objects.get(pk=product_id)
+        products = Product.objects.filter(m2m_account=product.m2m_account)
+        if name in [p.name for p in products]:
+            return HttpResponse(json.dumps({'response': 'faliure',
+                                            'info': 'The product name already exists in the account'}))
     except Exception:
         pass
     try:
