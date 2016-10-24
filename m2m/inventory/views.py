@@ -41,7 +41,7 @@ def create_inventory(request):
     fuel_type = request_vals.get('fuel_type')
     in_location = request_vals.get('in_location')
     id_number = request_vals.get('id_number')
-    account_name = request_vals.get('account_id').strip()
+    account_id = request_vals.get('account_id').strip()
     volume = request_vals.get('volume').strip()
     if volume == '':
         volume = 0
@@ -53,7 +53,7 @@ def create_inventory(request):
         pass
 
     try:
-        account = Account.objects.get(name=account_name)
+        account = Account.objects.get(pk=account_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of account is incorrectly'}))
 
