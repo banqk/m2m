@@ -49,7 +49,7 @@ def create_hedge_account(request):
         pass
 
     try:
-        account = Account.objects.get(name=account_id)
+        account = Account.objects.get(pk=account_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of account is incorrectly'}))
 
