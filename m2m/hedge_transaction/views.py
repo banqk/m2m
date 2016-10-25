@@ -302,6 +302,7 @@ def hedge_price(request):
     'Inventory Name',
     'Product Name',
     'Margin',
+    'Volume',
     'Type'
     ]
     #data1 = get_request_data('HOZ2016')
@@ -327,6 +328,7 @@ def hedge_price(request):
                 data['product_name'] = h.product.name
                 data['margin'] = data1[0][6] - h.price 
                 data['f_type'] = t
+                data['volume'] = sell_price.hedge_volume
                 rows.append(data)
             else:
                 continue

@@ -34,9 +34,11 @@
                     <tbody>
                      {% for ds in margin_list %}
                      <tr>
-                         {% for d in ds %}
-                          <td class="number">{{d}}</td>
-                         {% endfor %}
+                          <td class="number">{{ds.name}}</td>
+                          <td class="number">{{ds.product_name}}</td>
+                          <td class="number">{{ds.margin}}</td>
+                          <td class="number">{{ds.volume}}</td>
+                          <td class="number">{{ds.f_type}}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -70,10 +72,9 @@
                     <tbody>
                      {% for ds in data1 %}
                      <tr>
-                          <td class="number">{{ds.name}}</td>
-                          <td class="number">{{ds.product_name}}</td>
-                          <td class="number">{{ds.margin}}</td>
-                          <td class="number">{{ds.f_type}}</td>
+                         {% for d in ds %}
+                             <td class="number">{{d}}</td>
+                         {% endfor %}
                     </tr>
                     {% endfor %}
                     </tbody>
