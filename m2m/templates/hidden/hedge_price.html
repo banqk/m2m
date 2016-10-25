@@ -13,6 +13,39 @@
     <div class="box">
 
         <div class="box-head clearfix">
+            <h1 class="pull-left">Margin for all</h1>
+                <!--
+            <a href="javascript: location.reload();" class="btn btn-add" data-toggle="modal" data-target="#add-hedge-account">
+                <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Update price</a> -->
+            </h1>
+        </div>
+        <div class="box-content">
+            <div class="table-container">
+                <div role="tabpanel" class="tab-pane">
+                    <table class="table data-table">
+                    <thead>
+                    <tr>
+                        {% for name in margin_col %}
+                             <th>{{name}}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                     {% for ds in margin_list %}
+                     <tr>
+                         {% for d in ds %}
+                          <td class="number">{{d}}</td>
+                         {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+           </div>
+        </div>
+
+        <div class="box-head clearfix">
             <h1 class="pull-left">Price for HOZ2016</h1>
             <h1 class="pull-right">
                 <span>settlement price today {{settle_price1}}</span>,

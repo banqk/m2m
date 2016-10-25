@@ -8,6 +8,7 @@ from hedge_account.models import Hedge_Account
 from inventory.models import Inventory, HedgePos, SellPrice
 from product.models import Product
 from hedge_instrument.models import Instrument
+from fuel_class.models import Fuel_Class
 import simplejson as json
 import logging
 import urllib2
@@ -297,15 +298,39 @@ def hedge_price(request):
         "Volume",
         "Open Interest"
     ]
+    margin_col = [
+    'Inventory Name',
+    'Product Name',
+    'Margin',
+    'Type'
+    ]
     #data1 = get_request_data('HOZ2016')
     #data2 = get_request_data('RBZ2016')
     types = ['HOZ2016', 'RBZ2016']
     price_list = {}
+    margin_list = {}
+    rows = []
     for t in types:
         print t
         data1 = get_request_data(t)
-        data1.reverse()
+        #data1.reverse()
         price_list[t] = data1
+        
+        hedge_pos = HedgePos.objects.all()
+        for h in hedge_pos:
+            data = {}
+    
+            code = h.product.fuel_class.code
+            if code == t[0:2]:
+                sell_price = SellPrice.objects.get(inventory=h.inventory, product=h.product)
+                data['name'] = h.inventory.name
+                data['product_name'] = h.product.name
+                data['margin'] = data1[0][6] - h.price 
+                data['f_type'] = t
+                rows.append(data)
+            else:
+                continue
+        margin_list[t] = rows
         for d in data1:
             hedge_price = Hedge_Price.objects.create(
                 h_date = d[0],
@@ -328,6 +353,7 @@ def hedge_price(request):
     options.update({'col_names': col_names, 'data1': data1, 'data2': data2})
     options.update({'settle_price1': data1[0][6], 'settle_price2': data2[0][6]})
     options.update({'settle_price_y1': data1[1][6], 'settle_price_y2': data2[1][6]})
+    options.update({'margin_col': margin_col,'margin_list': rows})
     render_to_url = 'hidden/hedge_price.html'
     return render_to_response(render_to_url, options)
 
