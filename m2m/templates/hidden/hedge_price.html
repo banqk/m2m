@@ -70,9 +70,10 @@
                     <tbody>
                      {% for ds in data1 %}
                      <tr>
-                         {% for d in ds %}
-                          <td class="number">{{d}}</td>
-                         {% endfor %}
+                          <td class="number">{{ds.name}}</td>
+                          <td class="number">{{ds.product_name}}</td>
+                          <td class="number">{{ds.margin}}</td>
+                          <td class="number">{{ds.f_type}}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
