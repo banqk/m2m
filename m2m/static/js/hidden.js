@@ -440,6 +440,10 @@ $(function(){
         defaultDate: new Date(),
         format: 'YYYY-MM-DD HH:mm'
     });
+    $('#year_date').datetimepicker({
+        defaultDate: new Date(),
+        format: 'YYYY'
+    });
 
 });
 
@@ -1338,7 +1342,7 @@ function add_instrument() {
     $.ajax({
         type: "POST",
         url: "/inst/create_inst/",
-        data: ({ instrument : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: text_vals[3], expiration_date: text_vals[4], symbol: $("#instrument_info select").val(),put_call: text_vals[5], strike_price: text_vals[6], counter_party: text_vals[7]}),
+        data: ({ instrument : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: text_vals[3], expiration_date: text_vals[4],put_call: text_vals[5], strike_price: text_vals[6], counter_party: text_vals[7]}),
         success: function(html){
 
             json_data = JSON.parse(html);
