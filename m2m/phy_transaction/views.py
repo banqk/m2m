@@ -90,33 +90,33 @@ def create_physical(request):
             inventory.volume += int(gross_volume)
             sell_price.avg_price = out_new_price
         elif phy_type.lower() == 'sell':
-            if sell_price.volume < int(net_volume):
-                return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the product from the inventory'}))
+#            if sell_price.volume < int(net_volume):
+#                return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the product from the inventory'}))
+#            else:
+            out_price = sell_price.price
+            out_volume = sell_price.volume
+            #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
+            print '!!!!!!!!!!!!!'
+            sell_price.volume -= int(gross_volume)
+            inventory.volume -= int(gross_volume)
+            if sell_price.phy_volume == 0:
+                sell_price.phy_volume = sell_price.volume - int(gross_volume)
             else:
-                out_price = sell_price.price
-                out_volume = sell_price.volume
-                #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
-                print '!!!!!!!!!!!!!'
-                sell_price.volume -= int(gross_volume)
-                inventory.volume -= int(gross_volume)
-                if sell_price.phy_volume == 0:
-                    sell_price.phy_volume = sell_price.volume - int(gross_volume)
-                else:
-                    sell_price.phy_volume -= int(gross_volume)
-                print sell_price.volume
+                sell_price.phy_volume -= int(gross_volume)
+            print sell_price.volume
                 #product.price = out_new_price
         elif phy_type.lower() == 'transfer':
-            if sell_price.volume < int(net_volume):
-                return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the product from the inventory'}))
-            else:
-                out_volume = product.volume
+#            if sell_price.volume < int(net_volume):
+#                return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the product from the inventory'}))
+#            else:
+            out_volume = product.volume
                 #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
-                sell_price.volume -= int(gross_volume)
-                inventory.volume -= int(gross_volume)
-                if sell_price.phy_volume == 0:
-                    sell_price.phy_volume = sell_price.volume - int(gross_volume)
-                else:
-                    sell_price.phy_volume -= int(gross_volume)
+            sell_price.volume -= int(gross_volume)
+            inventory.volume -= int(gross_volume)
+            if sell_price.phy_volume == 0:
+                sell_price.phy_volume = sell_price.volume - int(gross_volume)
+            else:
+                sell_price.phy_volume -= int(gross_volume)
                 #product.price = out_new_price
             to_inventory = request_vals.get('to_inventory')
             if to_inventory == inventory_id:

@@ -41,6 +41,7 @@ def create_inst(request):
     put_call = request_vals.get('put_call')
     strike_price = request_vals.get('strike_price')
     counter_id = request_vals.get('counter_party')
+    symbol = fuel_id + str(year) + str(month)
     print fuel_id
     print counter_id
     print symbol

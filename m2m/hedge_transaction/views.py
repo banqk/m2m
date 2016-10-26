@@ -90,10 +90,10 @@ def create_hedge_tran(request):
             if hedge_type.lower() == 'purchase':
                 sell_price.volume += int(volume)
             elif hedge_type.lower() == 'sell':
-                if sell_price.volume < int(volume):
-                    return HttpResponse(json.dumps({'response':'faliure', 'info':'The volume greater than the inventory'}))
-                else:
-                    sell_price.volume -= int(volume)
+#                if sell_price.volume < int(volume):
+#                    return HttpResponse(json.dumps({'response':'faliure', 'info':'The volume greater than the inventory'}))
+#                else:
+                sell_price.volume -= int(volume)
 #            else:
 #                to_inventory = request_vals.get('to_inventory')
 #                try:
