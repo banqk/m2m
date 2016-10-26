@@ -43,8 +43,9 @@ def create_inst(request):
     counter_id = request_vals.get('counter_party')
     m = ['F','G','H','J','K','M','N','Q','U','V','X','Z']
     print month
-    print year
-    symbol = fuel_id +m(int(month)) +  str(year)
+    print type(month)
+    print type(year)
+    symbol = fuel_id +m[int(month)-1] +  str(year)
     print fuel_id
     print counter_id
     print symbol
