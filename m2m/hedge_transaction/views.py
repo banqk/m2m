@@ -304,6 +304,7 @@ def hedge_price(request):
     'Margin',
     'Volume',
     'Current Price',
+    'Transaction Price',
     'Type'
     ]
     #data1 = get_request_data('HOZ2016')
