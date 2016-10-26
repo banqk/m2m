@@ -23,7 +23,7 @@ def hedge_inst(request):
         counter_names += counter.name + '$'
     print '11111111111111111111'
     print counter_names
-    options.update({'instruments': instruments, 'fuels':fuel_codes, 'counters':counter_names})
+    options.update({'instruments': instruments, 'fuels':fuel_codes, 'counters':counter_names, 'months':range(1,13)})
     render_to_url = 'hidden/hedge_instrument.html'
     return render_to_response(render_to_url, options)
 
@@ -32,7 +32,7 @@ def hedge_inst(request):
 @login_required
 def create_inst(request):
     request_vals = request.POST
-    symbol = request_vals.get('symbol')
+    symbol = ''
     fuel_id = request_vals.get('fuel_class')
     year = request_vals.get('year')
     month = request_vals.get('month')

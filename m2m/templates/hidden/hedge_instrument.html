@@ -123,16 +123,22 @@
                         </div>
                         <div class="form-group">
                             <label for="">contract year</label>
-                            <input type="text" id="contract_year" class="form-control">
+                            <div class='input-group date form_datetime'>
+                                <input type='text' class="form-control" id="year_date"/>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="">contract month</label>
-                            <input type="text" id="contract_month" class="form-control">
+                            <select id="contract_month" class="form-control">
+                                {% for m in months %}
+                                <option value={{m}}>{{m}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="">expiration_date</label>
                             <div class='input-group date form_datetime'>
-                                <input type='text' class="form-control" id="expiration_date"/>
+                                <input type='text' class="form-control" id="trans_date"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -140,13 +146,6 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">contract symbol</label>
-                            <select id="con_symbol" class="form-control">
-                              <option value="HOZ2016">HOZ2016</option>
-                              <option value="RBZ2016">RBZ2016</option>
-                            </select>
-                        </div>
                         <div class="form-group">
                             <label for="">put call</label>
                             <input type="text" id="put call" class="form-control">
