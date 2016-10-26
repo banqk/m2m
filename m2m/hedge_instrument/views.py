@@ -42,6 +42,8 @@ def create_inst(request):
     strike_price = request_vals.get('strike_price')
     counter_id = request_vals.get('counter_party')
     m = ['F','G','H','J','K','M','N','Q','U','V','X','Z']
+    print month
+    print year
     symbol = fuel_id +m(int(month)) +  str(year)
     print fuel_id
     print counter_id
