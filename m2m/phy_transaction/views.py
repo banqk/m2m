@@ -17,24 +17,24 @@ def physicals(request):
     options = {}
     physicals = Physical.objects.all()
     products = Product.objects.all()
-    product_names = ''
-    for product in products:
-        product_names += product.name + ','
+#    product_names = ''
+#    for product in products:
+#        product_names += product.name + ','
     counter_names = ''
     counters = Counter.objects.all()
     for counter in counters:
         counter_names += counter.name + '$'
-    inventory_names = ''
+#    inventory_names = ''
     invents = Inventory.objects.all()
-    for invent in invents:
-        inventory_names += invent.name + ','
+#    for invent in invents:
+#        inventory_names += invent.name + ','
 
     suppliers = Counter.objects.filter(counter_type="Supplier")
     customers = Counter.objects.filter(counter_type="Customer")
     options.update({'supplier_list': '$'.join([x.name for x in suppliers])})
     options.update({'customer_list': '$'.join([x.name for x in customers])})
 
-    options.update({'physicals': physicals, 'counter_list': counter_names, 'product_list': product_names, 'invent_list':inventory_names})
+    options.update({'physicals': physicals, 'counter_list': counter_names, 'product_list': products, 'invent_list':invents})
     render_to_url = 'hidden/phy_transaction.html'
     return render_to_response(render_to_url, options)
 

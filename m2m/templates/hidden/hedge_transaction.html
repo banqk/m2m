@@ -132,11 +132,19 @@
                         </div>
                         <div class="form-group">
                             <label for="">inventory </label>
-                            <input type="text" id="inventory" class="form-control">
+                            <select id="inventory" class="form-control">
+                                {% for f in invent_list %}
+                                <option value={{f.name}}>{{f.name}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="">product </label>
-                            <input type="text" id="product" class="form-control">
+                            <label for="">product</label>
+                            <select id="product" class="form-control">
+                                {% for f in product_list %}
+                                <option value={{f.name}}>{{f.name}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="">contract</label>

@@ -183,7 +183,7 @@ $(function(){
             $('#to_inventory').parent().parent().remove()
         }
     });
-
+/*
     if ($('#auto_account').text().split(",").length > 1) {
    
         var data = $('#auto_account').text()
@@ -227,7 +227,8 @@ $(function(){
  	    }
         });
     }
-
+*/
+/*
     if($('#auto_fuel_class').text().split(",").length > 1){
         var data =  $('#auto_fuel_class').text()
         var fuel_input = document.getElementById('fuel_class')
@@ -249,7 +250,7 @@ $(function(){
  	    }
         });
     }
-    
+  */  
     if($('#auto_product').text().split(",").length > 1){
         var fuel_input = document.getElementById('product')
         prod_comboplete = new Awesomplete(fuel_input, {
@@ -331,6 +332,7 @@ $(function(){
         }
     }
 
+/*
     if($('#auto_inventory_product').text().split(",").length > 1){
         var product_input = document.getElementById('product')
         var product_comboplete = new Awesomplete(product_input, {
@@ -372,6 +374,7 @@ $(function(){
  	    }
         });
     }
+*/
     if($('#auto_to_inventory').text().split(",").length > 1){
         var invent_input1 = document.getElementById('to_inventory')
 		if (invent_input1) {
@@ -1171,7 +1174,8 @@ function add_product() {
     $.ajax({
         type: "POST",
         url: "/product/create_product/",
-        data: ({ name : text_vals[0], fuel_class: text_vals[2], description: text_vals[1], account: text_vals[3], inventory: text_vals[4]}),
+        //data: ({ name : text_vals[0], fuel_class: text_vals[2], description: text_vals[1], account: text_vals[3], inventory: text_vals[4]}),
+        data: ({ name : text_vals[0], fuel_class: $("#fuel_class").val(), description: text_vals[1], account: $("#m2m_account").val(), inventory: text_vals[4]}),
         success: function(html){
 
             json_data = JSON.parse(html);
@@ -1206,10 +1210,10 @@ function add_physical() {
         $.ajax({
             type: "POST",
             url: "/transaction/create_phy/",
-            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: text_vals[1],
-                product: text_vals[2], net_volume: text_vals[3],to_inventory: text_vals[4],
-                to_product: text_vals[5], gross_volume: text_vals[6], price: text_vals[7],
-                program: text_vals[8], counter: text_vals[9], trans_date: text_vals[10]}),
+            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: $("#inventory").val(),
+                product: $("#product").val(), net_volume: text_vals[1],to_inventory: text_vals[2],
+                to_product: text_vals[3], gross_volume: text_vals[4], price: text_vals[5],
+                program: text_vals[6], counter: $("#counter_party").val(, trans_date: text_vals[7]}),
             success: function(html){
 
                 json_data = JSON.parse(html);
@@ -1342,7 +1346,8 @@ function add_instrument() {
     $.ajax({
         type: "POST",
         url: "/inst/create_inst/",
-        data: ({ instrument : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: $("#contract_month").val(), expiration_date: text_vals[3],put_call: text_vals[4], strike_price: text_vals[5], counter_party: text_vals[6]}),
+        //data: ({ instrument : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: $("#contract_month").val(), expiration_date: text_vals[3],put_call: text_vals[4], strike_price: text_vals[5], counter_party: text_vals[6]}),
+        data: ({ instrument : text_vals[0], fuel_class: $("#fuel_class").val(), year: text_vals[1], month: $("#contract_month").val(), expiration_date: text_vals[2],put_call: text_vals[3], strike_price: text_vals[4], counter_party: text_vals[5]}),
         success: function(html){
 
             json_data = JSON.parse(html);

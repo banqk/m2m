@@ -23,6 +23,7 @@ def account(request):
         account = Account.objects.get(pk=account_id)
         if account.fuel_type is not None:
             fuel_type = [x.strip() for x in account.fuel_type.split(",") if x.strip() != ""]
+        fuels = Fuel_Class.objects.filter(m2m_account=account)
     except Account.DoesNotExist:
         pass
     try:
@@ -35,12 +36,13 @@ def account(request):
         hedge_accounts = {}
     products = Product.objects.filter(m2m_account=account_id)
     print products
+    print fuel_type
 #    options.update({'current_account_name': account.name})
     options.update({'account': account})
     options.update({'inventories': inventories})
     options.update({'hedge_accounts': hedge_accounts})
     options.update({'products': products})
-    options.update({'fuel_type': fuel_type})
+    options.update({'fuels': fuels})
     options.update({'fuel_type_str': ",".join(fuel_type)})
     render_to_url = 'hidden/single_account.html'
     return render_to_response(render_to_url, options)
