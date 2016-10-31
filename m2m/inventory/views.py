@@ -25,10 +25,10 @@ def inventories(request):
     except Exception:
         inventories = {}
 
-    for account in m2m_accounts:
-        account_names += account.name + ','
-    print account_names
-    options.update({'inventories': inventories, 'inven_names':account_names})
+#    for account in m2m_accounts:
+#        account_names += account.name + ','
+#    print account_names
+    options.update({'inventories': inventories, 'account_list':account_names})
     render_to_url = 'hidden/inventory.html'
     return render_to_response(render_to_url, options)
 

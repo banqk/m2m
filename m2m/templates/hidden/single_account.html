@@ -233,8 +233,8 @@
                         <div class="form-group">
                             <label for="">fuel type </label>
                             <select name="fuel_type" class="form-control">
-                                {% for ft in fuel_type %}
-                                 <option value="{{ft}}">{{ft}}</option>
+                                {% for ft in fuels %}
+                                 <option value="{{ft.code}}">{{ft.code}}</option>
                                 {% endfor %}
                             </select>
                         </div>

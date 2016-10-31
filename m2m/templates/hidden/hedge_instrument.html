@@ -119,7 +119,11 @@
                         </div>
                         <div class="form-group">
                             <label for="">fuel class</label>
-                            <input type="text" id="fuel_class" class="form-control">
+                            <select id="fuel_class" class="form-control">
+                                {% for f in fuels %}
+                                <option value={{f.code}}>{{f.code}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="">contract year</label>
