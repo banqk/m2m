@@ -20,10 +20,10 @@ def physicals(request):
 #    product_names = ''
 #    for product in products:
 #        product_names += product.name + ','
-    counter_names = ''
+#    counter_names = ''
     counters = Counter.objects.all()
-    for counter in counters:
-        counter_names += counter.name + '$'
+#    for counter in counters:
+#        counter_names += counter.name + '$'
 #    inventory_names = ''
     invents = Inventory.objects.all()
 #    for invent in invents:
@@ -34,7 +34,7 @@ def physicals(request):
     options.update({'supplier_list': '$'.join([x.name for x in suppliers])})
     options.update({'customer_list': '$'.join([x.name for x in customers])})
 
-    options.update({'physicals': physicals, 'counter_list': counter_names, 'product_list': products, 'invent_list':invents})
+    options.update({'physicals': physicals, 'counter_list': counters, 'product_list': products, 'invent_list':invents})
     render_to_url = 'hidden/phy_transaction.html'
     return render_to_response(render_to_url, options)
 
@@ -54,6 +54,8 @@ def create_physical(request):
     program = request_vals.get('program')
     trans_date = request_vals.get('trans_date')
     print 'trans_date=', trans_date
+    print counter_id
+    print product_id
     print counter_id
     to_inventory = ''
     sellprice = ''
@@ -87,7 +89,7 @@ def create_physical(request):
             print out_new_price
             sell_price.volume += int(gross_volume)
             sell_price.phy_volume += int(gross_volume)
-            inventory.volume += int(gross_volume)
+            inventory.volumn += int(gross_volume)
             sell_price.avg_price = out_new_price
         elif phy_type.lower() == 'sell':
 #            if sell_price.volume < int(net_volume):
@@ -98,7 +100,7 @@ def create_physical(request):
             #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
             print '!!!!!!!!!!!!!'
             sell_price.volume -= int(gross_volume)
-            inventory.volume -= int(gross_volume)
+            inventory.volumn -= int(gross_volume)
             if sell_price.phy_volume == 0:
                 sell_price.phy_volume = sell_price.volume - int(gross_volume)
             else:
@@ -112,7 +114,7 @@ def create_physical(request):
             out_volume = product.volume
                 #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
             sell_price.volume -= int(gross_volume)
-            inventory.volume -= int(gross_volume)
+            inventory.volumn -= int(gross_volume)
             if sell_price.phy_volume == 0:
                 sell_price.phy_volume = sell_price.volume - int(gross_volume)
             else:
@@ -131,7 +133,7 @@ def create_physical(request):
                 new_price = (now_volume*now_price + int(gross_volume)* float(price))/new_volume
                 sellprice.price = new_price
                 sellprice.volume = new_volume
-                to_invent.volume = new_volume
+                to_invent.volumn = new_volume
                 if sellprice.phy_volume == 0:
                     sellprice.phy_volume = sell_price.volume + int(gross_volume)
                 else:

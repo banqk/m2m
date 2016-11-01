@@ -20,15 +20,15 @@ def hedge_tran(request):
     options = {}
 
     products = Product.objects.all()
-    product_names = ''
-    for product in products:
-        product_names += product.name + ','
+#    product_names = ''
+#    for product in products:
+#        product_names += product.name + ','
 
     instruments = Instrument.objects.all()
-    instrument_names = ''
-    for instrument in instruments:
-        instrument_names += instrument.instrument + ','
-    print instrument_names
+#    instrument_names = ''
+#    for instrument in instruments:
+#        instrument_names += instrument.instrument + ','
+#    print instrument_names
 
     hedge_trans = Hedge_Tran.objects.all()
 
@@ -40,12 +40,12 @@ def hedge_tran(request):
     #instruments = Instrument.objects.all()
     #for instrument in instruments:
     #    instrument_names += instrument.symbol + ','
-    inventory_names = ''
+#    inventory_names = ''
     invents = Inventory.objects.all()
-    for invent in invents:
-        inventory_names += invent.name + ','
+#    for invent in invents:
+#        inventory_names += invent.name + ','
     print hedge_names
-    options.update({'hedge_trans': hedge_trans, 'hedge_account_list': hedge_names, 'invent_list': inventory_names, 'product_list':product_names, 'instrument_list':instrument_names})
+    options.update({'hedge_trans': hedge_trans, 'hedge_list': hedge_accounts, 'invent_list': invents, 'product_list':products, 'instrument_list':instruments})
     render_to_url = 'hidden/hedge_transaction.html'
     return render_to_response(render_to_url, options)
 
@@ -74,6 +74,9 @@ def create_hedge_tran(request):
     print hedge_type.lower() + 'aaaaaaaaa'
     print inventory_name + '!!!!!'
     print product_name
+    print '22222222'
+    print program
+    print status
     try:
         hedge_account = Hedge_Account.objects.get(name=hedge_id)
         inventory = Inventory.objects.get(name=inventory_name)
@@ -141,7 +144,7 @@ def create_hedge_tran(request):
         confirm_number = confirm_number,
         trader = trader,
         status = status,
-        program = program
+        program = program,
        # to_inventory = to_invetory
     )
     hedge_tran.save()
