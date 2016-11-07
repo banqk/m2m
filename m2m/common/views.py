@@ -23,7 +23,6 @@ def account(request):
         account = Account.objects.get(pk=account_id)
         if account.fuel_type is not None:
             fuel_type = [x.strip() for x in account.fuel_type.split(",") if x.strip() != ""]
-        fuels = Fuel_Class.objects.filter(m2m_account=account)
     except Account.DoesNotExist:
         pass
     try:
@@ -36,13 +35,12 @@ def account(request):
         hedge_accounts = {}
     products = Product.objects.filter(m2m_account=account_id)
     print products
-    print fuel_type
 #    options.update({'current_account_name': account.name})
     options.update({'account': account})
     options.update({'inventories': inventories})
     options.update({'hedge_accounts': hedge_accounts})
     options.update({'products': products})
-    options.update({'fuels': fuels})
+    options.update({'fuel_type': fuel_type})
     options.update({'fuel_type_str': ",".join(fuel_type)})
     render_to_url = 'hidden/single_account.html'
     return render_to_response(render_to_url, options)
@@ -73,7 +71,6 @@ def inventory(request):
     options = {}
     inventory_id = request.GET.get('inventory_id', '')
     print inventory_id
-
     try:
         inventory = Inventory.objects.get(pk=inventory_id)
     except Inventory.DoesNotExist:
@@ -107,7 +104,7 @@ def inventory(request):
     options.update({'supplier_ids': '$'.join([x.name for x in suppliers])})
     options.update({'customer_ids': '$'.join([x.name for x in customers])})
     options.update({'inventory': inventory})
-    options.update({'products': products})
+    options.update({'product_list': products})
     options.update({'sell_prices': sell_prices})
     options.update({'product_names': ','.join(in_products)})
     options.update({'all_products': all_products})
@@ -124,13 +121,10 @@ def inventory(request):
     hedge_names = ''
     for hedge in hedge_accounts:
         hedge_names += hedge.name + ','
-    instrument_names = ''
-    instruments = Instrument.objects.all()
-    for instrument in instruments:
-        instrument_names += instrument.symbol + ','
 
+    instruments = Instrument.objects.all()
     options.update({'hedge_list': hedge_names})
-    options.update({'instrument_list': instrument_names})
+    options.update({'instrument_list': instruments})
     render_to_url = 'hidden/edit_inventory.html'
     return render_to_response(render_to_url, options)
 
@@ -218,7 +212,7 @@ def get_prod(request):
     options = {}
     invent_name = request.POST.get('name')
     inventory = Inventory.objects.filter(name=invent_name)
-    products = ''
+    product = []
     try:
         prod_ids = inventory[0].products
         if "[" in prod_ids:
@@ -229,8 +223,10 @@ def get_prod(request):
         product = Product.objects.filter(pk__in=prod_ids)
     except Exception:
         product = []
+    print product
+    rt = []
     for p in product:
-        products += p.name + ','
-    
-    options.update({'response':'success','products': products})
+        rt.append({'id': p.id, 'name': p.name})
+
+    options.update({'response':'success','products': rt})
     return HttpResponse(json.dumps(options))

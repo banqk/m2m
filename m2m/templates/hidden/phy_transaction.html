@@ -133,8 +133,9 @@
                         <div class="form-group">
                             <label for="">inventory </label>
                             <select id="inventory" class="form-control">
+                                <option value="None">Select</option>
                                 {% for f in invent_list %}
-                                <option value={{f.name}}>{{f.name}}</option>
+                                <option value='{{f.name}}'>{{f.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -142,7 +143,7 @@
                             <label for="">product</label>
                             <select id="product" class="form-control">
                                 {% for f in product_list %}
-                                <option value={{f.name}}>{{f.name}}</option>
+                                <option value='{{f.id}}'>{{f.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -167,8 +168,8 @@
                         <div class="form-group">
                             <label for="">counter party </label>
                             <select id="counter_party" class="form-control">
-                                {% for f in counter_list %}
-                                <option value={{f.name}}>{{f.name}}</option>
+                                {% for f in customers %}
+                                <option value='{{f.name}}'>{{f.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -204,10 +205,7 @@
     </div>
 -->
 <div id='variables' style="display:none">
-    <span id="auto_inventory">{{invent_list}}</span>
-    <span id="auto_to_inventory">{{invent_list}}</span>
-    <span id="auto_product">{{product_list}}</span>
-    <span id="auto_to_product">{{product_list}}</span>
+    <span id="all_inventory_product">{{invList}}</span>
     <span id="auto_supplier_counter">{{supplier_list}}</span>
     <span id="auto_customer_counter">{{customer_list}}</span>
 </div>

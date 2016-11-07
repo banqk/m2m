@@ -54,21 +54,22 @@
 	    <table id="users" class="table is-datatable">
 		<thead>
 		    <tr>
-			<th class="select-checkbox no-filter"></th>
-			<th class="no-filter">ID</th>
-			<th >Type</th>
-			<th>Volume</th>
-                        <th>Counter Party</th>
-                        <th>Price</th>
-                        <th>Inventory</th>
-                        <th>Position</th>
-                        <th>Margin</th>
-                        <th>Create Date</th>
-
+				<th class="select-checkbox no-filter"></th>
+				<th >Inventory</th>
+				<th>Product</th>
+				<th>Volume</th>
+				<th>Position</th>
+				<th>Price</th>
+				<th>Margin</th>
+				<th>Cost</th>
+				<th>Summary</th>
+				<th>Status</th>
+				<th>Create Date</th>
 		    </tr>
 		</thead>
 		<tfoot>
 		    <tr class="filters">
+			<th></th>
 			<th></th>
 			<th></th>
 			<th></th>
@@ -84,7 +85,7 @@
 		<tbody>
                     {% for x in data %}
                      <tr>
-                        <td></td>
+						 <td></td>
                         <td>{{x.name}}</td>
                         <td>{{x.product_name}}</td>
                         <td style="text-align:right">{{x.volume}}</td>

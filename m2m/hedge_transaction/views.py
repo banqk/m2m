@@ -18,34 +18,37 @@ import time
 @login_required
 def hedge_tran(request):
     options = {}
-
     products = Product.objects.all()
-#    product_names = ''
-#    for product in products:
-#        product_names += product.name + ','
-
     instruments = Instrument.objects.all()
-#    instrument_names = ''
-#    for instrument in instruments:
-#        instrument_names += instrument.instrument + ','
-#    print instrument_names
-
     hedge_trans = Hedge_Tran.objects.all()
-
     hedge_accounts = Hedge_Account.objects.all()
-    hedge_names = ''
-    for hedge in hedge_accounts:
-        hedge_names += hedge.name + ','
-    #instrument_names = ''
-    #instruments = Instrument.objects.all()
-    #for instrument in instruments:
-    #    instrument_names += instrument.symbol + ','
-#    inventory_names = ''
     invents = Inventory.objects.all()
-#    for invent in invents:
-#        inventory_names += invent.name + ','
-    print hedge_names
-    options.update({'hedge_trans': hedge_trans, 'hedge_list': hedge_accounts, 'invent_list': invents, 'product_list':products, 'instrument_list':instruments})
+    invList = []
+    for inv in invents:
+        prod_ids = inv.products
+        if "[" in prod_ids:
+            prod_ids = prod_ids[1:-1]
+            prod_ids = [int(x.strip()[1:-1]) for x in prod_ids.split(',') if x.strip() != ""]
+        else:
+            prod_ids = []
+        pss = Product.objects.filter(pk__in=prod_ids)
+        ps = []
+        for p in pss:
+            ps.append({'id': p.id, 'name': p.name})
+        invList.append({'inv': inv.name, 'products': ps})
+    options.update({'invList': json.dumps(invList)})
+
+    hedgeList = []
+    for hedge in hedge_accounts:
+        invs = []
+        for inv in invents:
+            if hedge.m2m_account.id == inv.m2m_account.id:
+                invs.append({'id': inv.id, 'name': inv.name})
+        hedgeList.append({'account': hedge.name, 'invs': invs})
+    options.update({'hedgeList': json.dumps(hedgeList)})
+
+    options.update({'hedge_trans': hedge_trans, 'hedge_account_list': hedge_accounts, 'invent_list': invents,
+                    'product_list': products, 'instrument_list': instruments})
     render_to_url = 'hidden/hedge_transaction.html'
     return render_to_response(render_to_url, options)
 
@@ -58,7 +61,7 @@ def create_hedge_tran(request):
     hedge_type = request_vals.get('type')
     hedge_id = request_vals.get('hedge_account')
     inventory_name = request_vals.get('inventory')
-    product_name = request_vals.get('product')
+    product_id = request_vals.get('product')
     instrument_id = request_vals.get('contract')
     volume = request_vals.get('volume')
     price = request_vals.get('price')
@@ -73,21 +76,28 @@ def create_hedge_tran(request):
     to_inventory = ''
     print hedge_type.lower() + 'aaaaaaaaa'
     print inventory_name + '!!!!!'
-    print product_name
-    print '22222222'
-    print program
-    print status
-    try:
-        hedge_account = Hedge_Account.objects.get(name=hedge_id)
-        inventory = Inventory.objects.get(name=inventory_name)
-        product = Product.objects.get(name=product_name)
-        sell_price = SellPrice.objects.get(inventory=inventory,product=product)
-    except Exception:
-        return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of hedge account is incorrectly'}))
+    hedge_account = Hedge_Account.objects.get(name=hedge_id)
     try:
         inventory = Inventory.objects.get(name=inventory_name)
-        product = Product.objects.get(name=product_name)
-        sell_price = SellPrice.objects.get(inventory=inventory,product=product)
+        try:
+            ps = json.loads(inventory.products)
+        except Exception:
+            ps = []
+        if not isinstance(ps, list):
+            ps = [ps]
+        ps = [x for x in ps if len(str(x).strip()) > 0]
+        if product_id in ps:
+            product = Product.objects.get(pk=product_id)
+        else:
+            return HttpResponse(json.dumps({'response': 'faliure', 'info': 'The inventory has no such product'}))
+        sell_price = SellPrice.objects.get(inventory=inventory, product=product)
+    except Exception, e:
+        print e
+        return HttpResponse(json.dumps({'response':'faliure', 'info':'There is error'}))
+    try:
+        #inventory = Inventory.objects.get(name=inventory_name)
+        #product = Product.objects.get(name=product_name)
+        #sell_price = SellPrice.objects.get(inventory=inventory,product=product)
         #hedge_pos = HedgePos.objects.filter(inventory=inventory)
         if status.lower() == 'confirmed':
             if hedge_type.lower() == 'purchase':
@@ -110,17 +120,13 @@ def create_hedge_tran(request):
 #                hedge_pos = HedgePos.objects.get(inventory=inventory, product=product)
 #                now_pos = hedge_pos.position
 #                hedge_pos.position = hedge_pos.position + position
-#                hedge_pos.last_price = hedge_pos.price
-                #now_price = hedge_pos.price
-                #hedge_pos.price = (now_price*now_pos + float(price) * int(volume))/hedge_pos.position
-#                hedge_pos.price = price
-#            except Exception as e:
-#                print e
+#                now_price = hedge_pos.price
+#                hedge_pos.price = (now_price*now_pos + float(price) * int(volume))/hedge_pos.position
+#            except Exception:
 #                hedge_pos = HedgePos.objects.create(
 #                    inventory = inventory,
 #                    product = product,
 #                    position = position,
-#                    last_price = price,
 #                    price = price
 #                )
 #"""
@@ -140,11 +146,11 @@ def create_hedge_tran(request):
         inventory = inventory,
         volume = volume,
         price = price,
-        initial_pos = initial_pos,
+        initial_pos = initial_pos=='true',
         confirm_number = confirm_number,
         trader = trader,
         status = status,
-        program = program,
+        program = program
        # to_inventory = to_invetory
     )
     hedge_tran.save()
@@ -186,8 +192,7 @@ def create_hedge_tran(request):
 	    price = price,
             status = 'OPEN'
 	)
-        hedge_pos.save()
-
+    hedge_pos.save()
     sell_price.hedge_volume += position
 #    sell_price.hedge_price = price
     sell_price.save()
@@ -304,11 +309,11 @@ def hedge_price(request):
     margin_col = [
     'Inventory Name',
     'Product Name',
-    'Margin',
     'Volume',
     'Current Price',
     'Transaction Price',
-    'Type'
+    'Margin',
+    'Symbol'
     ]
     #data1 = get_request_data('HOZ2016')
     #data2 = get_request_data('RBZ2016')

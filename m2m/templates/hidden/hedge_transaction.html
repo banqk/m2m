@@ -63,6 +63,7 @@
 			<th>Type</th>
 			<th>Inventory</th>
 			<th>Status</th>
+            <th>Contract</th>
 			<th>Volume</th>
             <th>Price</th>
             <th>Initial Position</th>
@@ -75,6 +76,7 @@
 			<th></th>
 			<th></th>
 			<th></th>
+            <th></th>
 			<th></th>
 			<th></th>
 			<th></th>
@@ -91,6 +93,7 @@
                          <td>{{hedge_tran.hedge_type}}</td>
                          <td>{{hedge_tran.inventory.name}}</td>
                          <td>{{hedge_tran.status}}</td>
+                         <td>{{hedge_tran.instrument.instrument}}</td>
                          <td>{{hedge_tran.volume}}</td>
                          <td>{{hedge_tran.price}}</td>
                          <td>{{hedge_tran.initial_pos}}</td>
@@ -129,8 +132,9 @@
                         <div class="form-group">
                             <label for="">hedge account </label>
                             <select id="hedge_account" class="form-control">
-                                {% for f in hedge_list %}
-                                <option value={{f.name}}>{{f.name}}</option>
+                                <option value="None">Select</option>
+                                {% for f in hedge_account_list %}
+                                <option value='{{f.name}}'>{{f.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -138,7 +142,7 @@
                             <label for="">inventory </label>
                             <select id="inventory" class="form-control">
                                 {% for f in invent_list %}
-                                <option value={{f.name}}>{{f.name}}</option>
+                                <option value='{{f.name}}'>{{f.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -146,7 +150,7 @@
                             <label for="">product</label>
                             <select id="product" class="form-control">
                                 {% for f in product_list %}
-                                <option value={{f.name}}>{{f.name}}</option>
+                                <option value='{{f.id}}'>{{f.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -154,7 +158,7 @@
                             <label for="">contract</label>
                             <select id="instrument" class="form-control">
                                 {% for f in instrument_list %}
-                                <option value={{f.instrument}}>{{f.instrument}}</option>
+                                <option value='{{f.instrument}}'>{{f.instrument}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -219,10 +223,8 @@
     </div>
 -->
 <div id='variables' style="display:none">
-    <span id="auto_inventory">{{invent_list}}</span>
-    <span id="auto_hedge_account">{{hedge_list}}</span>
-    <span id="auto_product">{{product_list}}</span>
-    <span id="auto_contract">{{instrument_list}}</span>
+    <span id="all_inventory_product">{{invList}}</span>
+    <span id="all_hedge_inventory">{{hedgeList}}</span>
 </div>
 
 {% endblock%}
