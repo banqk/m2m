@@ -140,7 +140,7 @@ $(function(){
             $('p').remove();
         }
     });
-    
+   /* 
     $('#inventory').blur(function(){
         invent_name = $('#inventory').val()
         if(invent_name != ''){
@@ -148,6 +148,7 @@ $(function(){
             realtime_auto(invent_name, 'inventory')
         }
     });
+   */
     $('#to_inventory').blur(function(){
         invent_name = $('#to_inventory').val()
         if(invent_name != ''){
@@ -271,6 +272,7 @@ $(function(){
  	    }
         });
     }
+/*
     if($('#auto_contract').text().split(",").length > 1){
         var fuel_input = document.getElementById('instrument')
         contract_comboplete = new Awesomplete(fuel_input, {
@@ -291,7 +293,8 @@ $(function(){
  	    }
         });
     }
-
+*/
+/*
     if($('#auto_supplier_counter').text().split("$").length >= 1){
         var counter_input = document.getElementById('counter_party')
         if (counter_input) {
@@ -331,7 +334,7 @@ $(function(){
             });
         }
     }
-
+*/
 /*
     if($('#auto_inventory_product').text().split(",").length > 1){
         var product_input = document.getElementById('product')
@@ -1210,10 +1213,10 @@ function add_physical() {
         $.ajax({
             type: "POST",
             url: "/transaction/create_phy/",
-            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: $("#inventory").val(),
+            data: ({ name : text_vals[0], type: phy_type, inventory: $("#inventory").val(),
                 product: $("#product").val(), net_volume: text_vals[1],to_inventory: text_vals[2],
                 to_product: text_vals[3], gross_volume: text_vals[4], price: text_vals[5],
-                program: text_vals[6], counter: $("#counter_party").val(, trans_date: text_vals[7]}),
+                program: text_vals[6], counter: $("#counter_party").val(), trans_date: text_vals[7]}),
             success: function(html){
 
                 json_data = JSON.parse(html);
@@ -1237,10 +1240,10 @@ function add_physical() {
         $.ajax({
             type: "POST",
             url: "/transaction/create_phy/",
-            data: ({ name : text_vals[0], type: $("#physical_info select").val(),
-            inventory: text_vals[1], product: text_vals[2], net_volume: text_vals[3],
-            gross_volume: text_vals[4], price: text_vals[5], program: text_vals[6],
-            counter: text_vals[7], trans_date: text_vals[8]}),
+            data: ({ name : text_vals[0], type: phy_type,
+            inventory: $("#inventory").val(), product: $("#product").val(), net_volume: text_vals[1],
+            gross_volume: text_vals[2], price: text_vals[3], program: text_vals[4],
+            counter: $("#counter_party").val(), trans_date: text_vals[5]}),
             success: function(html){
 
                 json_data = JSON.parse(html);
@@ -1275,7 +1278,7 @@ function add_hedge_tran() {
     $.ajax({
         type: "POST",
         url: "/hedge_tran/create_ht/",
-        data: ({ name : text_vals[0], type: $("#hedge_trans_type").val(), hedge_account: text_vals[1], inventory: text_vals[2],product: text_vals[3], contract: text_vals[4], volume: text_vals[5], price: text_vals[6],initial_pos: $('#initial_pos').val(), confirm_number:text_vals[7], trader: text_vals[8],ht_status: $("#status").val(), program:text_vals[9]}),
+        data: ({ name : text_vals[0], type: $("#hedge_trans_type").val(), hedge_account: $("#hedge_account").val(), inventory: $("#inventory").val(),product: $("#product").val(), contract: $("#instrument").val(), volume: text_vals[1], price: text_vals[2],initial_pos: $('#initial_pos').val(), confirm_number:text_vals[3], trader: text_vals[4],ht_status: $("#status").val(), program:text_vals[5]}),
         success: function(html){
 
             json_data = JSON.parse(html);

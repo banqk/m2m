@@ -128,7 +128,11 @@
                         </div>
                         <div class="form-group">
                             <label for="">hedge account </label>
-                            <input type="text" id="hedge_account" class="form-control">
+                            <select id="hedge_account" class="form-control">
+                                {% for f in hedge_list %}
+                                <option value={{f.name}}>{{f.name}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="">inventory </label>
@@ -148,7 +152,11 @@
                         </div>
                         <div class="form-group">
                             <label for="">contract</label>
-                            <input type="text" id="instrument" class="form-control">
+                            <select id="instrument" class="form-control">
+                                {% for f in instrument_list %}
+                                <option value={{f.instrument}}>{{f.instrument}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="">volume </label>
@@ -212,7 +220,7 @@
 -->
 <div id='variables' style="display:none">
     <span id="auto_inventory">{{invent_list}}</span>
-    <span id="auto_hedge_account">{{hedge_account_list}}</span>
+    <span id="auto_hedge_account">{{hedge_list}}</span>
     <span id="auto_product">{{product_list}}</span>
     <span id="auto_contract">{{instrument_list}}</span>
 </div>
