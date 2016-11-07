@@ -84,18 +84,7 @@ $(function(){
             $('p').remove();
         }
     });
-/*
-    $('#address').blur(function(){
-        address = $('#address').val();
-        if(name.length < 1){
-            pTab = $('<p style="color:red; dispaly:inline-block;">The address cannot be empty.</p>');
-            $(this).after(pTab)
-            $(this).focus()
-        } else {
-            $('p').remove();
-        }
-    });
-*/
+
     $('#email').focus(function(){
         console.log("Please input a invalid email.");
     });
@@ -140,306 +129,79 @@ $(function(){
             $('p').remove();
         }
     });
-   /* 
-    $('#inventory').blur(function(){
-        invent_name = $('#inventory').val()
-        if(invent_name != ''){
-            console.log('AAAAAAAAAAAAAAAAAbBBB')
-            realtime_auto(invent_name, 'inventory')
-        }
-    });
-   */
-    $('#to_inventory').blur(function(){
-        invent_name = $('#to_inventory').val()
-        if(invent_name != ''){
-            console.log('AAAAAAAAAAAAAAAAAbCCCCC')
-            realtime_auto(invent_name, 'to_inventory')
-        }
-    });
     
+    $('#inventory').change(function(){
+        var invent_name = $('#inventory').val()
+        if(invent_name != ''){
+             data = JSON.parse($("#all_inventory_product").text());
+             for(var i=0;i<data.length;i++) {
+                if ((data[i].inv) == (invent_name)) {
+                     $("#product").empty();
+                     if (data[i].products.length == 0) {
+                        bootbox.alert("There is no product in the inventory");
+                     } else {
+                        $.each(data[i].products, function(idx, p) {
+                          $("#product").append($("<option></option>").attr("value", p.id).text(p.name));
+                        });
+                     }
+                }
+             }
+        }
+    });
+
+    $('#hedge_account').change(function(){
+        var hedge_account = $('#hedge_account').val()
+        if(hedge_account != ''){
+             data = JSON.parse($("#all_hedge_inventory").text());
+             for(var i=0;i<data.length;i++) {
+                if ((data[i].account) == (hedge_account)) {
+                     $("#inventory").empty();
+                     if (data[i].invs.length == 0) {
+                        bootbox.alert("There is no inventory in the m2m account");
+                     } else {
+                        $.each(data[i].invs, function(idx, p) {
+                          $("#inventory").append($("<option></option>").attr("value", p.name).text(p.name));
+                        });
+                     }
+                }
+             }
+        }
+    });
+
     $('#phy_type').change(function(){
         type = $('#phy_type').val()
         if(type == "Transfer") {
             //$('#account_number').parent().remove()
-
+            var options = "";
+            data = JSON.parse($("#all_inventory_product").text());
+            for(var i=0;i<data.length;i++) {
+                options += '<option value="'+data[i].inv+'">'+data[i].inv+'</option>';
+            }
             invenTab = $('<div class="form-group">'
-//                   + '<label for="">to m2m account</label>'
-//                   + '<input type="text" id="to_m2m_account" class="form-control">'
-//                   + '</div>'
                    + '<label for="">to inventory</label>'
-                   + '<input type="text" id="to_inventory" class="form-control">'
+                   + '<select id="to_inventory" class="form-control">'
+                   + options
+                   + '</select>'
                    + '</div>');
 
             $('#phy_type').parent().parent().append(invenTab);
-            $('#to_inventory').blur(function(){
-                invent_name = $('#to_inventory').val()
-                if(invent_name != ''){
-                    console.log('AAAAAAAAAAAAAAAAAbCCCCC')
-                    realtime_auto(invent_name, 'to_inventory')
-                }
-            });
-            fresh_autocomplete()
         } else {
-            $('#to_product').parent().parent().remove()
-            $('#to_inventory').parent().parent().remove()
+            $('#to_inventory').parent().remove();
         }
+        $("#counter_party").empty();
+        var counters = [];
+        if (type == "Sell") {
+            counters = $('#auto_customer_counter').text().split("$")
+        } else if (type == "Purchase") {
+            counters = $('#auto_supplier_counter').text().split("$")
+        } else {
+            counters = $('#auto_customer_counter').text().split("$")
+            counters.push.apply(counters, $('#auto_supplier_counter').text().split("$"))
+        }
+        $.each(counters, function(idx, p) {
+            $("#counter_party").append($("<option></option>").attr("value", p).text(p));
+        });
     });
-/*
-    if ($('#auto_account').text().split(",").length > 1) {
-   
-        var data = $('#auto_account').text()
-        var input = document.getElementById('m2m_account')
-        comboplete = new Awesomplete(input, {
-            minChars: 0,
-            //autoFirst: true,
-            list: data,
-        });
-        Awesomplete.$('#m2m_account').addEventListener("click", function() {
-	    if (comboplete.ul.childNodes.length === 0) {
-		comboplete.minChars = 0;
-		comboplete.evaluate();
-	    }
-	    else if (comboplete.ul.hasAttribute('hidden')) {
-		comboplete.open();
-  	    }
-	    else {
-		comboplete.close();
- 	    }
-        });
-    }
-    if ($('#auto_to_account').text().split(",").length > 1) {
-        var data1 = $('#auto_to_account').text()
-        var input1 = document.getElementById('to_m2m_account')
-        comboplete1 = new Awesomplete(input1, {
-            minChars: 0,
-            //autoFirst: true,
-            list: data1,
-        });
-        Awesomplete.$('#to_m2m_account').addEventListener("click", function() {
-	    if (comboplete1.ul.childNodes.length === 0) {
-		comboplete1.minChars = 0;
-		comboplete1.evaluate();
-	    }
-	    else if (comboplete1.ul.hasAttribute('hidden')) {
-		comboplete1.open();
-  	    }
-	    else {
-		comboplete1.close();
- 	    }
-        });
-    }
-*/
-/*
-    if($('#auto_fuel_class').text().split(",").length > 1){
-        var data =  $('#auto_fuel_class').text()
-        var fuel_input = document.getElementById('fuel_class')
-        fuel_comboplete = new Awesomplete(fuel_input, {
-            minChars: 1,
-            //autoFirst: true,
-            list: data
-        });
-        Awesomplete.$('#fuel_class').addEventListener("click", function() {
-	    if (fuel_comboplete.ul.childNodes.length === 0) {
-		fuel_comboplete.minChars = 0;
-		fuel_comboplete.evaluate();
-	    }
-	    else if (fuel_comboplete.ul.hasAttribute('hidden')) {
-		fuel_comboplete.open();
-  	    }
-	    else {
-		fuel_comboplete.close();
- 	    }
-        });
-    }
-  */  
-    if($('#auto_product').text().split(",").length > 1){
-        var fuel_input = document.getElementById('product')
-        prod_comboplete = new Awesomplete(fuel_input, {
-            minChars: 1,
-            //autoFirst: true,
-            list: $('#auto_product').text().split(",")
-        });
-        Awesomplete.$('#product').addEventListener("click", function() {
-	    if (prod_comboplete.ul.childNodes.length === 0) {
-		prod_comboplete.minChars = 0;
-		prod_comboplete.evaluate();
-	    }
-	    else if (prod_comboplete.ul.hasAttribute('hidden')) {
-		prod_comboplete.open();
-  	    }
-	    else {
-		prod_comboplete.close();
- 	    }
-        });
-    }
-/*
-    if($('#auto_contract').text().split(",").length > 1){
-        var fuel_input = document.getElementById('instrument')
-        contract_comboplete = new Awesomplete(fuel_input, {
-            minChars: 1,
-            //autoFirst: true,
-            list: $('#auto_contract').text().split(",")
-        });
-        Awesomplete.$('#instrument').addEventListener("click", function() {
-	    if (contract_comboplete.ul.childNodes.length === 0) {
-		contract_comboplete.minChars = 0;
-		contract_comboplete.evaluate();
-	    }
-	    else if (contract_comboplete.ul.hasAttribute('hidden')) {
-		contract_comboplete.open();
-  	    }
-	    else {
-		contract_comboplete.close();
- 	    }
-        });
-    }
-*/
-/*
-    if($('#auto_supplier_counter').text().split("$").length >= 1){
-        var counter_input = document.getElementById('counter_party')
-        if (counter_input) {
-            var counter_party_complete = new Awesomplete(counter_input, {
-                minChars: 1,
-                //autoFirst: true,
-                list: $('#auto_supplier_counter').text().split("$")
-            });
-            Awesomplete.$('#counter_party').addEventListener("click", function() {
-            var type = $('#phy_type').val()
-            document.getElementById('counter_party').value = "";
-            var counters = [];
-            if (type == "Sell") {
-                counters = $('#auto_customer_counter').text().split("$")
-            } else if (type == "Purchase") {
-                counters = $('#auto_supplier_counter').text().split("$")
-            } else {
-                counters = $('#auto_customer_counter').text().split("$")
-                counters.push.apply(counters, $('#auto_supplier_counter').text().split("$"))
-            }
-            console.log(counters);
-            counter_party_complete.list = counters
-            counter_party_complete.evaluate()
-            counter_party_complete.close();
-
-
-            if (counter_party_complete.ul.childNodes.length === 0) {
-            counter_party_complete.minChars = 0;
-            counter_party_complete.evaluate();
-            }
-            else if (counter_party_complete.ul.hasAttribute('hidden')) {
-            counter_party_complete.open();
-            }
-            else {
-            counter_party_complete.close();
-            }
-            });
-        }
-    }
-*/
-/*
-    if($('#auto_inventory_product').text().split(",").length > 1){
-        var product_input = document.getElementById('product')
-        var product_comboplete = new Awesomplete(product_input, {
-            minChars: 1,
-            //autoFirst: true,
-            list: $('#auto_inventory_product').text().split(",")
-        });
-        Awesomplete.$('#product').addEventListener("click", function() {
-	    if (product_comboplete.ul.childNodes.length === 0) {
-		product_comboplete.minChars = 0;
-		product_comboplete.evaluate();
-	    }
-	    else if (product_comboplete.ul.hasAttribute('hidden')) {
-		product_comboplete.open();
-  	    }
-	    else {
-		product_comboplete.close();
- 	    }
-        });
-    }
-
-    if($('#auto_inventory').text().split(",").length > 1){
-        var invent_input = document.getElementById('inventory')
-        invent_comboplete = new Awesomplete(invent_input, {
-            minChars: 1,
-            //autoFirst: true,
-            list: $('#auto_inventory').text().split(",")
-        });
-        Awesomplete.$('#inventory').addEventListener("click", function() {
-	    if (invent_comboplete.ul.childNodes.length === 0) {
-		invent_comboplete.minChars = 0;
-		invent_comboplete.evaluate();
-	    }
-	    else if (invent_comboplete.ul.hasAttribute('hidden')) {
-		invent_comboplete.open();
-  	    }
-	    else {
-		invent_comboplete.close();
- 	    }
-        });
-    }
-*/
-    if($('#auto_to_inventory').text().split(",").length > 1){
-        var invent_input1 = document.getElementById('to_inventory')
-		if (invent_input1) {
-			invent_comboplete1 = new Awesomplete(invent_input1, {
-			    minChars: 1,
-			    //autoFirst: true,
-			    list: $('#auto_to_inventory').text().split(",")
-			});
-			Awesomplete.$('#to_inventory').addEventListener("click", function() {
-			if (invent_comboplete1.ul.childNodes.length === 0) {
-			invent_comboplete1.minChars = 0;
-			invent_comboplete1.evaluate();
-			}
-			else if (invent_comboplete1.ul.hasAttribute('hidden')) {
-			invent_comboplete1.open();
-	  	    }
-			else {
-			invent_comboplete1.close();
-	 	    }
-			});
-		}
-    }
-    if($('#auto_hedge_account').text().split(",").length > 1){
-        var fuel_input = document.getElementById('hedge_account')
-        hedge_comboplete = new Awesomplete(fuel_input, {
-            minChars: 1,
-            //autoFirst: true,
-            list: $('#auto_hedge_account').text().split(",")
-        });
-        Awesomplete.$('#hedge_account').addEventListener("click", function() {
-	    if (hedge_comboplete.ul.childNodes.length === 0) {
-		hedge_comboplete.minChars = 0;
-		hedge_comboplete.evaluate();
-	    }
-	    else if (hedge_comboplete.ul.hasAttribute('hidden')) {
-		hedge_comboplete.open();
-  	    }
-	    else {
-		hedge_comboplete.close();
- 	    }
-        });
-    }
-    if($('#auto_instrument').text().split(",").length > 1){
-        var fuel_input = document.getElementById('instrument')
-        inst_comboplete = new Awesomplete(fuel_input, {
-            minChars: 1,
-            //autoFirst: true,
-            list: $('#auto_instrument').text().split(",")
-        });
-        Awesomplete.$('#instrument').addEventListener("click", function() {
-	    if (inst_comboplete.ul.childNodes.length === 0) {
-		inst_comboplete.minChars = 0;
-		inst_comboplete.evaluate();
-	    }
-	    else if (inst_comboplete.ul.hasAttribute('hidden')) {
-		inst_comboplete.open();
-  	    }
-	    else {
-		inst_comboplete.close();
- 	    }
-        });
-    }
 
     $('.form_datetime').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
     $('#trans_date').datetimepicker({
@@ -452,131 +214,6 @@ $(function(){
     });
 
 });
-
-function realtime_auto(name, type) {
-    var product_list = ''
-    $.ajax({
-        type: "POST",
-        url: "/api/get_prod/",
-        data: ({ name : name}),
-        success: function(html){
-
-            json_data = JSON.parse(html);
-            if (json_data.error) {
-                bootbox.alert(json_data['response'])
-            } else {
-                //bootbox.alert(json_data['response'])
-                if(json_data['response'] == 'success'){
-                    product_list = json_data['products'] 
-                    console.log(product_list)
-                    if(product_list == '') {
-                        bootbox.alert("The inventory don't include anyone product.")
-                    } 
-                    if(product_list.split(",").length > 1){
-                        console.log('WWWWWWWWWWWWWWWWWWWWWWW44444')
-                        if(type == 'inventory'){
-                            invenTab = $('<input type="text" id="product" class="form-control">');
-                            var s_parent = $('#product').parent().parent()
-                            $('#product').parent().remove()
-                            s_parent.append(invenTab)
-                            var invent_input = document.getElementById('product')
-                            prod_comboplete = new Awesomplete(invent_input, {
-                                minChars: 1,
-                                list: product_list,
-                            });
-                            Awesomplete.$('#product').addEventListener("click", function() {
-	                        if (prod_comboplete.ul.childNodes.length === 0) {
-		                    prod_comboplete.minChars = 0;
-		                    prod_comboplete.evaluate();
-                                    console.log('WWWWWWWWWWWWWWWWWWWWWWW44444')
-	                        }
-	                        else if (prod_comboplete.ul.hasAttribute('hidden')) {
-		                    prod_comboplete.open();
-  	                        }
-	                        else {
-		                    prod_comboplete.close();
- 	                        }
-                            });
-                        
-                        } else {
-                            invenTab = $('<input type="text" id="to_product" class="form-control">');
-                            var s_parent = $('#to_product').parent().parent()
-                            $('#to_product').parent().remove()
-                            s_parent.append(invenTab)
-                            var invent_input = document.getElementById('to_product')
-                            to_prod_comboplete = new Awesomplete(invent_input, {
-                                minChars: 1,
-                                list: product_list,
-                            });
-                            Awesomplete.$('#to_product').addEventListener("click", function() {
-	                        if (to_prod_comboplete.ul.childNodes.length === 0) {
-		                    to_prod_comboplete.minChars = 0;
-		                    to_prod_comboplete.evaluate();
-                                    console.log('WWWWWWWWWWWWWWWWWWWWWWW44444')
-	                        }
-	                        else if (to_prod_comboplete.ul.hasAttribute('hidden')) {
-		                    to_prod_comboplete.open();
-  	                        }
-	                        else {
-		                    to_prod_comboplete.close();
- 	                        }
-                            });
-                            
-                        }
-                    }
-                }
-            }
-        },
-        error: function(html){
-            bootbox.alert("There was an error.")
-        }
-    });
-}
-
-function fresh_autocomplete(){
-    if ($('#auto_to_account').text().split(",").length > 1) {
-        var data1 = $('#auto_to_account').text()
-        var input1 = document.getElementById('to_m2m_account')
-        comboplete1 = new Awesomplete(input1, {
-            minChars: 0,
-            //autoFirst: true,
-            list: data1,
-        });
-        Awesomplete.$('#to_m2m_account').addEventListener("click", function() {
-	    if (comboplete1.ul.childNodes.length === 0) {
-		comboplete1.minChars = 0;
-		comboplete1.evaluate();
-	    }
-	    else if (comboplete1.ul.hasAttribute('hidden')) {
-		comboplete1.open();
-  	    }
-	    else {
-		comboplete1.close();
- 	    }
-        });
-    }
-    if($('#auto_to_inventory').text().split(",").length > 1){
-        var fuel_input1 = document.getElementById('to_inventory')
-        invent_comboplete1 = new Awesomplete(fuel_input1, {
-            minChars: 1,
-            //autoFirst: true,
-            list: $('#auto_to_inventory').text().split(",")
-        });
-        Awesomplete.$('#to_inventory').addEventListener("click", function() {
-	    if (invent_comboplete1.ul.childNodes.length === 0) {
-		invent_comboplete1.minChars = 0;
-		invent_comboplete1.evaluate();
-	    }
-	    else if (invent_comboplete1.ul.hasAttribute('hidden')) {
-		invent_comboplete1.open();
-  	    }
-	    else {
-		invent_comboplete1.close();
- 	    }
-        });
-    }
-
-}
 
 function add_user() {
 
@@ -705,6 +342,10 @@ function add_inventory(entityType) {
             text_vals[i] = $(this).val()
             i = i + 1
         })
+        if (!$("#inven_hedge_info select").val()) {
+            bootbox.alert("Please add fuel type in account page firstly.");
+            return;
+        }
 	    $.ajax({
 		type: "POST",
 		url: "/inventory/create_inventory/",
@@ -1177,8 +818,7 @@ function add_product() {
     $.ajax({
         type: "POST",
         url: "/product/create_product/",
-        //data: ({ name : text_vals[0], fuel_class: text_vals[2], description: text_vals[1], account: text_vals[3], inventory: text_vals[4]}),
-        data: ({ name : text_vals[0], fuel_class: $("#fuel_class").val(), description: text_vals[1], account: $("#m2m_account").val(), inventory: text_vals[4]}),
+        data: ({ name : text_vals[0], description: text_vals[1], fuel_class: $("#fuel_class").val(), account: $("#m2m_account").val()}),
         success: function(html){
 
             json_data = JSON.parse(html);
@@ -1208,15 +848,19 @@ function add_physical() {
         text_vals[i] = $(this).val()
         i = i + 1
     })
+    if ($("#inventory").val() == "None") {
+        bootbox.alert("Please select an inventory.")
+        return;
+    }
     phy_type = $('#phy_type').val()
     if (phy_type == 'Transfer') {
         $.ajax({
             type: "POST",
             url: "/transaction/create_phy/",
-            data: ({ name : text_vals[0], type: phy_type, inventory: $("#inventory").val(),
-                product: $("#product").val(), net_volume: text_vals[1],to_inventory: text_vals[2],
-                to_product: text_vals[3], gross_volume: text_vals[4], price: text_vals[5],
-                program: text_vals[6], counter: $("#counter_party").val(), trans_date: text_vals[7]}),
+            data: ({ name : text_vals[0], type: $("#physical_info select").val(), inventory: $("#inventory").val(),
+                product: $("#product").val(), net_volume: text_vals[1],to_inventory: $("#to_inventory").val(),
+                to_product: $("#product").val(), gross_volume: text_vals[2], price: text_vals[3],
+                program: text_vals[4], counter: $("#counter_party").val(), trans_date: text_vals[5]}),
             success: function(html){
 
                 json_data = JSON.parse(html);
@@ -1240,7 +884,7 @@ function add_physical() {
         $.ajax({
             type: "POST",
             url: "/transaction/create_phy/",
-            data: ({ name : text_vals[0], type: phy_type,
+            data: ({ name : text_vals[0], type: $("#physical_info select").val(),
             inventory: $("#inventory").val(), product: $("#product").val(), net_volume: text_vals[1],
             gross_volume: text_vals[2], price: text_vals[3], program: text_vals[4],
             counter: $("#counter_party").val(), trans_date: text_vals[5]}),
@@ -1274,18 +918,27 @@ function add_hedge_tran() {
         text_vals[i] = $(this).val()
         i = i + 1
     })
-
+    if ($("#hedge_account").val() == "None") {
+        bootbox.alert("Please select a hedge account.")
+        return;
+    }
+    if ($("#product").val() == null) {
+        bootbox.alert("No product is selected")
+        return;
+    }
     $.ajax({
         type: "POST",
         url: "/hedge_tran/create_ht/",
-        data: ({ name : text_vals[0], type: $("#hedge_trans_type").val(), hedge_account: $("#hedge_account").val(), inventory: $("#inventory").val(),product: $("#product").val(), contract: $("#instrument").val(), volume: text_vals[1], price: text_vals[2],initial_pos: $('#initial_pos').val(), confirm_number:text_vals[3], trader: text_vals[4],ht_status: $("#status").val(), program:text_vals[5]}),
+        data: ({ name : text_vals[0], type: $("#hedge_trans_type").val(), hedge_account: $("#hedge_account").val(),
+        inventory: $("#inventory").val(),product: $("#product").val(), contract: $("#instrument").val(), volume: text_vals[1],
+        price: text_vals[2],initial_pos: $('#initial_pos').val(), confirm_number:text_vals[3],
+        trader: text_vals[4],ht_status: $("#status").val(), program:text_vals[5]}),
         success: function(html){
 
             json_data = JSON.parse(html);
             if (json_data.error) {
                 bootbox.alert(json_data['response'])
             } else {
-                //bootbox.alert(json_data['response'])
                 if(json_data['response'] == 'success'){
                     window.location = "/hedge_tran/hedge_tran";
                 } else {
@@ -1313,7 +966,7 @@ function add_fuel_class() {
     $.ajax({
         type: "POST",
         url: "/fuel/create_fuel/",
-        data: ({ code : text_vals[0], description: text_vals[1], account_id: text_vals[2]}),
+        data: ({ code : text_vals[0], description: text_vals[1], account_name: $("#m2m_account").val()}),
         success: function(html){
 
             json_data = JSON.parse(html);
@@ -1344,13 +997,13 @@ function add_instrument() {
         text_vals[i] = $(this).val()
         i = i + 1
     })
-    
-    console.log($("#con_symbol select").val())
+
     $.ajax({
         type: "POST",
         url: "/inst/create_inst/",
-        //data: ({ instrument : text_vals[0], fuel_class: text_vals[1], year: text_vals[2], month: $("#contract_month").val(), expiration_date: text_vals[3],put_call: text_vals[4], strike_price: text_vals[5], counter_party: text_vals[6]}),
-        data: ({ instrument : text_vals[0], fuel_class: $("#fuel_class").val(), year: text_vals[1], month: $("#contract_month").val(), expiration_date: text_vals[2],put_call: text_vals[3], strike_price: text_vals[4], counter_party: text_vals[5]}),
+        data: ({ instrument : text_vals[0], fuel_class: $("#fuel_class").val(), year: text_vals[1],
+        month: $("#contract_month").val(), expiration_date: text_vals[2],put_call: text_vals[3],
+        strike_price: text_vals[4], counter_party: $("#counter_party").val()}),
         success: function(html){
 
             json_data = JSON.parse(html);

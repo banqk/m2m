@@ -30,13 +30,10 @@ def products(request):
         products = Product.objects.filter(m2m_account__in=m2m_accounts)
     #for fuel in fuels:
     #    fuel_codes += fuel.code + ','
-#    for account in m2m_accounts:
- #       account_names += account.name + ','
- #   for inventory in inventories:
- #       inven_names += inventory.name + ','
-    print fuel_codes
-    print account_names
-    print inven_names
+    #for account in m2m_accounts:
+    #    account_names += account.name + ','
+    #for inventory in inventories:
+    #    inven_names += inventory.name + ','
     options.update({'products': products, 'fuels': fuels, 'account_list': m2m_accounts, 'invent_list': inventories})
     render_to_url = 'hidden/product.html'
     return render_to_response(render_to_url, options)
@@ -50,7 +47,6 @@ def create_product(request):
     fuel_name = request_vals.get('fuel_class')
     description = request_vals.get('description')
     account_name = request_vals.get('account')
-    #inventory_name = request_vals.get('inventory')
     print account_name
     try:
         fuel_class = Fuel_Class.objects.get(code=fuel_name)

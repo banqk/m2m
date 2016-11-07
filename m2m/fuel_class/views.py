@@ -3,6 +3,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from fuel_class.models import Fuel_Class
+from inventory.models import Inventory
 from accounts.models import Account
 from users.models import User
 import simplejson as json
@@ -12,7 +13,6 @@ from django.http import HttpResponse,HttpResponseRedirect
 @login_required
 def fuels(request):
     options = {}
-    account_names = ''
     try:
         if request.user.user_privilages.code == 1:
             fuels = Fuel_Class.objects.all()
@@ -23,9 +23,7 @@ def fuels(request):
             fuels = Fuel_Class.objects.filter(m2m_account__in=m2m_accounts)
     except Exception:
         fuels = {}
-    for account in m2m_accounts:
-        account_names += account.name + ','
-    options.update({'fuel_classes': fuels, 'account_list': account_names})
+    options.update({'fuel_classes': fuels, 'account_list': m2m_accounts})
     render_to_url = 'hidden/fuel_class.html'
     return render_to_response(render_to_url, options)
 
@@ -36,11 +34,11 @@ def create_fuel(request):
     request_vals = request.POST
     code = request_vals.get('code')
     description = request_vals.get('description')
-    account_name = request_vals.get('account_id')
+    account_name = request_vals.get('account_name')
     print account_name
 
     try:
-        fuel = Fuel_Class.objects.get(name=name)
+        fuel = Fuel_Class.objects.get(code=code)
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The code already exists in the application'}))
     except Exception:
         pass

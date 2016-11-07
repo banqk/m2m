@@ -139,17 +139,17 @@
                                 {% endfor %}
                             </select>
                         </div>
+                    </div>
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label for="">expiration_date</label>
                             <div class='input-group date form_datetime'>
-                                <input type='text' class="form-control" id="trans_date"/>
+                                <input type='text' class="form-control" id="expiration_date"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
                         <div class="form-group">
                             <label for="">put call</label>
                             <input type="text" id="put call" class="form-control">
@@ -160,7 +160,11 @@
                         </div>
                         <div class="form-group">
                             <label for="">counter party</label>
-                            <input type="text" id="counter_party" class="form-control">
+                            <select id="counter_party" class="form-control">
+                                {% for f in counters %}
+                                <option value='{{f.name}}'>{{f.name}}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                   </div>
@@ -176,7 +180,6 @@
 
 
 <div id='variables' style="display:none">
-    <span id="auto_fuel_class">{{fuels}}</span>
     <span id="auto_supplier_counter">{{counters}}</span>
 </div>
 {% endblock%}

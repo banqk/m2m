@@ -17,24 +17,28 @@ def physicals(request):
     options = {}
     physicals = Physical.objects.all()
     products = Product.objects.all()
-#    product_names = ''
-#    for product in products:
-#        product_names += product.name + ','
-#    counter_names = ''
     counters = Counter.objects.all()
-#    for counter in counters:
-#        counter_names += counter.name + '$'
-#    inventory_names = ''
     invents = Inventory.objects.all()
-#    for invent in invents:
-#        inventory_names += invent.name + ','
-
     suppliers = Counter.objects.filter(counter_type="Supplier")
     customers = Counter.objects.filter(counter_type="Customer")
+    invList = []
+    for inv in invents:
+        prod_ids = inv.products
+        if "[" in prod_ids:
+            prod_ids = prod_ids[1:-1]
+            prod_ids = [int(x.strip()[1:-1]) for x in prod_ids.split(',') if x.strip() != ""]
+        else:
+            prod_ids = []
+        pss = Product.objects.filter(pk__in=prod_ids)
+        ps = []
+        for p in pss:
+            ps.append({'id': p.id, 'name': p.name})
+        invList.append({'inv': inv.name, 'products': ps})
+
     options.update({'supplier_list': '$'.join([x.name for x in suppliers])})
     options.update({'customer_list': '$'.join([x.name for x in customers])})
-
-    options.update({'physicals': physicals, 'counter_list': counters, 'product_list': products, 'invent_list':invents})
+    options.update({'invList': json.dumps(invList)})
+    options.update({'physicals': physicals, 'counter_list': counters, 'customers': customers, 'product_list': products, 'invent_list': invents})
     render_to_url = 'hidden/phy_transaction.html'
     return render_to_response(render_to_url, options)
 
@@ -45,7 +49,7 @@ def create_physical(request):
     request_vals = request.POST
     name = request_vals.get('name')
     phy_type = request_vals.get('type').strip()
-    inventory_id = request_vals.get('inventory')
+    inventory_name = request_vals.get('inventory')
     product_id = request_vals.get('product')
     net_volume = request_vals.get('net_volume')
     gross_volume = request_vals.get('gross_volume')
@@ -55,12 +59,12 @@ def create_physical(request):
     trans_date = request_vals.get('trans_date')
     print 'trans_date=', trans_date
     print counter_id
-    print product_id
-    print counter_id
+    print inventory_name
     to_inventory = ''
     sellprice = ''
+    inventory = Inventory.objects.get(name=inventory_name)
     try:
-        product = Product.objects.get(name=product_id)
+        product = Product.objects.get(pk=product_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of product is incorrectly'}))
     try:
@@ -68,8 +72,6 @@ def create_physical(request):
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of counter is incorrectly'}))
     try:
-        inventory = Inventory.objects.get(name=inventory_id)
-        product = Product.objects.get(name=product_id)
         sell_price = SellPrice.objects.get(inventory=inventory,product=product)
         if phy_type.lower() == 'purchase':
             print sell_price.avg_price
@@ -112,7 +114,7 @@ def create_physical(request):
 #                return HttpResponse(json.dumps({'response':'faliure', 'info':'The net volume greater than the product from the inventory'}))
 #            else:
             out_volume = product.volume
-                #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
+            #out_new_price = (out_price*out_volume-float(price)*int(net_volume))/(out_volume - int(net_volume))
             sell_price.volume -= int(gross_volume)
             inventory.volumn -= int(gross_volume)
             if sell_price.phy_volume == 0:
@@ -121,7 +123,7 @@ def create_physical(request):
                 sell_price.phy_volume -= int(gross_volume)
                 #product.price = out_new_price
             to_inventory = request_vals.get('to_inventory')
-            if to_inventory == inventory_id:
+            if to_inventory == inventory_name:
                 return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of inventory and to_inventory is equivalent'}))
                 
             try:
@@ -133,7 +135,7 @@ def create_physical(request):
                 new_price = (now_volume*now_price + int(gross_volume)* float(price))/new_volume
                 sellprice.price = new_price
                 sellprice.volume = new_volume
-                to_invent.volumn = new_volume
+                to_invent.volume = new_volume
                 if sellprice.phy_volume == 0:
                     sellprice.phy_volume = sell_price.volume + int(gross_volume)
                 else:

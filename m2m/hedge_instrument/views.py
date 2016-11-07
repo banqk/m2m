@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,HttpResponseRedirect
 from hedge_instrument.models import Instrument
+from hedge_account.models import Hedge_Account
 from fuel_class.models import Fuel_Class
 from counter_party.models import Counter
 import simplejson as json
@@ -14,16 +15,8 @@ def hedge_inst(request):
     options = {}
     instruments = Instrument.objects.all()
     fuels = Fuel_Class.objects.all()
-    fuel_codes = ''
-#    for fuel in fuels:
-#        fuel_codes += fuel.code + ','
-    counter_names = ''
     counters = Counter.objects.all()
-    for counter in counters:
-        counter_names += counter.name + '$'
-    print '11111111111111111111'
-    print counter_names
-    options.update({'instruments': instruments, 'fuels':fuels, 'counters':counter_names, 'months':range(1,13)})
+    options.update({'instruments': instruments, 'fuels': fuels, 'counters': counters, 'months':range(1,13)})
     render_to_url = 'hidden/hedge_instrument.html'
     return render_to_response(render_to_url, options)
 
@@ -32,7 +25,6 @@ def hedge_inst(request):
 @login_required
 def create_inst(request):
     request_vals = request.POST
-    symbol = ''
     fuel_id = request_vals.get('fuel_class')
     year = request_vals.get('year')
     month = request_vals.get('month')
@@ -40,21 +32,15 @@ def create_inst(request):
     instrument = request_vals.get('instrument')
     put_call = request_vals.get('put_call')
     strike_price = request_vals.get('strike_price')
-    counter_id = request_vals.get('counter_party')
+    counter_name = request_vals.get('counter_party')
     m = ['F','G','H','J','K','M','N','Q','U','V','X','Z']
-    print month
-    print type(month)
-    print type(year)
-    symbol = fuel_id +m[int(month)-1] +  str(year)
-    print fuel_id
-    print counter_id
-    print symbol
+    symbol = fuel_id +m[int(month)-1] + str(year)
     try:
         fuel_class = Fuel_Class.objects.get(code=fuel_id)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of fuel_class is incorrectly'}))
     try:
-        counter = Counter.objects.get(name=counter_id)
+        counter = Counter.objects.get(name=counter_name)
     except Exception:
         return HttpResponse(json.dumps({'response':'faliure', 'info':'The value of counter party is incorrectly'}))
 
