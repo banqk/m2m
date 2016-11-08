@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from inventory.models import Inventory, SellPrice
+from phy_transaction.models import Physical
 from accounts.models import Account
 from product.models import Product
 from users.models import User
@@ -28,7 +29,7 @@ def inventories(request):
 #    for account in m2m_accounts:
 #        account_names += account.name + ','
 #    print account_names
-    options.update({'inventories': inventories, 'account_list':account_names})
+    options.update({'inventories': inventories, 'account_list':m2m_accounts})
     render_to_url = 'hidden/inventory.html'
     return render_to_response(render_to_url, options)
 
@@ -164,25 +165,42 @@ def invent_summ(request):
             inventories = Inventory.objects.filter(m2m_account__in=m2m_accounts)
     except Exception:
         inventories = {}
-    rows = []
+
     options = {}
-
+    def parseProduct(products):
+        if products == None or len(str(products).strip()) == 0:
+            return []
+        rt = json.loads(products)
+        if not isinstance(rt, list):
+            rt = [rt]
+        return [int(x) for x in rt if len(str(x).strip()) > 0]
+    allPhy = Physical.objects.all()
+    allproducts = Product.objects.all()
+    data = []
     for inventory in inventories:
-        products = inventory.products
-        sell_price = SellPrice.objects.filter(inventory=inventory)
-        for s in sell_price:
-            new_one = s 
-            rows.append(new_one)
-
-#        sell_price.inventory = inventory
-#        sell_price.product = product
-#        sell_price.volume = p['volume']
-#        sell_price.price = p['price']
-#        sell_price.avg_price = p['price']
-#        sell_price.save()
-    options.update({'data': rows})
+        ps = parseProduct(inventory.products)
+        products = [x for x in allproducts if ps.count(x.id) > 0]
+        phy = [x for x in allPhy if x.inventory == inventory]
+        print inventory.name
+        for p in products:
+            dic = {'invName': inventory.name}
+            dic['prodName'] = p.name
+            v = 0
+            for y in phy:
+                if y.product.id == p.id:
+                    if y.phy_type == "Sell":
+                        v = v - y.net_volume
+                    elif y.phy_type == "Purchase":
+                        v = v + y.net_volume
+            dic['phyVol'] = v
+            sell_price = SellPrice.objects.get(inventory=inventory, product=p)
+            dic['hedgeVol'] = sell_price.hedge_volume
+            data.append(dic)
+    options.update({'data': data})
     render_to_url = 'hidden/invent_summ.html'
     return render_to_response(render_to_url, options)
+
+
 def invent_summ_hedge(request):
     #request_vals = request.POST
     #products = request_vals.getlist('products[]', '')
