@@ -3,6 +3,7 @@ from hedge_account.models import Hedge_Account
 from counter_party.models import Counter 
 from hedge_instrument.models import Instrument
 from inventory.models import Inventory
+from product.models import Product
 
 class Hedge_Tran(models.Model):
 
@@ -19,6 +20,7 @@ class Hedge_Tran(models.Model):
     trader = models.CharField(max_length=100)
     status = models.CharField(max_length=20) 
     program = models.CharField(max_length=100)
+    product = models.ForeignKey(Product)
 
 class Hedge_Price(models.Model):
     h_date = models.CharField(max_length=100)
