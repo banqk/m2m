@@ -8,6 +8,7 @@ from counter_party.models import Counter
 from fuel_class.models import Fuel_Class
 from hedge_instrument.models import Instrument
 from hedge_transaction.models import Hedge_Tran
+from phy_transaction.models import Physical
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -35,6 +36,7 @@ def account(request):
         hedge_accounts = {}
     products = Product.objects.filter(m2m_account=account_id)
     print products
+    print fuel_type
 #    options.update({'current_account_name': account.name})
     options.update({'account': account})
     options.update({'inventories': inventories})
@@ -155,6 +157,18 @@ def hedge_tran(request):
     render_to_url = 'hidden/edit_hedge_trans.html'
     return render_to_response(render_to_url, options)
 
+def phy_tran(request):
+    options = {}
+    phy_tran_id = request.GET.get('phy_tran_id', '')
+    print "phy_tran_id ", phy_tran_id
+    try:
+        phy_tran = Physical.objects.get(pk=phy_tran_id)
+    except Physical.DoesNotExist:
+        phy_tran = {}
+
+    options.update({'phy_tran': phy_tran})
+    render_to_url = 'hidden/edit_phy_trans.html'
+    return render_to_response(render_to_url, options)
 
 def product(request):
     options = {}

@@ -8,6 +8,7 @@ urlpatterns = patterns(
     url(r'inventory', 'inventory'),
     url(r'hedge/$', 'hedge'),
     url(r'hedge_tran/$', 'hedge_tran'),
+    url(r'phy_tran/$', 'phy_tran'),
     url(r'product', 'product'),
     url(r'counter', 'counter'),
     url(r'fuel', 'fuel_class'),

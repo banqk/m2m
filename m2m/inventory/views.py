@@ -5,6 +5,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from inventory.models import Inventory, SellPrice
 from phy_transaction.models import Physical
+from hedge_transaction.models import Hedge_Tran
 from accounts.models import Account
 from product.models import Product
 from users.models import User
@@ -175,12 +176,14 @@ def invent_summ(request):
             rt = [rt]
         return [int(x) for x in rt if len(str(x).strip()) > 0]
     allPhy = Physical.objects.all()
+    allHed = Hedge_Tran.objects.all()
     allproducts = Product.objects.all()
     data = []
     for inventory in inventories:
         ps = parseProduct(inventory.products)
         products = [x for x in allproducts if ps.count(x.id) > 0]
         phy = [x for x in allPhy if x.inventory == inventory]
+        hed = [x for x in allHed if x.inventory == inventory]
         print inventory.name
         for p in products:
             dic = {'invName': inventory.name}
@@ -194,7 +197,15 @@ def invent_summ(request):
                         v = v + y.net_volume
             dic['phyVol'] = v
             sell_price = SellPrice.objects.get(inventory=inventory, product=p)
-            dic['hedgeVol'] = sell_price.hedge_volume
+            v2 = 0
+            for y in hed:
+                if y.product.id == p.id:
+                    if y.hedge_type == "Sell":
+                        v2 = v2 - y.volume
+                    elif y.hedge_type == "Purchase":
+                        v2 = v2 + y.volume
+            #dic['hedgeVol'] = sell_price.hedge_volume
+            dic['hedgeVol'] = v2
             data.append(dic)
     options.update({'data': data})
     render_to_url = 'hidden/invent_summ.html'
