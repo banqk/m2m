@@ -150,8 +150,8 @@ def create_hedge_tran(request):
         confirm_number = confirm_number,
         trader = trader,
         status = status,
+        product = product,
         program = program
-       # to_inventory = to_invetory
     )
     hedge_tran.save()
     print hedge_tran.id

@@ -62,11 +62,12 @@
 			<th class="no-filter">Name</th>
 			<th>Type</th>
 			<th>Inventory</th>
+			<th>Product</th>
 			<th>Status</th>
-            <th>Contract</th>
+                        <th>Contract</th>
 			<th>Volume</th>
-            <th>Price</th>
-            <th>Initial Position</th>
+                        <th>Price</th>
+                        <th>Initial Position</th>
 		    </tr>
 		</thead>
 		<tfoot>
@@ -76,7 +77,8 @@
 			<th></th>
 			<th></th>
 			<th></th>
-            <th></th>
+                        <th></th>
+                        <th></th>
 			<th></th>
 			<th></th>
 			<th></th>
@@ -92,6 +94,7 @@
 
                          <td>{{hedge_tran.hedge_type}}</td>
                          <td>{{hedge_tran.inventory.name}}</td>
+                         <td>{{hedge_tran.product.name}}</td>
                          <td>{{hedge_tran.status}}</td>
                          <td>{{hedge_tran.instrument.instrument}}</td>
                          <td>{{hedge_tran.volume}}</td>
